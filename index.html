@@ -1,0 +1,2864 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAWI MY SafeConstruct | ระบบความปลอดภัยและสิ่งแวดล้อม ISO 45001 & ISO 14001</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0f172a;
+  --primary-600: #1e40af;
+  --primary-500: #3b82f6;
+  --primary-400: #60a5fa;
+  --primary-100: #dbeafe;
+  --primary-50: #eff6ff;
+  --emerald-600: #059669;
+  --emerald-500: #10b981;
+  --emerald-100: #d1fae5;
+  --emerald-50: #ecfdf5;
+  --red-600: #dc2626;
+  --red-500: #ef4444;
+  --red-100: #fee2e2;
+  --red-50: #fef2f2;
+  --amber-600: #d97706;
+  --amber-500: #f59e0b;
+  --amber-100: #fef3c7;
+  --amber-50: #fffbeb;
+  --violet-600: #7c3aed;
+  --violet-500: #8b5cf6;
+  --violet-100: #ede9fe;
+  --slate-900: #0f172a;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50: #f8fafc;
+  --white: #ffffff;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --sidebar-w: 272px;
+  --transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--slate-50); color: var(--slate-800);
+  line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--slate-400); }
+
+/* ========== SIDEBAR ========== */
+.sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0; width: var(--sidebar-w);
+  background: var(--slate-900); color: var(--white); z-index: 100;
+  display: flex; flex-direction: column; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  overflow: hidden;
+}
+.sidebar.hidden { transform: translateX(calc(var(--sidebar-w) * -1)); }
+
+.sidebar-brand {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.sidebar-brand .logo {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+.sidebar-brand .logo-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary-500), var(--emerald-500));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 800; color: white;
+}
+.sidebar-brand .logo-text {
+  font-size: 17px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.2;
+}
+.sidebar-brand .logo-sub {
+  font-size: 11px; color: var(--slate-400); font-weight: 400;
+}
+.iso-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.iso-tag {
+  background: rgba(59,130,246,0.15); color: var(--primary-400);
+  padding: 3px 10px; border-radius: 6px; font-size: 10px;
+  font-weight: 600; letter-spacing: 0.5px;
+}
+
+.nav-menu { flex: 1; overflow-y: auto; padding: 12px 0; }
+.nav-section {
+  padding: 16px 20px 6px; font-size: 10px; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--slate-500); font-weight: 600;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px; margin: 2px 8px; border-radius: 10px;
+  cursor: pointer; transition: var(--transition);
+  font-size: 13.5px; font-weight: 500; color: var(--slate-400);
+  position: relative;
+}
+.nav-item:hover { background: rgba(255,255,255,0.06); color: var(--slate-200); }
+.nav-item.active {
+  background: rgba(59,130,246,0.15); color: var(--white);
+}
+.nav-item.active::before {
+  content: ''; position: absolute; left: -8px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 20px; background: var(--primary-500); border-radius: 0 3px 3px 0;
+}
+.nav-item .icon {
+  width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.nav-item .nav-badge {
+  margin-left: auto; background: var(--red-500); color: white;
+  font-size: 10px; font-weight: 700; padding: 1px 7px;
+  border-radius: 10px; min-width: 18px; text-align: center;
+}
+
+.sidebar-footer {
+  padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; gap: 12px;
+}
+.avatar {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary-500), var(--violet-500));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: white;
+}
+.sidebar-footer .user-info { flex: 1; }
+.sidebar-footer .user-name { font-size: 13px; font-weight: 600; color: var(--white); }
+.sidebar-footer .user-role { font-size: 11px; color: var(--slate-400); }
+
+/* ========== MAIN ========== */
+.main {
+  margin-left: var(--sidebar-w); min-height: 100vh;
+  transition: margin-left 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.main.expanded { margin-left: 0; }
+
+/* Topbar */
+.topbar {
+  background: rgba(255,255,255,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  padding: 0 32px; height: 64px; display: flex; align-items: center;
+  justify-content: space-between; border-bottom: 1px solid var(--slate-200);
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.menu-toggle {
+  display: none; background: none; border: 1px solid var(--slate-200);
+  width: 40px; height: 40px; border-radius: 10px; cursor: pointer;
+  color: var(--slate-600); font-size: 18px;
+  transition: var(--transition);
+}
+.menu-toggle:hover { background: var(--slate-100); }
+.topbar h1 { font-size: 18px; font-weight: 700; color: var(--slate-900); letter-spacing: -0.3px; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-date {
+  font-size: 13px; color: var(--slate-500); font-weight: 500;
+  background: var(--slate-100); padding: 6px 14px; border-radius: 8px;
+}
+.topbar-btn {
+  width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--slate-200);
+  background: var(--white); cursor: pointer; display: flex;
+  align-items: center; justify-content: center; font-size: 18px;
+  transition: var(--transition); position: relative;
+}
+.topbar-btn:hover { background: var(--slate-50); border-color: var(--slate-300); }
+.topbar-btn .dot {
+  position: absolute; top: 8px; right: 8px; width: 8px; height: 8px;
+  background: var(--red-500); border-radius: 50%; border: 2px solid var(--white);
+}
+
+/* ========== CONTENT ========== */
+.content { padding: 28px 32px; max-width: 1400px; }
+.page { display: none; }
+.page.active { display: block; animation: fadeUp 0.35s ease; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== STAT CARDS ========== */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px; margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--white); border-radius: var(--radius-lg); padding: 24px;
+  border: 1px solid var(--slate-200); transition: var(--transition);
+  position: relative; overflow: hidden;
+}
+.stat-card:hover { border-color: var(--slate-300); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.stat-card .stat-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 16px;
+}
+.stat-card .stat-icon.green { background: var(--emerald-100); }
+.stat-card .stat-icon.red { background: var(--red-100); }
+.stat-card .stat-icon.amber { background: var(--amber-100); }
+.stat-card .stat-icon.blue { background: var(--primary-100); }
+.stat-card .stat-icon.violet { background: var(--violet-100); }
+.stat-card .stat-label { font-size: 12px; color: var(--slate-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-card .stat-value { font-size: 36px; font-weight: 800; color: var(--slate-900); letter-spacing: -1px; margin: 4px 0; line-height: 1; }
+.stat-card .stat-sub { font-size: 12px; color: var(--slate-400); display: flex; align-items: center; gap: 4px; }
+.stat-card .stat-trend { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+.stat-card .stat-trend.up { background: var(--red-100); color: var(--red-600); }
+.stat-card .stat-trend.down { background: var(--emerald-100); color: var(--emerald-600); }
+.stat-card .stat-glow {
+  position: absolute; top: -30px; right: -30px; width: 100px; height: 100px;
+  border-radius: 50%; opacity: 0.06;
+}
+
+/* ========== CARDS ========== */
+.card {
+  background: var(--white); border-radius: var(--radius-lg);
+  border: 1px solid var(--slate-200); margin-bottom: 20px;
+  transition: var(--transition);
+}
+.card:hover { border-color: var(--slate-300); }
+.card-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 24px; border-bottom: 1px solid var(--slate-100);
+}
+.card-header h3 {
+  font-size: 15px; font-weight: 700; color: var(--slate-800);
+  display: flex; align-items: center; gap: 10px; letter-spacing: -0.2px;
+}
+.card-header h3 .h-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.card-body { padding: 20px 24px; }
+.card-body-flush { padding: 0; }
+
+/* ========== GRIDS ========== */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* ========== BUTTONS ========== */
+.btn {
+  padding: 9px 18px; border: none; border-radius: 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: var(--transition); font-family: inherit;
+  display: inline-flex; align-items: center; gap: 8px;
+  letter-spacing: -0.1px;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: var(--primary-600); color: var(--white);
+  box-shadow: 0 1px 2px rgba(30,64,175,0.3);
+}
+.btn-primary:hover { background: #1d4ed8; box-shadow: 0 4px 12px rgba(30,64,175,0.3); }
+.btn-success {
+  background: var(--emerald-600); color: var(--white);
+  box-shadow: 0 1px 2px rgba(5,150,105,0.3);
+}
+.btn-success:hover { background: #047857; }
+.btn-danger {
+  background: var(--red-500); color: var(--white);
+  box-shadow: 0 1px 2px rgba(239,68,68,0.3);
+}
+.btn-danger:hover { background: var(--red-600); }
+.btn-warning {
+  background: var(--amber-500); color: var(--white);
+  box-shadow: 0 1px 2px rgba(245,158,11,0.3);
+}
+.btn-warning:hover { background: var(--amber-600); }
+.btn-ghost {
+  background: transparent; color: var(--slate-600);
+  border: 1px solid var(--slate-200);
+}
+.btn-ghost:hover { background: var(--slate-50); border-color: var(--slate-300); }
+.btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 8px; }
+.btn-icon { padding: 8px; width: 36px; height: 36px; justify-content: center; }
+
+/* ========== TABLES ========== */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: var(--slate-50); }
+th {
+  padding: 12px 16px; text-align: left; font-weight: 600;
+  color: var(--slate-500); font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.8px; white-space: nowrap;
+  border-bottom: 1px solid var(--slate-200);
+}
+td {
+  padding: 12px 16px; border-bottom: 1px solid var(--slate-100);
+  color: var(--slate-700); vertical-align: middle;
+}
+tr { transition: var(--transition); }
+tr:hover td { background: var(--slate-50); }
+tr:last-child td { border-bottom: none; }
+
+/* ========== BADGES ========== */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 6px;
+  font-size: 11px; font-weight: 600; white-space: nowrap;
+}
+.badge-dot {
+  width: 6px; height: 6px; border-radius: 50%; display: inline-block;
+}
+.badge-success { background: var(--emerald-50); color: var(--emerald-600); }
+.badge-success .badge-dot { background: var(--emerald-500); }
+.badge-warning { background: var(--amber-50); color: var(--amber-600); }
+.badge-warning .badge-dot { background: var(--amber-500); }
+.badge-danger { background: var(--red-50); color: var(--red-600); }
+.badge-danger .badge-dot { background: var(--red-500); }
+.badge-info { background: var(--primary-50); color: var(--primary-600); }
+.badge-info .badge-dot { background: var(--primary-500); }
+.badge-violet { background: var(--violet-100); color: var(--violet-600); }
+.badge-gray { background: var(--slate-100); color: var(--slate-500); }
+
+/* ========== TABS ========== */
+.tabs {
+  display: flex; gap: 4px; padding: 4px;
+  background: var(--slate-100); border-radius: 10px;
+  margin-bottom: 20px; width: fit-content;
+}
+.tab {
+  padding: 8px 18px; cursor: pointer; font-size: 13px; font-weight: 600;
+  color: var(--slate-500); border-radius: 8px; transition: var(--transition);
+  user-select: none;
+}
+.tab:hover { color: var(--slate-700); }
+.tab.active {
+  background: var(--white); color: var(--slate-800);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ========== FORMS ========== */
+.form-group { margin-bottom: 18px; }
+.form-group label {
+  display: block; font-size: 13px; font-weight: 600;
+  margin-bottom: 6px; color: var(--slate-700);
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 10px 14px; border: 1px solid var(--slate-200);
+  border-radius: 10px; font-size: 14px; font-family: inherit;
+  transition: var(--transition); background: var(--white);
+  color: var(--slate-800);
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none; border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+}
+.form-group input::placeholder, .form-group textarea::placeholder {
+  color: var(--slate-400);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* ========== RISK MATRIX ========== */
+.risk-matrix {
+  display: grid; grid-template-columns: 36px repeat(5,1fr);
+  grid-template-rows: repeat(5,48px) 28px; gap: 3px; max-width: 460px;
+}
+.risk-matrix .cell {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; font-size: 12px; font-weight: 700; color: var(--white);
+  transition: var(--transition);
+}
+.risk-matrix .cell:hover { transform: scale(1.08); z-index: 1; box-shadow: var(--shadow-md); }
+.risk-matrix .y-label {
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: var(--slate-400);
+}
+.risk-matrix .x-label {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: var(--slate-400);
+}
+.risk-low { background: var(--emerald-500); }
+.risk-med { background: var(--amber-500); }
+.risk-high { background: var(--red-500); }
+.risk-vhigh { background: var(--violet-600); }
+
+/* ========== CHECKLIST ========== */
+.checklist-item {
+  display: flex; align-items: center; gap: 14px; padding: 14px 0;
+  border-bottom: 1px solid var(--slate-100);
+}
+.checklist-item:last-child { border-bottom: none; }
+.check-box {
+  width: 24px; height: 24px; border: 2px solid var(--slate-300);
+  border-radius: 8px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+  transition: var(--transition); color: transparent;
+}
+.check-box:hover { border-color: var(--primary-500); background: var(--primary-50); }
+.check-box.checked {
+  background: var(--emerald-500); border-color: var(--emerald-500);
+  color: var(--white);
+}
+.checklist-item .text .title { font-size: 14px; font-weight: 500; color: var(--slate-700); }
+.checklist-section-title {
+  font-size: 14px; font-weight: 700; color: var(--slate-800);
+  padding: 16px 0 4px; display: flex; align-items: center; gap: 8px;
+}
+.checklist-section-title .num {
+  width: 24px; height: 24px; border-radius: 6px; background: var(--primary-600);
+  color: white; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+
+/* ========== PROGRESS ========== */
+.progress-bar { height: 8px; background: var(--slate-100); border-radius: 4px; overflow: hidden; }
+.progress-bar .fill { height: 100%; border-radius: 4px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+.kpi-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 6px;
+}
+.kpi-row .kpi-label { font-size: 13px; color: var(--slate-600); font-weight: 500; }
+.kpi-row .kpi-value { font-size: 13px; font-weight: 700; }
+.kpi-item { margin-bottom: 18px; }
+.kpi-item:last-child { margin-bottom: 0; }
+
+/* ========== CHART ========== */
+.bar-chart {
+  display: flex; align-items: flex-end; gap: 16px; height: 220px;
+  padding: 16px 0;
+}
+.bar-col { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+.bar {
+  width: 100%; border-radius: 8px 8px 0 0; transition: height 0.6s cubic-bezier(0.4,0,0.2,1);
+  min-width: 28px; position: relative;
+}
+.bar:hover { filter: brightness(1.1); }
+.bar-label { font-size: 11px; color: var(--slate-400); font-weight: 600; }
+.bar-value { font-size: 12px; font-weight: 700; color: var(--slate-600); }
+.chart-legend {
+  display: flex; gap: 16px; justify-content: center; margin-top: 12px;
+}
+.chart-legend span {
+  display: flex; align-items: center; gap: 6px; font-size: 12px;
+  color: var(--slate-500); font-weight: 500;
+}
+.chart-legend .dot { width: 10px; height: 10px; border-radius: 3px; }
+
+/* ========== ALERTS ========== */
+.alert {
+  padding: 14px 18px; border-radius: 12px; margin-bottom: 12px;
+  font-size: 13px; display: flex; align-items: center; gap: 12px;
+  font-weight: 500; border: 1px solid transparent;
+}
+.alert:last-child { margin-bottom: 0; }
+.alert-danger { background: var(--red-50); color: var(--red-600); border-color: var(--red-100); }
+.alert-warning { background: var(--amber-50); color: var(--amber-600); border-color: var(--amber-100); }
+.alert-success { background: var(--emerald-50); color: var(--emerald-600); border-color: var(--emerald-100); }
+.alert .alert-icon {
+  width: 32px; height: 32px; border-radius: 8px; display: flex;
+  align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
+}
+.alert-danger .alert-icon { background: var(--red-100); }
+.alert-warning .alert-icon { background: var(--amber-100); }
+.alert-success .alert-icon { background: var(--emerald-100); }
+
+/* ========== TIMELINE ========== */
+.timeline-item {
+  display: flex; gap: 16px; padding: 14px 0;
+  border-bottom: 1px solid var(--slate-100);
+}
+.timeline-item:last-child { border-bottom: none; }
+.timeline-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  margin-top: 5px; flex-shrink: 0;
+  box-shadow: 0 0 0 4px var(--white), 0 0 0 5px var(--slate-200);
+}
+.timeline-item .time { font-size: 11px; color: var(--slate-400); font-weight: 600; }
+.timeline-item .detail { font-size: 13px; color: var(--slate-600); font-weight: 500; }
+
+/* ========== MODAL ========== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(15,23,42,0.6); backdrop-filter: blur(8px);
+  z-index: 200; align-items: center; justify-content: center;
+}
+.modal-overlay.show { display: flex; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal {
+  background: var(--white); border-radius: var(--radius-xl); padding: 32px;
+  width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+  box-shadow: var(--shadow-xl); animation: slideUp 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.modal-title {
+  font-size: 20px; font-weight: 700; color: var(--slate-900);
+  margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
+  letter-spacing: -0.3px;
+}
+.modal-title .modal-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--slate-100); }
+
+/* ========== EMPTY STATE ========== */
+.empty-state {
+  text-align: center; padding: 48px 24px; color: var(--slate-400);
+}
+.empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+.empty-state p { font-size: 14px; }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(calc(var(--sidebar-w) * -1)); }
+  .sidebar.show { transform: translateX(0); }
+  .main { margin-left: 0 !important; }
+  .menu-toggle { display: flex; }
+  .content { padding: 20px 16px; }
+  .topbar { padding: 0 16px; }
+  .form-row { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .stat-card { padding: 18px; }
+  .stat-card .stat-value { font-size: 28px; }
+  .tabs { flex-wrap: wrap; }
+}
+
+/* ========== PRINT ========== */
+@media print {
+  .sidebar, .topbar, .btn, .menu-toggle { display: none !important; }
+  .main { margin-left: 0 !important; }
+  .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+}
+
+/* ========== BACKDROP ========== */
+.sidebar-backdrop {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  z-index: 99;
+}
+@media (max-width: 768px) {
+  .sidebar-backdrop.show { display: block; }
+}
+
+/* ========== LOGIN SCREEN ========== */
+.login-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+.login-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.login-box {
+  background: var(--white); border-radius: 24px; padding: 48px 40px;
+  width: 90%; max-width: 420px; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+  animation: slideUp 0.5s ease;
+}
+.login-box .login-logo {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 8px;
+  justify-content: center;
+}
+.login-box .login-logo-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary-500), var(--emerald-500));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 800; color: white;
+}
+.login-box .login-logo-text { font-size: 22px; font-weight: 800; color: var(--slate-900); letter-spacing: -0.5px; }
+.login-box .login-subtitle { text-align: center; color: var(--slate-400); font-size: 13px; margin-bottom: 32px; }
+.login-box .form-group { margin-bottom: 20px; }
+.login-box .form-group label { font-size: 13px; font-weight: 600; color: var(--slate-600); }
+.login-box .form-group input, .login-box .form-group select {
+  width: 100%; padding: 12px 16px; border: 1.5px solid var(--slate-200);
+  border-radius: 12px; font-size: 15px; font-family: inherit;
+  transition: var(--transition); background: var(--slate-50);
+}
+.login-box .form-group input:focus, .login-box .form-group select:focus {
+  outline: none; border-color: var(--primary-500); background: var(--white);
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+}
+.login-btn {
+  width: 100%; padding: 14px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary-600), #1d4ed8);
+  color: white; font-size: 15px; font-weight: 700; cursor: pointer;
+  font-family: inherit; transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(30,64,175,0.3);
+}
+.login-btn:hover { box-shadow: 0 6px 20px rgba(30,64,175,0.4); transform: translateY(-1px); }
+.login-btn:active { transform: translateY(0); }
+.login-footer { text-align: center; margin-top: 24px; font-size: 11px; color: var(--slate-400); }
+.login-bg-shapes {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.login-bg-shapes .shape {
+  position: absolute; border-radius: 50%; opacity: 0.04; background: white;
+}
+.login-bg-shapes .s1 { width: 400px; height: 400px; top: -100px; right: -100px; }
+.login-bg-shapes .s2 { width: 300px; height: 300px; bottom: -80px; left: -80px; }
+.login-bg-shapes .s3 { width: 200px; height: 200px; top: 40%; left: 60%; }
+
+/* ========== CLOCK ========== */
+.clock-display {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--slate-900); color: var(--white);
+  padding: 6px 14px; border-radius: 10px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 14px; font-weight: 600; letter-spacing: 1px;
+  min-width: 100px; justify-content: center;
+}
+.clock-display .clock-icon { font-size: 14px; }
+.clock-display .clock-sec { color: var(--primary-400); }
+.clock-display .clock-date {
+  font-size: 11px; color: var(--slate-400); font-weight: 500;
+  letter-spacing: 0; font-family: inherit;
+}
+
+/* ========== USER MENU ========== */
+.user-menu-btn {
+  display: flex; align-items: center; gap: 10px; padding: 5px 14px 5px 5px;
+  border-radius: 12px; border: 1px solid var(--slate-200); background: var(--white);
+  cursor: pointer; transition: var(--transition);
+}
+.user-menu-btn:hover { background: var(--slate-50); border-color: var(--slate-300); }
+.user-menu-btn .um-avatar {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: white;
+}
+.user-menu-btn .um-info { text-align: left; }
+.user-menu-btn .um-name { font-size: 12px; font-weight: 700; color: var(--slate-800); line-height: 1.2; }
+.user-menu-btn .um-role { font-size: 10px; color: var(--slate-400); font-weight: 500; }
+
+.user-dropdown {
+  position: absolute; top: 56px; right: 0; background: var(--white);
+  border-radius: 14px; border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-xl); padding: 8px; min-width: 220px;
+  display: none; z-index: 60;
+  animation: fadeIn 0.15s ease;
+}
+.user-dropdown.show { display: block; }
+.user-dropdown .ud-header {
+  padding: 12px 14px; border-bottom: 1px solid var(--slate-100); margin-bottom: 4px;
+}
+.user-dropdown .ud-header .ud-name { font-size: 14px; font-weight: 700; color: var(--slate-900); }
+.user-dropdown .ud-header .ud-email { font-size: 12px; color: var(--slate-400); }
+.user-dropdown .ud-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 500;
+  color: var(--slate-600); transition: var(--transition);
+}
+.user-dropdown .ud-item:hover { background: var(--slate-50); }
+.user-dropdown .ud-item.danger { color: var(--red-500); }
+.user-dropdown .ud-item.danger:hover { background: var(--red-50); }
+.user-dropdown .ud-divider { height: 1px; background: var(--slate-100); margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-bg-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+    <div class="shape s3"></div>
+  </div>
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">SC</div>
+      <div class="login-logo-text">LAWI MY SafeConstruct</div>
+    </div>
+    <div class="login-subtitle">ระบบจัดการความปลอดภัยและสิ่งแวดล้อม<br>ISO 45001 & ISO 14001</div>
+
+    <div class="form-group">
+      <label>ชื่อผู้ใช้ / Username</label>
+      <input type="text" id="login-username" placeholder="กรอกชื่อผู้ใช้" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>รหัสผ่าน / Password</label>
+      <input type="password" id="login-password" placeholder="กรอกรหัสผ่าน">
+    </div>
+    <div class="form-group">
+      <label>เข้าสู่ระบบในฐานะ</label>
+      <select id="login-role">
+        <option value="safety">จป.วิชาชีพ (Safety Officer)</option>
+        <option value="manager">ผู้จัดการโครงการ (Project Manager)</option>
+        <option value="contractor">ผู้รับเหมา (Contractor)</option>
+        <option value="env">เจ้าหน้าที่สิ่งแวดล้อม (Environment Officer)</option>
+        <option value="admin">ผู้ดูแลระบบ (Admin)</option>
+      </select>
+    </div>
+    <div id="login-error" style="display:none;padding:10px 14px;border-radius:10px;background:var(--red-50);color:var(--red-600);font-size:13px;font-weight:500;margin-bottom:16px;border:1px solid var(--red-100);"></div>
+    <button class="login-btn" onclick="doLogin()">เข้าสู่ระบบ</button>
+    <div class="login-footer">
+      LAWI MY SafeConstruct v2.0 — Construction SHE Management System<br>
+      Demo: ใส่ชื่อผู้ใช้อะไรก็ได้ รหัสผ่าน <strong>1234</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Sidebar Backdrop (mobile) -->
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="logo">
+      <div class="logo-icon">SC</div>
+      <div>
+        <div class="logo-text">LAWI MY SafeConstruct</div>
+        <div class="logo-sub">Construction SHE System</div>
+      </div>
+    </div>
+    <div class="iso-tags">
+      <span class="iso-tag">ISO 45001:2018</span>
+      <span class="iso-tag">ISO 14001:2015</span>
+    </div>
+  </div>
+
+  <div class="nav-menu">
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" data-page="dashboard"><span class="icon">📊</span> แดชบอร์ด</div>
+    <div class="nav-item" data-page="incidents"><span class="icon">🚨</span> รายงานเหตุการณ์ <span class="nav-badge">2</span></div>
+    <div class="nav-item" data-page="investigation"><span class="icon">🔬</span> สอบสวนอุบัติเหตุ <span class="nav-badge">2</span></div>
+    <div class="nav-item" data-page="risk"><span class="icon">⚠️</span> ประเมินความเสี่ยง</div>
+    <div class="nav-item" data-page="inspection"><span class="icon">📋</span> ตรวจสอบความปลอดภัย</div>
+
+    <div class="nav-section">สิ่งแวดล้อม</div>
+    <div class="nav-item" data-page="environment"><span class="icon">🌿</span> การจัดการสิ่งแวดล้อม</div>
+    <div class="nav-item" data-page="waste"><span class="icon">♻️</span> การจัดการของเสีย</div>
+
+    <div class="nav-section">จัดการระบบ</div>
+    <div class="nav-item" data-page="training"><span class="icon">🎓</span> การฝึกอบรม</div>
+    <div class="nav-item" data-page="documents"><span class="icon">📁</span> เอกสาร ISO</div>
+    <div class="nav-item" data-page="ppe"><span class="icon">🦺</span> อุปกรณ์ PPE <span class="nav-badge">1</span></div>
+    <div class="nav-item" data-page="audit"><span class="icon">🔍</span> Audit</div>
+    <div class="nav-item" data-page="workpermit"><span class="icon">📝</span> Work Permit <span class="nav-badge">3</span></div>
+    <div class="nav-item" data-page="corrective"><span class="icon">🔧</span> CAPA</div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="avatar">SO</div>
+    <div class="user-info">
+      <div class="user-name">Safety Officer</div>
+      <div class="user-role">จป.วิชาชีพ</div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main -->
+<div class="main" id="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <h1 id="pageTitle">แดชบอร์ด</h1>
+    </div>
+    <div class="topbar-right">
+      <div class="clock-display" id="liveClock">
+        <span class="clock-icon">🕐</span>
+        <span id="clockTime">00:00:00</span>
+      </div>
+      <span class="topbar-date" id="currentDate"></span>
+      <button class="topbar-btn" title="การแจ้งเตือน" onclick="navTo('dashboard')">🔔<span class="dot"></span></button>
+      <div style="position:relative;">
+        <div class="user-menu-btn" id="userMenuBtn" onclick="toggleUserMenu()">
+          <div class="um-avatar" id="umAvatar" style="background:linear-gradient(135deg,var(--primary-500),var(--violet-500))">SO</div>
+          <div class="um-info">
+            <div class="um-name" id="umName">Safety Officer</div>
+            <div class="um-role" id="umRole">จป.วิชาชีพ</div>
+          </div>
+        </div>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="ud-header">
+            <div class="ud-name" id="udName">Safety Officer</div>
+            <div class="ud-email" id="udEmail">safety@safeconstruct.com</div>
+          </div>
+          <div class="ud-item" onclick="navTo('dashboard');closeUserMenu();">📊 แดชบอร์ด</div>
+          <div class="ud-item" onclick="alert('โปรไฟล์ — ฟีเจอร์กำลังพัฒนา');closeUserMenu();">👤 โปรไฟล์ของฉัน</div>
+          <div class="ud-item" onclick="alert('ตั้งค่า — ฟีเจอร์กำลังพัฒนา');closeUserMenu();">⚙️ ตั้งค่า</div>
+          <div class="ud-divider"></div>
+          <div class="ud-item danger" onclick="doLogout()">🚪 ออกจากระบบ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon green">🛡️</div>
+          <div class="stat-label">วันปลอดภัย (Safe Days)</div>
+          <div class="stat-value" style="color:var(--emerald-600)">247</div>
+          <div class="stat-sub">วันตั้งแต่อุบัติเหตุครั้งล่าสุด</div>
+          <div class="stat-glow" style="background:var(--emerald-500)"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red">🚨</div>
+          <div class="stat-label">อุบัติเหตุเดือนนี้</div>
+          <div class="stat-value" style="color:var(--red-500)">2</div>
+          <div class="stat-sub"><span class="stat-trend down">-50%</span> จากเดือนก่อน</div>
+          <div class="stat-glow" style="background:var(--red-500)"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber">⚡</div>
+          <div class="stat-label">Near Miss เดือนนี้</div>
+          <div class="stat-value" style="color:var(--amber-600)">5</div>
+          <div class="stat-sub">รายงาน Near Miss ทั้งหมด</div>
+          <div class="stat-glow" style="background:var(--amber-500)"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue">📈</div>
+          <div class="stat-label">คะแนนความปลอดภัย</div>
+          <div class="stat-value" style="color:var(--primary-600)">92<span style="font-size:20px">%</span></div>
+          <div class="stat-sub">จากการตรวจประเมินล่าสุด</div>
+          <div class="stat-glow" style="background:var(--primary-500)"></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="h-icon" style="background:var(--red-50)">📈</span> สถิติเหตุการณ์ (6 เดือน)</h3>
+          </div>
+          <div class="card-body">
+            <div class="bar-chart" id="incidentChart"></div>
+            <div class="chart-legend">
+              <span><span class="dot" style="background:var(--red-500)"></span> อุบัติเหตุ</span>
+              <span><span class="dot" style="background:var(--amber-400)"></span> Near Miss</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="h-icon" style="background:var(--emerald-50)">🎯</span> เป้าหมาย KPI ความปลอดภัย</h3>
+          </div>
+          <div class="card-body" id="kpiContainer"></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="h-icon" style="background:var(--primary-50)">🕐</span> กิจกรรมล่าสุด</h3>
+          </div>
+          <div class="card-body" id="recentActivity"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="h-icon" style="background:var(--amber-50)">🔔</span> การแจ้งเตือน</h3>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-danger"><span class="alert-icon">🚨</span> พบ Near Miss บริเวณโซน A - รอการตรวจสอบ</div>
+            <div class="alert alert-warning"><span class="alert-icon">⏰</span> ใบอนุญาตทำงานบนที่สูง #WP-034 จะหมดอายุใน 3 วัน</div>
+            <div class="alert alert-warning"><span class="alert-icon">📋</span> การตรวจสอบรายสัปดาห์ - กำหนดส่ง 28 มี.ค. 2569</div>
+            <div class="alert alert-success"><span class="alert-icon">✅</span> การฝึกอบรมดับเพลิงเสร็จสิ้น - 45 คนผ่านเกณฑ์</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INCIDENTS ===== -->
+    <div class="page" id="page-incidents">
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--red-50)">🚨</span> รายการอุบัติเหตุ/เหตุการณ์</h3>
+          <button class="btn btn-danger btn-sm" onclick="openModal('incidentModal')">+ รายงานใหม่</button>
+        </div>
+        <div class="card-body" style="padding-bottom:0;">
+          <div class="tabs">
+            <div class="tab active" onclick="filterIncidents('all',this)">ทั้งหมด</div>
+            <div class="tab" onclick="filterIncidents('accident',this)">อุบัติเหตุ</div>
+            <div class="tab" onclick="filterIncidents('near-miss',this)">Near Miss</div>
+            <div class="tab" onclick="filterIncidents('unsafe',this)">สภาพไม่ปลอดภัย</div>
+          </div>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>รหัส</th><th>วันที่</th><th>ประเภท</th><th>สถานที่</th><th>รายละเอียด</th><th>ความรุนแรง</th><th>สถานะ</th><th></th></tr></thead>
+              <tbody id="incidentTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INVESTIGATION ===== -->
+    <div class="page" id="page-investigation">
+      <!-- Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+        <div class="stat-card"><div class="stat-icon red">🔬</div><div class="stat-label">กำลังสอบสวน</div><div class="stat-value" style="color:var(--red-500)" id="inv-open-count">0</div></div>
+        <div class="stat-card"><div class="stat-icon amber">📝</div><div class="stat-label">รอทบทวน</div><div class="stat-value" style="color:var(--amber-600)" id="inv-review-count">0</div></div>
+        <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-label">ปิดการสอบสวน</div><div class="stat-value" style="color:var(--emerald-600)" id="inv-closed-count">0</div></div>
+        <div class="stat-card"><div class="stat-icon blue">📊</div><div class="stat-label">ทั้งหมด</div><div class="stat-value" style="color:var(--primary-600)" id="inv-total-count">0</div></div>
+      </div>
+
+      <!-- Investigation List -->
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--red-50)">🔬</span> รายการสอบสวนอุบัติเหตุ</h3>
+          <button class="btn btn-danger btn-sm" onclick="openModal('invModal')">+ สร้างการสอบสวนใหม่</button>
+        </div>
+        <div class="card-body" style="padding-bottom:0;">
+          <div class="tabs">
+            <div class="tab active" onclick="filterInv('all',this)">ทั้งหมด</div>
+            <div class="tab" onclick="filterInv('investigating',this)">กำลังสอบสวน</div>
+            <div class="tab" onclick="filterInv('review',this)">รอทบทวน</div>
+            <div class="tab" onclick="filterInv('closed',this)">ปิดแล้ว</div>
+          </div>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>เลขที่</th><th>อ้างอิง</th><th>วันที่เกิดเหตุ</th><th>ประเภท</th>
+                <th>สถานที่</th><th>ความรุนแรง</th><th>ผู้สอบสวน</th><th>สถานะ</th><th></th>
+              </tr></thead>
+              <tbody id="invTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Investigation Detail Cards (shown when viewing a case) -->
+      <div id="invDetailSection" style="display:none;">
+
+        <div style="display:flex;align-items:center;gap:12px;margin:20px 0 16px;">
+          <button class="btn btn-ghost btn-sm" onclick="closeInvDetail()">← กลับ</button>
+          <h2 style="font-size:18px;font-weight:700;color:var(--slate-900);" id="invDetailTitle"></h2>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="card">
+          <div class="card-body">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;" id="invSteps"></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Left: Basic Info -->
+          <div class="card">
+            <div class="card-header"><h3><span class="h-icon" style="background:var(--primary-50)">📋</span> ข้อมูลเหตุการณ์</h3></div>
+            <div class="card-body" id="invBasicInfo"></div>
+          </div>
+          <!-- Right: Injured/Witness -->
+          <div class="card">
+            <div class="card-header"><h3><span class="h-icon" style="background:var(--red-50)">🏥</span> ผู้บาดเจ็บและพยาน</h3></div>
+            <div class="card-body" id="invPersonInfo"></div>
+          </div>
+        </div>
+
+        <!-- Root Cause Analysis -->
+        <div class="card">
+          <div class="card-header"><h3><span class="h-icon" style="background:var(--amber-50)">🔍</span> การวิเคราะห์สาเหตุ (Root Cause Analysis)</h3></div>
+          <div class="card-body" id="invRCA"></div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Corrective Actions -->
+          <div class="card">
+            <div class="card-header"><h3><span class="h-icon" style="background:var(--emerald-50)">🔧</span> มาตรการแก้ไข/ป้องกัน</h3></div>
+            <div class="card-body" id="invActions"></div>
+          </div>
+          <!-- Timeline -->
+          <div class="card">
+            <div class="card-header"><h3><span class="h-icon" style="background:var(--violet-100)">🕐</span> ลำดับเหตุการณ์ (Timeline)</h3></div>
+            <div class="card-body" id="invTimeline"></div>
+          </div>
+        </div>
+
+        <!-- Evidence / Photos -->
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="h-icon" style="background:var(--primary-50)">📷</span> หลักฐานและภาพถ่าย</h3>
+          </div>
+          <div class="card-body" id="invEvidence"></div>
+        </div>
+
+        <!-- Lessons Learned & Sign-off -->
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><h3><span class="h-icon" style="background:var(--amber-50)">💡</span> บทเรียนที่ได้รับ (Lessons Learned)</h3></div>
+            <div class="card-body" id="invLessons"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3><span class="h-icon" style="background:var(--emerald-50)">✍️</span> การลงนาม/อนุมัติ</h3></div>
+            <div class="card-body" id="invSignoff"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== RISK ===== -->
+    <div class="page" id="page-risk">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="h-icon" style="background:var(--amber-50)">📐</span> Risk Matrix (5x5)</h3>
+          </div>
+          <div class="card-body">
+            <div class="risk-matrix" id="riskMatrix"></div>
+            <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="badge badge-success"><span class="badge-dot"></span> ต่ำ (1-4)</span>
+              <span class="badge badge-warning"><span class="badge-dot"></span> ปานกลาง (5-9)</span>
+              <span class="badge badge-danger"><span class="badge-dot"></span> สูง (10-16)</span>
+              <span class="badge badge-violet"><span class="badge-dot"></span> สูงมาก (20-25)</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="h-icon" style="background:var(--red-50)">🔥</span> ความเสี่ยงสูง</h3>
+            <button class="btn btn-warning btn-sm" onclick="openModal('riskModal')">+ เพิ่ม</button>
+          </div>
+          <div class="card-body" id="riskList"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--amber-50)">📋</span> ทะเบียนความเสี่ยง (Risk Register)</h3>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>รหัส</th><th>กิจกรรม</th><th>อันตราย</th><th>L</th><th>S</th><th>ระดับ</th><th>มาตรการ</th><th>ผู้รับผิดชอบ</th></tr></thead>
+              <tbody id="riskRegister"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INSPECTION ===== -->
+    <div class="page" id="page-inspection">
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--emerald-50)">📋</span> แบบตรวจสอบความปลอดภัยประจำวัน</h3>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="printChecklist()">🖨️ พิมพ์</button>
+            <button class="btn btn-success btn-sm" onclick="saveChecklist()">💾 บันทึก</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-row" style="margin-bottom:24px;">
+            <div class="form-group"><label>วันที่ตรวจ</label><input type="date" id="inspDate"></div>
+            <div class="form-group"><label>ผู้ตรวจ</label><input type="text" placeholder="ชื่อ-สกุล ผู้ตรวจ"></div>
+          </div>
+
+          <div class="checklist-section-title"><span class="num">1</span> สภาพพื้นที่ทำงาน</div>
+          <div id="checklist-area"></div>
+
+          <div class="checklist-section-title"><span class="num">2</span> อุปกรณ์ PPE</div>
+          <div id="checklist-ppe"></div>
+
+          <div class="checklist-section-title"><span class="num">3</span> เครื่องจักรและอุปกรณ์</div>
+          <div id="checklist-machine"></div>
+
+          <div class="checklist-section-title"><span class="num">4</span> ระบบป้องกันอัคคีภัย</div>
+          <div id="checklist-fire"></div>
+
+          <div class="checklist-section-title"><span class="num">5</span> สิ่งแวดล้อม (ISO 14001)</div>
+          <div id="checklist-env"></div>
+
+          <div class="form-group" style="margin-top:24px;">
+            <label>หมายเหตุ / ข้อสังเกตเพิ่มเติม</label>
+            <textarea rows="3" placeholder="ระบุข้อสังเกตหรือสิ่งที่ต้องแก้ไข..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ENVIRONMENT ===== -->
+    <div class="page" id="page-environment">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon green">💨</div><div class="stat-label">PM2.5</div><div class="stat-value" style="color:var(--emerald-600)">35</div><div class="stat-sub">µg/m³ (มาตรฐาน < 50)</div></div>
+        <div class="stat-card"><div class="stat-icon blue">🔊</div><div class="stat-label">ระดับเสียง</div><div class="stat-value" style="color:var(--primary-600)">78</div><div class="stat-sub">dB(A) (มาตรฐาน < 85)</div></div>
+        <div class="stat-card"><div class="stat-icon green">💧</div><div class="stat-label">น้ำทิ้ง BOD</div><div class="stat-value" style="color:var(--emerald-600)">15</div><div class="stat-sub">mg/L (มาตรฐาน < 20)</div></div>
+        <div class="stat-card"><div class="stat-icon amber">🌫️</div><div class="stat-label">ฝุ่น TSP</div><div class="stat-value" style="color:var(--amber-600)">0.28</div><div class="stat-sub">mg/m³ (มาตรฐาน < 0.33)</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--emerald-50)">📊</span> บันทึกการตรวจวัดสิ่งแวดล้อม</h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('envModal')">+ เพิ่มบันทึก</button>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>วันที่</th><th>พารามิเตอร์</th><th>ค่าที่วัด</th><th>หน่วย</th><th>มาตรฐาน</th><th>สถานะ</th><th>จุดตรวจวัด</th></tr></thead>
+              <tbody id="envTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3><span class="h-icon" style="background:var(--emerald-50)">🌿</span> แผนจัดการสิ่งแวดล้อม (ISO 14001)</h3></div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ประเด็น</th><th>ผลกระทบ</th><th>มาตรการควบคุม</th><th>ความถี่</th><th>ผู้รับผิดชอบ</th><th>สถานะ</th></tr></thead>
+              <tbody>
+                <tr><td>ฝุ่นจากงานรื้อถอน</td><td>มลพิษทางอากาศ</td><td>ฉีดน้ำลดฝุ่น, ติดตั้งแผงกั้น</td><td>ทุกวัน</td><td>ทีมสิ่งแวดล้อม</td><td><span class="badge badge-success"><span class="badge-dot"></span> ดำเนินการ</span></td></tr>
+                <tr><td>เสียงจากเครื่องจักร</td><td>มลพิษทางเสียง</td><td>จำกัดเวลาทำงาน, ติดตั้ง Barrier</td><td>สัปดาห์ละ 1</td><td>วิศวกรโครงการ</td><td><span class="badge badge-success"><span class="badge-dot"></span> ดำเนินการ</span></td></tr>
+                <tr><td>น้ำเสียจากการก่อสร้าง</td><td>มลพิษทางน้ำ</td><td>บ่อดักตะกอน, บำบัดก่อนปล่อย</td><td>สัปดาห์ละ 2</td><td>ทีมสิ่งแวดล้อม</td><td><span class="badge badge-warning"><span class="badge-dot"></span> ต้องปรับปรุง</span></td></tr>
+                <tr><td>ของเสียอันตราย</td><td>ปนเปื้อนดิน/น้ำ</td><td>จัดเก็บแยกประเภท, ส่งกำจัดถูกวิธี</td><td>เดือนละ 1</td><td>จป.วิชาชีพ</td><td><span class="badge badge-success"><span class="badge-dot"></span> ดำเนินการ</span></td></tr>
+                <tr><td>การใช้พลังงาน</td><td>การปล่อย CO2</td><td>ปิดเครื่องเมื่อไม่ใช้, LED</td><td>เดือนละ 1</td><td>ผู้จัดการโครงการ</td><td><span class="badge badge-info"><span class="badge-dot"></span> กำลังติดตาม</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== WASTE ===== -->
+    <div class="page" id="page-waste">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon blue">📦</div><div class="stat-label">ของเสียทั้งหมด</div><div class="stat-value" style="color:var(--primary-600)">12.5</div><div class="stat-sub">ตัน (เดือนนี้)</div></div>
+        <div class="stat-card"><div class="stat-icon green">♻️</div><div class="stat-label">รีไซเคิลได้</div><div class="stat-value" style="color:var(--emerald-600)">8.2</div><div class="stat-sub">ตัน (65.6%)</div></div>
+        <div class="stat-card"><div class="stat-icon red">☣️</div><div class="stat-label">ของเสียอันตราย</div><div class="stat-value" style="color:var(--red-500)">0.8</div><div class="stat-sub">ตัน</div></div>
+        <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-label">กำจัดถูกวิธี</div><div class="stat-value" style="color:var(--emerald-600)">100<span style="font-size:20px">%</span></div><div class="stat-sub">ตามข้อกำหนด</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--emerald-50)">♻️</span> บันทึกการจัดการของเสีย</h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('wasteModal')">+ เพิ่มบันทึก</button>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>วันที่</th><th>ประเภท</th><th>รายละเอียด</th><th>ปริมาณ (กก.)</th><th>วิธีกำจัด</th><th>บริษัท</th><th></th></tr></thead>
+              <tbody id="wasteTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TRAINING ===== -->
+    <div class="page" id="page-training">
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--violet-100)">🎓</span> แผนการฝึกอบรมความปลอดภัย</h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('trainingModal')">+ เพิ่มหลักสูตร</button>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>รหัส</th><th>หลักสูตร</th><th>วันที่</th><th>ผู้เข้าอบรม</th><th>ผ่าน</th><th>วิทยากร</th><th>สถานะ</th></tr></thead>
+              <tbody id="trainingTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3><span class="h-icon" style="background:var(--primary-50)">📚</span> หลักสูตรบังคับ (ISO 45001 Clause 7.2)</h3></div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>หลักสูตร</th><th>ความถี่</th><th>กลุ่มเป้าหมาย</th><th>สถานะ</th></tr></thead>
+              <tbody>
+                <tr><td>ปฐมนิเทศความปลอดภัย</td><td>เข้างานใหม่</td><td>พนักงานใหม่ทุกคน</td><td><span class="badge badge-success"><span class="badge-dot"></span> ครบถ้วน</span></td></tr>
+                <tr><td>การทำงานบนที่สูง</td><td>ปีละ 1 ครั้ง</td><td>ช่างทำงานบนที่สูง</td><td><span class="badge badge-success"><span class="badge-dot"></span> ครบถ้วน</span></td></tr>
+                <tr><td>การใช้เครนและปั้นจั่น</td><td>ปีละ 1 ครั้ง</td><td>ผู้ควบคุมเครน</td><td><span class="badge badge-warning"><span class="badge-dot"></span> กำลังดำเนินการ</span></td></tr>
+                <tr><td>การดับเพลิงเบื้องต้น</td><td>ปีละ 1 ครั้ง</td><td>พนักงานทุกคน</td><td><span class="badge badge-success"><span class="badge-dot"></span> ครบถ้วน</span></td></tr>
+                <tr><td>การปฐมพยาบาลเบื้องต้น</td><td>ปีละ 1 ครั้ง</td><td>หัวหน้าทีม, จป.</td><td><span class="badge badge-warning"><span class="badge-dot"></span> กำลังดำเนินการ</span></td></tr>
+                <tr><td>สารเคมีอันตราย (MSDS)</td><td>ปีละ 1 ครั้ง</td><td>ผู้ปฏิบัติงานเกี่ยวข้อง</td><td><span class="badge badge-danger"><span class="badge-dot"></span> ยังไม่ดำเนินการ</span></td></tr>
+                <tr><td>การจัดการสิ่งแวดล้อม</td><td>ปีละ 1 ครั้ง</td><td>หัวหน้าทีม, จป.</td><td><span class="badge badge-success"><span class="badge-dot"></span> ครบถ้วน</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DOCUMENTS ===== -->
+    <div class="page" id="page-documents">
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--primary-50)">📁</span> ระบบเอกสาร (Document Control - ISO 7.5)</h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('docModal')">+ เพิ่มเอกสาร</button>
+        </div>
+        <div class="card-body" style="padding-bottom:0;">
+          <div class="tabs">
+            <div class="tab active">ทั้งหมด</div>
+            <div class="tab">นโยบาย</div>
+            <div class="tab">SOP</div>
+            <div class="tab">แบบฟอร์ม</div>
+            <div class="tab">ใบอนุญาต</div>
+          </div>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>รหัส</th><th>ชื่อเอกสาร</th><th>ประเภท</th><th>ฉบับที่</th><th>วันที่</th><th>ผู้อนุมัติ</th><th>สถานะ</th></tr></thead>
+              <tbody id="docTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PPE ===== -->
+    <div class="page" id="page-ppe">
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--amber-50)">🦺</span> ระบบจัดการอุปกรณ์ PPE</h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('ppeModal')">+ เบิก/เพิ่ม PPE</button>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>รหัส</th><th>อุปกรณ์</th><th>คงเหลือ</th><th>ขั้นต่ำ</th><th>สถานะ</th><th>หมดอายุ</th><th></th></tr></thead>
+              <tbody id="ppeTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AUDIT ===== -->
+    <div class="page" id="page-audit">
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--violet-100)">🔍</span> แผนการตรวจประเมิน (Audit Plan)</h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('auditModal')">+ สร้างแผน</button>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>รหัส</th><th>ประเภท</th><th>ขอบเขต</th><th>วันที่</th><th>ผู้ตรวจ</th><th>ข้อค้นพบ</th><th>สถานะ</th></tr></thead>
+              <tbody id="auditTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CAPA ===== -->
+    <div class="page" id="page-corrective">
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--amber-50)">🔧</span> การแก้ไข/ป้องกัน (CAPA)</h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('capaModal')">+ สร้าง CAPA</button>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>รหัส</th><th>ที่มา</th><th>ปัญหา</th><th>สาเหตุ</th><th>การแก้ไข</th><th>ผู้รับผิดชอบ</th><th>กำหนด</th><th>สถานะ</th></tr></thead>
+              <tbody id="capaTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== WORK PERMIT ===== -->
+    <div class="page" id="page-workpermit">
+      <!-- Role Switcher -->
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-body" style="padding:14px 24px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="font-size:14px;font-weight:600;color:var(--slate-600);">เข้าสู่ระบบในฐานะ:</span>
+              <div class="tabs" style="margin-bottom:0;">
+                <div class="tab active" id="role-contractor" onclick="switchRole('contractor')">👷 ผู้รับเหมา</div>
+                <div class="tab" id="role-safety" onclick="switchRole('safety')">🛡️ จป.วิชาชีพ</div>
+              </div>
+            </div>
+            <div id="currentRoleInfo" style="font-size:13px;color:var(--slate-400);font-weight:500;">กำลังใช้งาน: ผู้รับเหมา</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contractor: Create Permit -->
+      <div id="wp-contractor-section">
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="h-icon" style="background:var(--primary-50)">📝</span> ขอใบอนุญาตทำงาน (Work Permit)</h3>
+            <button class="btn btn-primary btn-sm" onclick="openModal('wpModal')">+ ขอใบอนุญาตใหม่</button>
+          </div>
+          <div class="card-body-flush">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>เลขที่</th><th>ประเภทงาน</th><th>บริษัท</th><th>สถานที่</th><th>วันที่ทำงาน</th><th>ผู้ขอ</th><th>สถานะ</th><th></th></tr></thead>
+                <tbody id="wpContractorTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Safety Officer: Approve Permits -->
+      <div id="wp-safety-section" style="display:none;">
+        <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+          <div class="stat-card"><div class="stat-icon amber">⏳</div><div class="stat-label">รออนุมัติ</div><div class="stat-value" style="color:var(--amber-600)" id="wp-pending-count">0</div></div>
+          <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-label">อนุมัติแล้ว</div><div class="stat-value" style="color:var(--emerald-600)" id="wp-approved-count">0</div></div>
+          <div class="stat-card"><div class="stat-icon red">❌</div><div class="stat-label">ไม่อนุมัติ</div><div class="stat-value" style="color:var(--red-500)" id="wp-rejected-count">0</div></div>
+          <div class="stat-card"><div class="stat-icon blue">📋</div><div class="stat-label">ทั้งหมด</div><div class="stat-value" style="color:var(--primary-600)" id="wp-total-count">0</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="h-icon" style="background:var(--emerald-50)">🛡️</span> รายการใบอนุญาต — อนุมัติโดย จป.</h3>
+          </div>
+          <div class="card-body" style="padding-bottom:0;">
+            <div class="tabs">
+              <div class="tab active" onclick="filterWP('all',this)">ทั้งหมด</div>
+              <div class="tab" onclick="filterWP('pending',this)">รออนุมัติ</div>
+              <div class="tab" onclick="filterWP('approved',this)">อนุมัติแล้ว</div>
+              <div class="tab" onclick="filterWP('rejected',this)">ไม่อนุมัติ</div>
+              <div class="tab" onclick="filterWP('expired',this)">หมดอายุ</div>
+            </div>
+          </div>
+          <div class="card-body-flush">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>เลขที่</th><th>ประเภทงาน</th><th>บริษัท</th><th>สถานที่</th><th>วันที่</th><th>ผู้ขอ</th><th>สถานะ</th><th>การดำเนินการ</th></tr></thead>
+                <tbody id="wpSafetyTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div class="modal-overlay" id="incidentModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--red-50)">🚨</span> รายงานเหตุการณ์ใหม่</div>
+    <div class="form-row">
+      <div class="form-group"><label>วันที่เกิดเหตุ</label><input type="date" id="inc-date"></div>
+      <div class="form-group"><label>เวลา</label><input type="time" id="inc-time"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>ประเภท</label>
+        <select id="inc-type"><option value="accident">อุบัติเหตุ</option><option value="near-miss">Near Miss</option><option value="unsafe">สภาพไม่ปลอดภัย</option><option value="env">เหตุการณ์สิ่งแวดล้อม</option></select>
+      </div>
+      <div class="form-group"><label>ความรุนแรง</label>
+        <select id="inc-severity"><option value="low">ต่ำ</option><option value="medium">ปานกลาง</option><option value="high">สูง</option><option value="critical">วิกฤต</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label>สถานที่เกิดเหตุ</label><input type="text" id="inc-location" placeholder="เช่น โซน A อาคาร 1 ชั้น 3"></div>
+    <div class="form-group"><label>รายละเอียด</label><textarea id="inc-desc" rows="3" placeholder="อธิบายเหตุการณ์ที่เกิดขึ้น..."></textarea></div>
+    <div class="form-group"><label>ผู้บาดเจ็บ (ถ้ามี)</label><input type="text" id="inc-injured" placeholder="ชื่อ-สกุล, ตำแหน่ง"></div>
+    <div class="form-group"><label>การดำเนินการเบื้องต้น</label><textarea id="inc-action" rows="2" placeholder="มาตรการเบื้องต้นที่ดำเนินการ..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('incidentModal')">ยกเลิก</button>
+      <button class="btn btn-danger" onclick="addIncident()">บันทึกรายงาน</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="riskModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--amber-50)">⚠️</span> เพิ่มรายการความเสี่ยง</div>
+    <div class="form-group"><label>กิจกรรม</label><input type="text" id="risk-activity" placeholder="เช่น งานขุดดิน, งานเชื่อม"></div>
+    <div class="form-group"><label>อันตรายที่พบ</label><input type="text" id="risk-hazard" placeholder="เช่น ดินถล่ม, ไฟฟ้าช็อต"></div>
+    <div class="form-row">
+      <div class="form-group"><label>โอกาสเกิด (1-5)</label><select id="risk-l"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+      <div class="form-group"><label>ความรุนแรง (1-5)</label><select id="risk-s"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+    </div>
+    <div class="form-group"><label>มาตรการควบคุม</label><textarea id="risk-control" rows="2" placeholder="ตามลำดับ: กำจัด > ทดแทน > วิศวกรรม > บริหาร > PPE"></textarea></div>
+    <div class="form-group"><label>ผู้รับผิดชอบ</label><input type="text" id="risk-owner" placeholder="ชื่อผู้รับผิดชอบ"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('riskModal')">ยกเลิก</button>
+      <button class="btn btn-warning" onclick="addRisk()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="envModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--emerald-50)">🌿</span> เพิ่มบันทึกตรวจวัดสิ่งแวดล้อม</div>
+    <div class="form-row">
+      <div class="form-group"><label>วันที่</label><input type="date" id="env-date"></div>
+      <div class="form-group"><label>พารามิเตอร์</label>
+        <select id="env-param"><option>PM2.5</option><option>PM10</option><option>TSP</option><option>ระดับเสียง</option><option>BOD</option><option>COD</option><option>pH</option><option>ความสั่นสะเทือน</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>ค่าที่วัดได้</label><input type="number" id="env-value" step="0.01"></div>
+      <div class="form-group"><label>จุดตรวจวัด</label><input type="text" id="env-point" placeholder="เช่น ริมรั้วด้านทิศเหนือ"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('envModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="addEnvRecord()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="wasteModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--emerald-50)">♻️</span> เพิ่มบันทึกของเสีย</div>
+    <div class="form-row">
+      <div class="form-group"><label>วันที่</label><input type="date" id="waste-date"></div>
+      <div class="form-group"><label>ประเภท</label>
+        <select id="waste-type"><option>ของเสียทั่วไป</option><option>ของเสียรีไซเคิล</option><option>ของเสียอันตราย</option><option>ของเสียก่อสร้าง</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label>รายละเอียด</label><input type="text" id="waste-desc" placeholder="เช่น เศษเหล็ก, ถังสีเก่า"></div>
+    <div class="form-row">
+      <div class="form-group"><label>ปริมาณ (กก.)</label><input type="number" id="waste-qty"></div>
+      <div class="form-group"><label>วิธีกำจัด</label>
+        <select id="waste-method"><option>รีไซเคิล</option><option>ฝังกลบ</option><option>เผาทำลาย</option><option>ส่งบำบัด</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label>บริษัทรับกำจัด</label><input type="text" id="waste-company" placeholder="ชื่อบริษัท"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('wasteModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="addWaste()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="trainingModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--violet-100)">🎓</span> เพิ่มหลักสูตรฝึกอบรม</div>
+    <div class="form-group"><label>ชื่อหลักสูตร</label><input type="text" id="train-name" placeholder="เช่น การทำงานในที่อับอากาศ"></div>
+    <div class="form-row">
+      <div class="form-group"><label>วันที่อบรม</label><input type="date" id="train-date"></div>
+      <div class="form-group"><label>จำนวนผู้เข้าอบรม</label><input type="number" id="train-count"></div>
+    </div>
+    <div class="form-group"><label>วิทยากร</label><input type="text" id="train-trainer"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('trainingModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="addTraining()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="capaModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--amber-50)">🔧</span> สร้าง CAPA ใหม่</div>
+    <div class="form-group"><label>แหล่งที่มา</label>
+      <select id="capa-source"><option>อุบัติเหตุ</option><option>Near Miss</option><option>Audit Finding</option><option>ข้อร้องเรียน</option><option>การตรวจสอบ</option></select>
+    </div>
+    <div class="form-group"><label>รายละเอียดปัญหา</label><textarea id="capa-problem" rows="2"></textarea></div>
+    <div class="form-group"><label>สาเหตุรากเหง้า (Root Cause)</label><textarea id="capa-root" rows="2" placeholder="ใช้ 5 Why / Fishbone"></textarea></div>
+    <div class="form-group"><label>การแก้ไข/ป้องกัน</label><textarea id="capa-action" rows="2"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>ผู้รับผิดชอบ</label><input type="text" id="capa-owner"></div>
+      <div class="form-group"><label>กำหนดเสร็จ</label><input type="date" id="capa-due"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('capaModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="addCAPA()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Investigation Modal -->
+<div class="modal-overlay" id="invModal">
+  <div class="modal" style="max-width:700px;">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--red-50)">🔬</span> สร้างการสอบสวนอุบัติเหตุใหม่</div>
+
+    <div style="font-size:13px;font-weight:700;color:var(--slate-700);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--slate-100);">ข้อมูลเหตุการณ์</div>
+    <div class="form-row">
+      <div class="form-group"><label>อ้างอิงเหตุการณ์ (INC-xxx)</label>
+        <select id="inv-ref">
+          <option value="">-- เลือกเหตุการณ์ --</option>
+        </select>
+      </div>
+      <div class="form-group"><label>ประเภทอุบัติเหตุ</label>
+        <select id="inv-type">
+          <option value="ตกจากที่สูง">ตกจากที่สูง (Fall from Height)</option>
+          <option value="วัสดุตก/กระเด็น">วัสดุตก/กระเด็น (Struck By)</option>
+          <option value="ไฟฟ้าช็อต">ไฟฟ้าช็อต (Electrical)</option>
+          <option value="เครื่องจักรหนีบ/ตัด">เครื่องจักรหนีบ/ตัด (Caught In)</option>
+          <option value="ลื่น/ล้ม/สะดุด">ลื่น/ล้ม/สะดุด (Slip/Trip/Fall)</option>
+          <option value="ดินถล่ม/พังทลาย">ดินถล่ม/พังทลาย (Collapse)</option>
+          <option value="สารเคมี/สัมผัส">สารเคมี/สัมผัส (Chemical Exposure)</option>
+          <option value="ไฟไหม้/ระเบิด">ไฟไหม้/ระเบิด (Fire/Explosion)</option>
+          <option value="ยานพาหนะ/เครื่องจักร">ยานพาหนะ/เครื่องจักร (Vehicle)</option>
+          <option value="อื่นๆ">อื่นๆ</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>วันที่เกิดเหตุ</label><input type="date" id="inv-date"></div>
+      <div class="form-group"><label>เวลา</label><input type="time" id="inv-time" value="10:00"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>สถานที่เกิดเหตุ</label><input type="text" id="inv-location" placeholder="เช่น โซน A ชั้น 5"></div>
+      <div class="form-group"><label>ความรุนแรง</label>
+        <select id="inv-severity">
+          <option value="minor">เล็กน้อย (Minor) - ปฐมพยาบาลเบื้องต้น</option>
+          <option value="moderate" selected>ปานกลาง (Moderate) - พบแพทย์</option>
+          <option value="serious">รุนแรง (Serious) - หยุดงาน/เข้า รพ.</option>
+          <option value="fatal">เสียชีวิต/ทุพพลภาพ (Fatal)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>รายละเอียดเหตุการณ์</label><textarea id="inv-desc" rows="3" placeholder="อธิบายเหตุการณ์ที่เกิดขึ้นโดยละเอียด..."></textarea></div>
+
+    <div style="font-size:13px;font-weight:700;color:var(--slate-700);margin:16px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--slate-100);">ผู้บาดเจ็บ</div>
+    <div class="form-row">
+      <div class="form-group"><label>ชื่อ-สกุล</label><input type="text" id="inv-injured-name" placeholder="ชื่อผู้บาดเจ็บ"></div>
+      <div class="form-group"><label>ตำแหน่ง/บริษัท</label><input type="text" id="inv-injured-pos" placeholder="เช่น ช่างเหล็ก / บจก.ก่อสร้าง"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>อายุ</label><input type="number" id="inv-injured-age" placeholder="ปี"></div>
+      <div class="form-group"><label>ประสบการณ์ทำงาน</label><input type="text" id="inv-injured-exp" placeholder="เช่น 5 ปี"></div>
+    </div>
+    <div class="form-group"><label>ลักษณะการบาดเจ็บ</label><input type="text" id="inv-injury-type" placeholder="เช่น กระดูกแขนขวาหัก, แผลฉีกขาดที่ขา"></div>
+    <div class="form-group"><label>การรักษาพยาบาล</label><input type="text" id="inv-treatment" placeholder="เช่น ส่ง รพ.กรุงเทพ, เข้าเฝือก, พักรักษา 30 วัน"></div>
+
+    <div style="font-size:13px;font-weight:700;color:var(--slate-700);margin:16px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--slate-100);">พยาน</div>
+    <div class="form-group"><label>รายชื่อพยาน</label><textarea id="inv-witnesses" rows="2" placeholder="ชื่อ-สกุล, ตำแหน่ง (บรรทัดละ 1 คน)"></textarea></div>
+
+    <div style="font-size:13px;font-weight:700;color:var(--slate-700);margin:16px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--slate-100);">ทีมสอบสวน</div>
+    <div class="form-row">
+      <div class="form-group"><label>หัวหน้าทีมสอบสวน</label><input type="text" id="inv-lead" placeholder="ชื่อ-สกุล"></div>
+      <div class="form-group"><label>สมาชิกทีม</label><input type="text" id="inv-team" placeholder="เช่น จป.สมชาย, วิศวกร ก., หน.งาน ข."></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('invModal')">ยกเลิก</button>
+      <button class="btn btn-danger" onclick="addInvestigation()">สร้างการสอบสวน</button>
+    </div>
+  </div>
+</div>
+
+<!-- Investigation RCA Modal (add root cause) -->
+<div class="modal-overlay" id="invRCAModal">
+  <div class="modal" style="max-width:650px;">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--amber-50)">🔍</span> เพิ่มการวิเคราะห์สาเหตุ</div>
+    <input type="hidden" id="rca-inv-id">
+    <div class="form-group"><label>วิธีการวิเคราะห์</label>
+      <select id="rca-method">
+        <option value="5 Whys">5 Whys (ถามทำไม 5 ครั้ง)</option>
+        <option value="Fishbone">Fishbone / Ishikawa Diagram</option>
+        <option value="Fault Tree">Fault Tree Analysis</option>
+        <option value="Domino Theory">Domino Theory</option>
+        <option value="SCAT">SCAT (Systematic Cause Analysis)</option>
+      </select>
+    </div>
+
+    <div style="font-size:13px;font-weight:600;color:var(--slate-600);margin-bottom:10px;">สาเหตุทันที (Immediate Cause)</div>
+    <div class="form-row">
+      <div class="form-group"><label>การกระทำที่ไม่ปลอดภัย (Unsafe Act)</label><textarea id="rca-unsafe-act" rows="2" placeholder="เช่น ไม่สวม Harness, ลัดขั้นตอน..."></textarea></div>
+      <div class="form-group"><label>สภาพที่ไม่ปลอดภัย (Unsafe Condition)</label><textarea id="rca-unsafe-cond" rows="2" placeholder="เช่น นั่งร้านชำรุด, พื้นลื่น..."></textarea></div>
+    </div>
+
+    <div style="font-size:13px;font-weight:600;color:var(--slate-600);margin:8px 0 10px;">สาเหตุพื้นฐาน (Basic Cause)</div>
+    <div class="form-row">
+      <div class="form-group"><label>ปัจจัยส่วนบุคคล (Personal Factor)</label><textarea id="rca-personal" rows="2" placeholder="เช่น ขาดความรู้, เหนื่อยล้า, ประมาท..."></textarea></div>
+      <div class="form-group"><label>ปัจจัยด้านงาน (Job Factor)</label><textarea id="rca-job" rows="2" placeholder="เช่น ไม่มี SOP, อุปกรณ์ไม่เพียงพอ..."></textarea></div>
+    </div>
+
+    <div style="font-size:13px;font-weight:600;color:var(--slate-600);margin:8px 0 10px;">สาเหตุรากเหง้า (Root Cause)</div>
+    <div class="form-group"><label>สาเหตุรากเหง้า</label><textarea id="rca-root" rows="2" placeholder="สาเหตุหลักที่แท้จริง..."></textarea></div>
+
+    <div style="font-size:13px;font-weight:600;color:var(--slate-600);margin:8px 0 10px;">5 Whys</div>
+    <div class="form-group"><label>Why 1 - ทำไมจึงเกิดเหตุ?</label><input type="text" id="rca-why1" placeholder=""></div>
+    <div class="form-group"><label>Why 2 - ทำไมจึงเป็นเช่นนั้น?</label><input type="text" id="rca-why2" placeholder=""></div>
+    <div class="form-group"><label>Why 3 - ทำไม?</label><input type="text" id="rca-why3" placeholder=""></div>
+    <div class="form-group"><label>Why 4 - ทำไม?</label><input type="text" id="rca-why4" placeholder=""></div>
+    <div class="form-group"><label>Why 5 - ทำไม? (สาเหตุรากเหง้า)</label><input type="text" id="rca-why5" placeholder=""></div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('invRCAModal')">ยกเลิก</button>
+      <button class="btn btn-warning" onclick="saveRCA()">บันทึกการวิเคราะห์</button>
+    </div>
+  </div>
+</div>
+
+<!-- Investigation Corrective Action Modal -->
+<div class="modal-overlay" id="invActionModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--emerald-50)">🔧</span> เพิ่มมาตรการแก้ไข/ป้องกัน</div>
+    <input type="hidden" id="act-inv-id">
+    <div class="form-group"><label>ประเภทมาตรการ</label>
+      <select id="act-type">
+        <option value="immediate">แก้ไขเฉพาะหน้า (Immediate)</option>
+        <option value="corrective">แก้ไข (Corrective Action)</option>
+        <option value="preventive">ป้องกัน (Preventive Action)</option>
+      </select>
+    </div>
+    <div class="form-group"><label>ระดับการควบคุม (Hierarchy of Controls)</label>
+      <select id="act-hierarchy">
+        <option value="elimination">1. กำจัด (Elimination)</option>
+        <option value="substitution">2. ทดแทน (Substitution)</option>
+        <option value="engineering">3. วิศวกรรม (Engineering Controls)</option>
+        <option value="administrative">4. บริหาร (Administrative Controls)</option>
+        <option value="ppe">5. PPE</option>
+      </select>
+    </div>
+    <div class="form-group"><label>รายละเอียดมาตรการ</label><textarea id="act-desc" rows="3" placeholder="อธิบายมาตรการที่จะดำเนินการ..."></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>ผู้รับผิดชอบ</label><input type="text" id="act-owner" placeholder="ชื่อ-สกุล"></div>
+      <div class="form-group"><label>กำหนดเสร็จ</label><input type="date" id="act-due"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('invActionModal')">ยกเลิก</button>
+      <button class="btn btn-success" onclick="saveAction()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Work Permit Modal -->
+<div class="modal-overlay" id="wpModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--primary-50)">📝</span> ขอใบอนุญาตทำงาน</div>
+    <div class="form-row">
+      <div class="form-group"><label>ประเภทงาน</label>
+        <select id="wp-type">
+          <option value="งานบนที่สูง">งานบนที่สูง (Working at Height)</option>
+          <option value="งานเชื่อม/ตัด (Hot Work)">งานเชื่อม/ตัด (Hot Work)</option>
+          <option value="งานในที่อับอากาศ">งานในที่อับอากาศ (Confined Space)</option>
+          <option value="งานไฟฟ้า">งานไฟฟ้า (Electrical Work)</option>
+          <option value="งานขุดดิน">งานขุดดิน (Excavation)</option>
+          <option value="งานยกเคลื่อนย้าย">งานยกเคลื่อนย้าย (Lifting/Crane)</option>
+          <option value="งานรื้อถอน">งานรื้อถอน (Demolition)</option>
+          <option value="งานสารเคมี">งานสารเคมี (Chemical Handling)</option>
+          <option value="อื่นๆ">อื่นๆ</option>
+        </select>
+      </div>
+      <div class="form-group"><label>ระดับความเสี่ยง</label>
+        <select id="wp-risk">
+          <option value="low">ต่ำ</option>
+          <option value="medium" selected>ปานกลาง</option>
+          <option value="high">สูง</option>
+          <option value="critical">สูงมาก</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>ชื่อบริษัทผู้รับเหมา</label><input type="text" id="wp-company" placeholder="เช่น บจก. ก่อสร้างไทย"></div>
+    <div class="form-group"><label>ชื่อผู้ขออนุญาต</label><input type="text" id="wp-requester" placeholder="ชื่อ-สกุล ผู้รับผิดชอบ"></div>
+    <div class="form-group"><label>จำนวนคนงาน</label><input type="number" id="wp-workers" placeholder="จำนวนคนงานที่จะเข้าทำงาน"></div>
+    <div class="form-group"><label>สถานที่ทำงาน</label><input type="text" id="wp-location" placeholder="เช่น โซน A ชั้น 5 อาคาร 1"></div>
+    <div class="form-row">
+      <div class="form-group"><label>วันที่เริ่มทำงาน</label><input type="date" id="wp-start"></div>
+      <div class="form-group"><label>วันที่สิ้นสุด</label><input type="date" id="wp-end"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>เวลาเริ่ม</label><input type="time" id="wp-time-start" value="08:00"></div>
+      <div class="form-group"><label>เวลาสิ้นสุด</label><input type="time" id="wp-time-end" value="17:00"></div>
+    </div>
+    <div class="form-group"><label>รายละเอียดงาน</label><textarea id="wp-desc" rows="3" placeholder="อธิบายขอบเขตงานที่จะทำ..."></textarea></div>
+    <div class="form-group"><label>มาตรการความปลอดภัยที่จะใช้</label><textarea id="wp-safety" rows="3" placeholder="เช่น สวม Full Body Harness, มี Fire Watch standby, ตรวจก๊าซก่อนเข้า..."></textarea></div>
+    <div class="form-group"><label>อุปกรณ์ PPE ที่ต้องใช้</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;" id="wp-ppe-checks">
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;background:var(--slate-50);padding:6px 12px;border-radius:8px;border:1px solid var(--slate-200);">
+          <input type="checkbox" checked> หมวกนิรภัย</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;background:var(--slate-50);padding:6px 12px;border-radius:8px;border:1px solid var(--slate-200);">
+          <input type="checkbox" checked> รองเท้านิรภัย</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;background:var(--slate-50);padding:6px 12px;border-radius:8px;border:1px solid var(--slate-200);">
+          <input type="checkbox" checked> เสื้อสะท้อนแสง</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;background:var(--slate-50);padding:6px 12px;border-radius:8px;border:1px solid var(--slate-200);">
+          <input type="checkbox"> สายรัดนิรภัย</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;background:var(--slate-50);padding:6px 12px;border-radius:8px;border:1px solid var(--slate-200);">
+          <input type="checkbox"> แว่นตานิรภัย</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;background:var(--slate-50);padding:6px 12px;border-radius:8px;border:1px solid var(--slate-200);">
+          <input type="checkbox"> หน้ากากกันสารเคมี</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;background:var(--slate-50);padding:6px 12px;border-radius:8px;border:1px solid var(--slate-200);">
+          <input type="checkbox"> ถุงมือนิรภัย</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;background:var(--slate-50);padding:6px 12px;border-radius:8px;border:1px solid var(--slate-200);">
+          <input type="checkbox"> ที่อุดหู/ครอบหู</label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('wpModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="addWorkPermit()">ส่งคำขออนุมัติ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Work Permit Detail/Approve Modal -->
+<div class="modal-overlay" id="wpDetailModal">
+  <div class="modal" style="max-width:700px;">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--primary-50)">📋</span> รายละเอียดใบอนุญาตทำงาน</div>
+    <div id="wpDetailContent"></div>
+    <div id="wpDetailActions" class="modal-actions"></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const store = {
+  incidents: [
+    { id:'INC-001', date:'2569-03-15', type:'near-miss', location:'โซน A ชั้น 5', desc:'วัสดุตกจากที่สูงเฉียดคนงาน', severity:'high', status:'investigating' },
+    { id:'INC-002', date:'2569-03-10', type:'accident', location:'โซน B พื้นที่ขุดดิน', desc:'คนงานลื่นล้มบริเวณทางลาด', severity:'medium', status:'closed' },
+    { id:'INC-003', date:'2569-03-08', type:'unsafe', location:'โซน C คลังวัสดุ', desc:'สารเคมีจัดเก็บไม่ถูกวิธี ไม่มีป้ายเตือน', severity:'medium', status:'corrective' },
+    { id:'INC-004', date:'2569-02-28', type:'accident', location:'โซน A ชั้น 3', desc:'ไฟฟ้าช็อตจากสายไฟชำรุด', severity:'high', status:'closed' },
+    { id:'INC-005', date:'2569-02-20', type:'near-miss', location:'โซน D ลานจอดเครน', desc:'เครนยกของเฉียดนั่งร้าน', severity:'critical', status:'closed' },
+  ],
+  risks: [
+    { id:'RSK-001', activity:'งานเชื่อมโลหะ', hazard:'ไฟไหม้/ประกายไฟ', l:3, s:4, control:'Hot Work Permit, ดับเพลิง Standby', owner:'หัวหน้าช่างเชื่อม' },
+    { id:'RSK-002', activity:'งานขุดดินลึก > 1.5m', hazard:'ดินถล่ม/ทับ', l:2, s:5, control:'Shoring, ตรวจดินก่อนลง, ห้ามเข้าขณะฝน', owner:'วิศวกรโยธา' },
+    { id:'RSK-003', activity:'ทำงานบนที่สูง > 2m', hazard:'ตกจากที่สูง', l:3, s:5, control:'สายรัดนิรภัย, ตาข่ายกันตก, Guardrail', owner:'จป.วิชาชีพ' },
+    { id:'RSK-004', activity:'ยกของด้วยเครน', hazard:'ของตก/เครนล้ม', l:2, s:5, control:'ตรวจเครนก่อนใช้, ผู้ควบคุมมีใบอนุญาต', owner:'ผู้ควบคุมเครน' },
+    { id:'RSK-005', activity:'ใช้สารเคมี/สี', hazard:'สูดดมสารพิษ', l:3, s:3, control:'หน้ากาก, ระบายอากาศ, MSDS', owner:'จป.วิชาชีพ' },
+  ],
+  envRecords: [
+    { date:'2569-03-25', param:'PM2.5', value:35, unit:'µg/m³', std:'< 50', point:'ริมรั้วทิศเหนือ' },
+    { date:'2569-03-25', param:'ระดับเสียง', value:78, unit:'dB(A)', std:'< 85', point:'หน้าโครงการ' },
+    { date:'2569-03-24', param:'BOD', value:15, unit:'mg/L', std:'< 20', point:'จุดระบายน้ำ' },
+    { date:'2569-03-24', param:'TSP', value:0.28, unit:'mg/m³', std:'< 0.33', point:'จุดก่อสร้าง Zone A' },
+    { date:'2569-03-22', param:'pH', value:7.2, unit:'-', std:'5-9', point:'จุดระบายน้ำ' },
+  ],
+  waste: [
+    { date:'2569-03-25', type:'ของเสียรีไซเคิล', desc:'เศษเหล็กเส้น', qty:2500, method:'รีไซเคิล', company:'บจก. รีไซเคิลกรีน' },
+    { date:'2569-03-23', type:'ของเสียก่อสร้าง', desc:'เศษคอนกรีต', qty:5000, method:'ฝังกลบ', company:'บจก. กำจัดขยะสะอาด' },
+    { date:'2569-03-20', type:'ของเสียอันตราย', desc:'ถังสีและทินเนอร์', qty:120, method:'เผาทำลาย', company:'บจก. กำจัดอันตราย' },
+    { date:'2569-03-18', type:'ของเสียทั่วไป', desc:'ขยะสำนักงาน', qty:300, method:'ฝังกลบ', company:'เทศบาล' },
+  ],
+  training: [
+    { id:'TRN-001', name:'ปฐมนิเทศความปลอดภัย (รุ่นที่ 12)', date:'2569-03-20', count:25, pass:25, trainer:'จป.สมชาย', status:'completed' },
+    { id:'TRN-002', name:'การทำงานบนที่สูงอย่างปลอดภัย', date:'2569-03-15', count:30, pass:28, trainer:'บจก. เซฟตี้โปร', status:'completed' },
+    { id:'TRN-003', name:'การดับเพลิงและอพยพหนีไฟ', date:'2569-03-10', count:45, pass:45, trainer:'สำนักดับเพลิง', status:'completed' },
+    { id:'TRN-004', name:'การใช้เครนและปั้นจั่น', date:'2569-04-05', count:15, pass:0, trainer:'กรมสวัสดิการฯ', status:'planned' },
+    { id:'TRN-005', name:'การปฐมพยาบาลเบื้องต้น', date:'2569-04-12', count:20, pass:0, trainer:'สภากาชาดไทย', status:'planned' },
+  ],
+  documents: [
+    { id:'POL-001', name:'นโยบายความปลอดภัยและสิ่งแวดล้อม', type:'นโยบาย', ver:'3.0', date:'2569-01-15', approver:'ผู้อำนวยการโครงการ', status:'active' },
+    { id:'SOP-001', name:'ขั้นตอนการทำงานบนที่สูง', type:'SOP', ver:'2.1', date:'2569-02-01', approver:'จป.วิชาชีพ', status:'active' },
+    { id:'SOP-002', name:'ขั้นตอนการจัดการสารเคมี', type:'SOP', ver:'1.3', date:'2569-01-20', approver:'จป.วิชาชีพ', status:'active' },
+    { id:'FRM-001', name:'แบบฟอร์มรายงานอุบัติเหตุ', type:'แบบฟอร์ม', ver:'2.0', date:'2569-01-10', approver:'ผจก.ความปลอดภัย', status:'active' },
+    { id:'FRM-002', name:'ใบอนุญาตทำงาน (Work Permit)', type:'แบบฟอร์ม', ver:'1.5', date:'2568-12-01', approver:'จป.วิชาชีพ', status:'active' },
+    { id:'FRM-003', name:'แบบตรวจสอบนั่งร้าน', type:'แบบฟอร์ม', ver:'1.2', date:'2568-11-15', approver:'วิศวกรโครงสร้าง', status:'review' },
+  ],
+  ppe: [
+    { id:'PPE-001', name:'หมวกนิรภัย', stock:150, min:50, expiry:'2570-06-30' },
+    { id:'PPE-002', name:'แว่นตานิรภัย', stock:80, min:30, expiry:'2571-01-15' },
+    { id:'PPE-003', name:'รองเท้านิรภัย', stock:45, min:20, expiry:'-' },
+    { id:'PPE-004', name:'สายรัดนิรภัย (Full Body)', stock:25, min:15, expiry:'2569-12-31' },
+    { id:'PPE-005', name:'ถุงมือกันบาด', stock:200, min:100, expiry:'2570-03-01' },
+    { id:'PPE-006', name:'หน้ากาก N95', stock:500, min:200, expiry:'2569-09-30' },
+    { id:'PPE-007', name:'ที่อุดหู/ครอบหู', stock:60, min:30, expiry:'2571-06-30' },
+    { id:'PPE-008', name:'เสื้อสะท้อนแสง', stock:12, min:30, expiry:'-' },
+  ],
+  audits: [
+    { id:'AUD-001', type:'Internal Audit', scope:'ISO 45001 ข้อ 6-8', date:'2569-03-01', auditor:'คุณวิชัย ศ.', findings:3, status:'completed' },
+    { id:'AUD-002', type:'Site Inspection', scope:'โซน A-D ทุกชั้น', date:'2569-03-15', auditor:'จป.สมชาย', findings:5, status:'completed' },
+    { id:'AUD-003', type:'ISO 14001 Audit', scope:'การจัดการสิ่งแวดล้อมทั้งระบบ', date:'2569-04-10', auditor:'บจก. รับรองมาตรฐาน', findings:0, status:'planned' },
+    { id:'AUD-004', type:'Management Review', scope:'ทบทวนโดยฝ่ายบริหาร Q1/2569', date:'2569-04-20', auditor:'ผู้อำนวยการ', findings:0, status:'planned' },
+  ],
+  capa: [
+    { id:'CAR-001', source:'อุบัติเหตุ INC-002', problem:'คนงานลื่นล้มบริเวณทางลาด', root:'พื้นทางลาดเปียกน้ำ ไม่มีแผ่นกันลื่น', action:'ติดแผ่นกันลื่น + ป้ายเตือนพื้นเปียก', owner:'หน.โยธา', due:'2569-03-20', status:'completed' },
+    { id:'CAR-002', source:'Audit AUD-001', problem:'เอกสาร SOP ไม่เป็นปัจจุบัน 2 ฉบับ', root:'ไม่มีระบบทบทวนเอกสารตามรอบ', action:'จัดทำแผนทบทวนเอกสารรายไตรมาส', owner:'จป.วิชาชีพ', due:'2569-04-01', status:'in-progress' },
+    { id:'CAR-003', source:'Near Miss INC-001', problem:'วัสดุตกจากที่สูงเฉียดคนงาน', root:'ไม่มี toe board และตาข่ายกันของตก', action:'ติดตั้ง toe board ทุกชั้น + ตาข่าย', owner:'หน.นั่งร้าน', due:'2569-03-25', status:'in-progress' },
+    { id:'CAR-004', source:'การตรวจสอบ', problem:'สารเคมีจัดเก็บไม่ถูกวิธี', root:'ขาดพื้นที่จัดเก็บเฉพาะ และขาดอบรม', action:'สร้างห้องเก็บสารเคมี + อบรม MSDS', owner:'จป.วิชาชีพ', due:'2569-04-15', status:'in-progress' },
+  ],
+  investigations: [
+    {
+      id:'INV-001', ref:'INC-002', type:'ลื่น/ล้ม/สะดุด', date:'2569-03-10', time:'14:20',
+      location:'โซน B พื้นที่ขุดดิน ทางลาดลงชั้นใต้ดิน', severity:'moderate',
+      desc:'คนงานลื่นล้มบริเวณทางลาดลงชั้นใต้ดิน ขณะเดินขึ้นจากพื้นที่ขุดดิน ทางลาดเปียกน้ำจากฝนตกเมื่อช่วงเช้า ไม่มีแผ่นกันลื่น',
+      injured: { name:'นายสมหมาย แสงทอง', position:'ช่างก่อสร้าง / บจก.ดินทองก่อสร้าง', age:35, exp:'8 ปี', injuryType:'ข้อเท้าซ้ายเคล็ด, แผลถลอกที่ฝ่ามือ', treatment:'ปฐมพยาบาลเบื้องต้น ส่ง รพ.ใกล้เคียง พักรักษา 5 วัน' },
+      witnesses: ['นายประเสริฐ มั่นคง - หัวหน้าทีม','นายวิชัย ทองดี - ช่างเชื่อม'],
+      lead:'จป.สมชาย ใจดี', team:['วิศวกรโยธา ก.','หัวหน้างาน ข.','ตัวแทนผู้รับเหมา'],
+      rca: {
+        method:'5 Whys', unsafeAct:'เดินเร็วบนทางลาดเปียก ไม่จับราวจับ', unsafeCond:'พื้นทางลาดเปียกน้ำ ไม่มีแผ่นกันลื่น ไม่มีราวจับ',
+        personal:'รีบเร่งทำงานให้ทันเวลา ขาดความระมัดระวัง', job:'ไม่มี SOP เรื่องความปลอดภัยทางลาดขณะฝนตก',
+        root:'ขาดการประเมินความเสี่ยงทางลาดในสภาพเปียก และไม่มีมาตรการป้องกันลื่น',
+        whys:['พื้นทางลาดเปียก ไม่มีแผ่นกันลื่น','ไม่ได้ติดตั้งแผ่นกันลื่นเพราะคิดว่าเป็นทางชั่วคราว','ไม่มีมาตรฐานกำหนดให้ติดแผ่นกันลื่นทางลาดชั่วคราว','ขาดการประเมินความเสี่ยงเฉพาะสภาพอากาศ','ระบบ Risk Assessment ไม่ครอบคลุมปัจจัยสภาพแวดล้อมที่เปลี่ยนแปลง']
+      },
+      actions: [
+        { type:'immediate', hierarchy:'engineering', desc:'ติดตั้งแผ่นกันลื่นบนทางลาดทุกจุดทันที', owner:'หน.โยธา', due:'2569-03-12', status:'completed' },
+        { type:'immediate', hierarchy:'engineering', desc:'ติดตั้งราวจับตลอดทางลาด', owner:'หน.โยธา', due:'2569-03-14', status:'completed' },
+        { type:'corrective', hierarchy:'administrative', desc:'จัดทำ SOP ความปลอดภัยทางลาดและทางเดินขณะฝนตก', owner:'จป.วิชาชีพ', due:'2569-03-20', status:'completed' },
+        { type:'preventive', hierarchy:'administrative', desc:'เพิ่มหัวข้อสภาพอากาศในแบบประเมินความเสี่ยงประจำวัน', owner:'จป.วิชาชีพ', due:'2569-03-25', status:'completed' },
+        { type:'preventive', hierarchy:'administrative', desc:'อบรมคนงานเรื่องความปลอดภัยในสภาพเปียก', owner:'จป.วิชาชีพ', due:'2569-04-01', status:'in-progress' },
+      ],
+      timeline: [
+        { time:'14:20', event:'เกิดเหตุ: นายสมหมายลื่นล้มบนทางลาด' },
+        { time:'14:22', event:'หัวหน้าทีมพบเห็น เข้าช่วยเหลือ' },
+        { time:'14:25', event:'แจ้ง จป. และปฐมพยาบาลเบื้องต้น' },
+        { time:'14:40', event:'รถพยาบาลมาถึง นำส่ง รพ.' },
+        { time:'15:00', event:'ปิดกั้นพื้นที่ เก็บหลักฐาน ถ่ายรูป' },
+        { time:'16:00', event:'ประชุมทีมสอบสวนเบื้องต้น' },
+        { time:'มี.ค. 11', event:'สอบปากคำพยาน 2 คน' },
+        { time:'มี.ค. 12', event:'ติดตั้งแผ่นกันลื่น (แก้ไขเฉพาะหน้า)' },
+        { time:'มี.ค. 15', event:'ส่งรายงานสอบสวนฉบับร่าง' },
+        { time:'มี.ค. 20', event:'ผจก.อนุมัติ ปิดการสอบสวน' },
+      ],
+      evidence: ['ภาพถ่ายจุดเกิดเหตุ (ทางลาดเปียก)','ภาพถ่ายรองเท้าผู้บาดเจ็บ (พื้นรองเท้าสึก)','แบบบันทึกปากคำพยาน 2 ฉบับ','ใบรับรองแพทย์','วิดีโอกล้องวงจรปิด จุดใกล้เคียง'],
+      lessons: ['ทางลาดชั่วคราวต้องมีแผ่นกันลื่นเสมอ ไม่ว่าจะใช้งานระยะสั้นแค่ไหน','ต้องประเมินความเสี่ยงใหม่ทุกครั้งที่สภาพอากาศเปลี่ยน','รองเท้านิรภัยต้องตรวจสภาพพื้นรองเท้าสม่ำเสมอ','ควรมีระบบแจ้งเตือนอัตโนมัติเมื่อมีฝนตก ให้ตรวจสอบพื้นที่ลื่น'],
+      signoff: [
+        { role:'หัวหน้าทีมสอบสวน', name:'จป.สมชาย ใจดี', date:'2569-03-18', signed:true },
+        { role:'ผู้จัดการโครงการ', name:'คุณวิชัย ศรีสุข', date:'2569-03-20', signed:true },
+        { role:'ผู้อำนวยการ', name:'คุณประเสริฐ มั่นคง', date:'2569-03-20', signed:true },
+      ],
+      status:'closed', submitDate:'2569-03-10'
+    },
+    {
+      id:'INV-002', ref:'INC-004', type:'ไฟฟ้าช็อต', date:'2569-02-28', time:'10:45',
+      location:'โซน A ชั้น 3 ห้องไฟฟ้าชั่วคราว', severity:'serious',
+      desc:'ช่างไฟฟ้าถูกไฟฟ้าช็อตขณะต่อสายไฟชั่วคราว สายไฟฉนวนชำรุดสัมผัสโครงเหล็ก ช่างไม่ได้ตัดไฟก่อนทำงาน',
+      injured: { name:'นายธนากร ไฟฟ้า', position:'ช่างไฟฟ้า / บจก.อิเล็คทริคโปร', age:28, exp:'3 ปี', injuryType:'แผลไหม้ที่มือขวา ระดับ 2, หัวใจเต้นผิดจังหวะชั่วคราว', treatment:'นำส่ง รพ.กรุงเทพ ฉุกเฉิน พักรักษา 14 วัน ติดตามหัวใจ' },
+      witnesses: ['นายสมศักดิ์ แก้วมณี - ช่างไฟฟ้า','นายวิรัตน์ จันทร์ - หัวหน้าช่างไฟฟ้า'],
+      lead:'จป.สมชาย ใจดี', team:['วิศวกรไฟฟ้า','ผู้แทนผู้รับเหมา','ผู้แทนคนงาน'],
+      rca: {
+        method:'5 Whys', unsafeAct:'ไม่ทำ LOTO ก่อนทำงาน, ไม่ตรวจสอบกระแสไฟฟ้าด้วย Voltage Detector', unsafeCond:'สายไฟฉนวนชำรุดไม่ได้เปลี่ยน, ไม่มีอุปกรณ์ LOTO ณ จุดงาน',
+        personal:'ประสบการณ์น้อย มั่นใจเกินไป เคยทำแบบนี้จนชิน', job:'ขาดการ supervise อย่างใกล้ชิด, ไม่มีการตรวจสายไฟก่อนใช้งาน',
+        root:'ขาดระบบ LOTO ที่บังคับใช้จริง และขาดการตรวจสอบสภาพอุปกรณ์ไฟฟ้าเป็นประจำ',
+        whys:['ช่างถูกไฟฟ้าช็อต','สายไฟฉนวนชำรุดสัมผัสโครงเหล็ก','ไม่มีการตรวจสอบสภาพสายไฟเป็นประจำ','ไม่มีระบบ Inspection checklist สำหรับอุปกรณ์ไฟฟ้า','ขาดนโยบายและทรัพยากรในการบำรุงรักษาอุปกรณ์ไฟฟ้าเชิงป้องกัน']
+      },
+      actions: [
+        { type:'immediate', hierarchy:'engineering', desc:'ตัดกระแสไฟฟ้าชั่วคราวทั้งโซน ตรวจสอบสายไฟทั้งหมด', owner:'วิศวกรไฟฟ้า', due:'2569-02-28', status:'completed' },
+        { type:'corrective', hierarchy:'engineering', desc:'ติดตั้งระบบ LOTO ทุกจุดตัดไฟ พร้อมอุปกรณ์ครบ', owner:'วิศวกรไฟฟ้า', due:'2569-03-10', status:'completed' },
+        { type:'corrective', hierarchy:'administrative', desc:'อบรม LOTO ให้ช่างไฟฟ้าทุกคน ทดสอบก่อนอนุญาตทำงาน', owner:'จป.วิชาชีพ', due:'2569-03-15', status:'in-progress' },
+        { type:'preventive', hierarchy:'administrative', desc:'จัดทำ Checklist ตรวจสอบสายไฟและอุปกรณ์ไฟฟ้ารายสัปดาห์', owner:'วิศวกรไฟฟ้า', due:'2569-03-20', status:'in-progress' },
+      ],
+      timeline: [
+        { time:'10:45', event:'เกิดเหตุ: ช่างธนากรถูกไฟฟ้าช็อต' },
+        { time:'10:46', event:'เพื่อนร่วมงานตัดไฟ ช่วยเหลือ CPR' },
+        { time:'10:50', event:'แจ้ง จป. และเรียกรถพยาบาล' },
+        { time:'11:05', event:'รถพยาบาลมาถึง นำส่ง รพ.ฉุกเฉิน' },
+        { time:'11:30', event:'ตัดไฟทั้งโซน ปิดกั้นพื้นที่' },
+        { time:'13:00', event:'ประชุมทีมสอบสวนฉุกเฉิน' },
+        { time:'มี.ค. 1', event:'สอบปากคำพยาน ถ่ายรูปหลักฐาน' },
+        { time:'มี.ค. 5', event:'วิเคราะห์สาเหตุ 5 Whys' },
+      ],
+      evidence: ['ภาพถ่ายจุดเกิดเหตุ สายไฟชำรุด','ภาพถ่ายจุด LOTO ที่ไม่มีอุปกรณ์','บันทึกปากคำพยาน 2 ฉบับ','ใบรับรองแพทย์ รพ.กรุงเทพ','ผลตรวจสอบระบบไฟฟ้าทั้งโซน'],
+      lessons: ['ต้องบังคับใช้ LOTO 100% ก่อนทำงานไฟฟ้าทุกครั้ง','ช่างไฟฟ้าทุกคนต้องมี Voltage Detector ประจำตัว','ต้องตรวจสอบสภาพสายไฟและอุปกรณ์เป็นประจำทุกสัปดาห์','ห้ามทำงานไฟฟ้าคนเดียว ต้องมี Buddy System'],
+      signoff: [
+        { role:'หัวหน้าทีมสอบสวน', name:'จป.สมชาย ใจดี', date:'2569-03-08', signed:true },
+        { role:'ผู้จัดการโครงการ', name:'คุณวิชัย ศรีสุข', date:'', signed:false },
+      ],
+      status:'review', submitDate:'2569-02-28'
+    },
+    {
+      id:'INV-003', ref:'INC-001', type:'วัสดุตก/กระเด็น', date:'2569-03-15', time:'11:30',
+      location:'โซน A ชั้น 5 บริเวณนั่งร้าน', severity:'moderate',
+      desc:'วัสดุ (ท่อนเหล็กยาว 1 เมตร) ตกจากชั้น 5 เฉียดคนงานด้านล่าง ห่างจากศีรษะประมาณ 50 ซม. ไม่มีผู้บาดเจ็บแต่จัดเป็น High Potential Near Miss',
+      injured: { name:'ไม่มีผู้บาดเจ็บ (Near Miss)', position:'-', age:0, exp:'-', injuryType:'ไม่มี (Near Miss)', treatment:'ไม่มี' },
+      witnesses: ['นายสมบัติ ใจเย็น - คนงาน ชั้น 1','นายอาทิตย์ แสงจันทร์ - ช่างเหล็ก ชั้น 5'],
+      lead:'จป.สมชาย ใจดี', team:['หน.นั่งร้าน','วิศวกรโครงสร้าง'],
+      rca: null,
+      actions: [],
+      timeline: [
+        { time:'11:30', event:'เหล็กตกจากชั้น 5 เฉียดคนงานด้านล่าง' },
+        { time:'11:32', event:'คนงานแจ้งหัวหน้า สั่งหยุดงาน' },
+        { time:'11:40', event:'จป.มาตรวจสอบที่เกิดเหตุ' },
+        { time:'12:00', event:'ถ่ายรูป เก็บหลักฐาน สัมภาษณ์พยาน' },
+      ],
+      evidence: ['ภาพถ่ายนั่งร้านจุดเกิดเหตุ','ภาพท่อนเหล็กที่ตก','ภาพแสดงไม่มี toe board'],
+      lessons: [],
+      signoff: [],
+      status:'investigating', submitDate:'2569-03-15'
+    },
+  ],
+  workPermits: [
+    { id:'WP-001', type:'งานบนที่สูง', company:'บจก. ก่อสร้างเอ็กเซล', requester:'สมศักดิ์ แก้วมณี', workers:8, location:'โซน A ชั้น 5', startDate:'2569-03-25', endDate:'2569-03-27', timeStart:'08:00', timeEnd:'17:00', desc:'ติดตั้งโครงเหล็กหลังคาชั้น 5', safety:'สวม Full Body Harness ตลอดเวลา, ติดตั้ง Guardrail, มี Safety net', ppe:['หมวกนิรภัย','รองเท้านิรภัย','เสื้อสะท้อนแสง','สายรัดนิรภัย'], risk:'high', status:'pending', submitDate:'2569-03-24', approver:'', approveDate:'', rejectReason:'' },
+    { id:'WP-002', type:'งานเชื่อม/ตัด (Hot Work)', company:'บจก. เมทัลเวิร์ค', requester:'วิชัย ทองดี', workers:4, location:'โซน B ชั้น 2', startDate:'2569-03-26', endDate:'2569-03-26', timeStart:'09:00', timeEnd:'16:00', desc:'เชื่อมเหล็กโครงสร้างคาน B2-B5', safety:'Fire Watch standby, ถังดับเพลิงพร้อมใช้, ปิดกั้นพื้นที่ประกายไฟ', ppe:['หมวกนิรภัย','รองเท้านิรภัย','แว่นตานิรภัย','ถุงมือนิรภัย'], risk:'high', status:'pending', submitDate:'2569-03-24', approver:'', approveDate:'', rejectReason:'' },
+    { id:'WP-003', type:'งานขุดดิน', company:'บจก. ดินทองก่อสร้าง', requester:'ประเสริฐ มั่นคง', workers:12, location:'โซน D พื้นที่ฐานราก', startDate:'2569-03-22', endDate:'2569-03-24', timeStart:'07:00', timeEnd:'17:00', desc:'ขุดดินวางฐานรากลึก 3 เมตร', safety:'Shoring ค้ำยัน, ตรวจดินทุกเช้า, ห้ามเข้าขณะฝนตก', ppe:['หมวกนิรภัย','รองเท้านิรภัย','เสื้อสะท้อนแสง'], risk:'medium', status:'approved', submitDate:'2569-03-21', approver:'จป.สมชาย', approveDate:'2569-03-21', rejectReason:'' },
+    { id:'WP-004', type:'งานในที่อับอากาศ', company:'บจก. ก่อสร้างเอ็กเซล', requester:'สมศักดิ์ แก้วมณี', workers:3, location:'โซน C ถังเก็บน้ำใต้ดิน', startDate:'2569-03-20', endDate:'2569-03-20', timeStart:'08:00', timeEnd:'12:00', desc:'ทำความสะอาดภายในถังเก็บน้ำ', safety:'ตรวจวัดก๊าซก่อนเข้า, มี Buddy standby, เชือกช่วยชีวิตพร้อม', ppe:['หมวกนิรภัย','รองเท้านิรภัย','หน้ากากกันสารเคมี'], risk:'critical', status:'rejected', submitDate:'2569-03-19', approver:'จป.สมชาย', approveDate:'2569-03-19', rejectReason:'ต้องเพิ่มแผนฉุกเฉินกู้ภัย และต้องมีทีมกู้ภัย standby อย่างน้อย 2 คน' },
+    { id:'WP-005', type:'งานไฟฟ้า', company:'บจก. อิเล็คทริคโปร', requester:'ธนากร ไฟฟ้า', workers:5, location:'โซน A-B ห้อง MDB', startDate:'2569-03-18', endDate:'2569-03-19', timeStart:'08:00', timeEnd:'17:00', desc:'เดินสายไฟฟ้าหลักจากห้อง MDB ไปยัง DB แต่ละชั้น', safety:'LOTO ก่อนทำงาน, ตรวจไฟฟ้าด้วย Voltage Detector, มี Electrician ใบอนุญาต', ppe:['หมวกนิรภัย','รองเท้านิรภัย','ถุงมือนิรภัย'], risk:'high', status:'expired', submitDate:'2569-03-17', approver:'จป.สมชาย', approveDate:'2569-03-17', rejectReason:'' },
+  ]
+};
+
+// ===== LOGIN / LOGOUT / AUTH =====
+const roleConfig = {
+  safety:   { label:'จป.วิชาชีพ', labelEn:'Safety Officer', initials:'SO', color:'linear-gradient(135deg,var(--primary-500),var(--violet-500))', email:'safety@safeconstruct.com' },
+  manager:  { label:'ผู้จัดการโครงการ', labelEn:'Project Manager', initials:'PM', color:'linear-gradient(135deg,var(--emerald-500),var(--primary-500))', email:'pm@safeconstruct.com' },
+  contractor:{ label:'ผู้รับเหมา', labelEn:'Contractor', initials:'CR', color:'linear-gradient(135deg,var(--amber-500),var(--red-500))', email:'contractor@partner.com' },
+  env:      { label:'จนท.สิ่งแวดล้อม', labelEn:'Environment Officer', initials:'EO', color:'linear-gradient(135deg,#10b981,#06b6d4)', email:'env@safeconstruct.com' },
+  admin:    { label:'ผู้ดูแลระบบ', labelEn:'Admin', initials:'AD', color:'linear-gradient(135deg,var(--slate-700),var(--slate-900))', email:'admin@safeconstruct.com' },
+};
+
+let currentUser = null;
+
+function doLogin() {
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  const role = document.getElementById('login-role').value;
+  const errEl = document.getElementById('login-error');
+
+  if(!username) { errEl.style.display='block'; errEl.textContent='กรุณากรอกชื่อผู้ใช้'; return; }
+  if(password !== '1234') { errEl.style.display='block'; errEl.textContent='รหัสผ่านไม่ถูกต้อง (Demo: 1234)'; return; }
+
+  errEl.style.display = 'none';
+  const rc = roleConfig[role];
+  currentUser = { username, role, ...rc };
+
+  // Update all UI
+  updateUserUI();
+
+  // Hide login
+  document.getElementById('loginScreen').classList.add('hidden');
+}
+
+// Enter key to login
+document.getElementById('login-password').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('login-username').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('login-password').focus(); });
+
+function updateUserUI() {
+  if(!currentUser) return;
+  const u = currentUser;
+  // Topbar user menu
+  document.getElementById('umAvatar').textContent = u.initials;
+  document.getElementById('umAvatar').style.background = u.color;
+  document.getElementById('umName').textContent = u.username;
+  document.getElementById('umRole').textContent = u.label;
+  // Dropdown
+  document.getElementById('udName').textContent = u.username;
+  document.getElementById('udEmail').textContent = u.email;
+  // Sidebar footer
+  const sAvatar = document.querySelector('.sidebar-footer .avatar');
+  const sName = document.querySelector('.sidebar-footer .user-name');
+  const sRole = document.querySelector('.sidebar-footer .user-role');
+  sAvatar.textContent = u.initials;
+  sAvatar.style.background = u.color;
+  sName.textContent = u.username;
+  sRole.textContent = u.label;
+}
+
+function doLogout() {
+  closeUserMenu();
+  currentUser = null;
+  // Reset form
+  document.getElementById('login-username').value = '';
+  document.getElementById('login-password').value = '';
+  document.getElementById('login-error').style.display = 'none';
+  // Show login
+  document.getElementById('loginScreen').classList.remove('hidden');
+  // Reset to dashboard
+  navTo('dashboard');
+}
+
+function toggleUserMenu() {
+  document.getElementById('userDropdown').classList.toggle('show');
+}
+function closeUserMenu() {
+  document.getElementById('userDropdown').classList.remove('show');
+}
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  const btn = document.getElementById('userMenuBtn');
+  const dd = document.getElementById('userDropdown');
+  if(btn && dd && !btn.contains(e.target) && !dd.contains(e.target)) {
+    dd.classList.remove('show');
+  }
+});
+
+// ===== LIVE CLOCK =====
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clockTime').innerHTML = `${h}:${m}<span class="clock-sec">:${s}</span>`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ===== NAV =====
+const titles = {
+  dashboard:'แดชบอร์ด', incidents:'รายงานอุบัติเหตุ/เหตุการณ์', risk:'การประเมินความเสี่ยง',
+  inspection:'ตรวจสอบความปลอดภัย', environment:'การจัดการสิ่งแวดล้อม', waste:'การจัดการของเสีย',
+  training:'การฝึกอบรม', documents:'เอกสาร ISO', ppe:'อุปกรณ์ PPE',
+  audit:'การตรวจประเมิน (Audit)', corrective:'การแก้ไข/ป้องกัน (CAPA)',
+  workpermit:'ใบอนุญาตทำงาน (Work Permit)',
+  investigation:'สอบสวนอุบัติเหตุ (Accident Investigation)'
+};
+
+function navTo(page) {
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.page === page);
+  });
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.getElementById('pageTitle').textContent = titles[page] || page;
+  if(window.innerWidth < 768) toggleSidebar();
+}
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => navTo(item.dataset.page));
+});
+
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const bd = document.getElementById('sidebarBackdrop');
+  sb.classList.toggle('show');
+  bd.classList.toggle('show');
+}
+
+// ===== DATE =====
+const today = new Date();
+document.getElementById('currentDate').textContent = today.toLocaleDateString('th-TH',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
+document.querySelectorAll('input[type="date"]').forEach(d => d.valueAsDate = today);
+
+// ===== MODAL =====
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if(e.target === m) m.classList.remove('show'); });
+});
+
+// ===== BADGES =====
+function severityBadge(s) {
+  const map = { low:['badge-success','ต่ำ'], medium:['badge-warning','ปานกลาง'], high:['badge-danger','สูง'], critical:['badge-danger','วิกฤต'] };
+  const [cls,txt] = map[s] || ['badge-gray',s];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+}
+function statusBadge(s) {
+  const map = {
+    investigating:['badge-warning','กำลังสอบสวน'], closed:['badge-success','ปิดแล้ว'],
+    corrective:['badge-info','แก้ไข/ป้องกัน'], completed:['badge-success','เสร็จสิ้น'],
+    planned:['badge-info','วางแผน'], 'in-progress':['badge-warning','กำลังดำเนินการ'],
+    active:['badge-success','ใช้งาน'], review:['badge-warning','รอทบทวน']
+  };
+  const [cls,txt] = map[s] || ['badge-gray',s];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+}
+function typeBadge(t) {
+  const map = { accident:['badge-danger','อุบัติเหตุ'], 'near-miss':['badge-warning','Near Miss'], unsafe:['badge-info','สภาพไม่ปลอดภัย'], env:['badge-success','สิ่งแวดล้อม'] };
+  const [cls,txt] = map[t] || ['badge-gray',t];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+}
+
+// ===== RENDERS =====
+function renderIncidents(filter='all') {
+  const filtered = filter==='all' ? store.incidents : store.incidents.filter(i=>i.type===filter);
+  document.getElementById('incidentTable').innerHTML = filtered.map(i => `
+    <tr><td><strong style="color:var(--slate-900)">${i.id}</strong></td><td>${i.date}</td><td>${typeBadge(i.type)}</td>
+    <td>${i.location}</td><td style="max-width:250px;color:var(--slate-600)">${i.desc}</td><td>${severityBadge(i.severity)}</td>
+    <td>${statusBadge(i.status)}</td><td><button class="btn btn-ghost btn-sm">ดู</button></td></tr>
+  `).join('');
+}
+function filterIncidents(type, el) {
+  document.querySelectorAll('#page-incidents .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderIncidents(type);
+}
+
+function riskLevel(l,s) {
+  const r = l*s;
+  if(r<=4) return ['badge-success','ต่ำ'];
+  if(r<=9) return ['badge-warning','ปานกลาง'];
+  if(r<=16) return ['badge-danger','สูง'];
+  return ['badge-violet','สูงมาก'];
+}
+function renderRiskRegister() {
+  document.getElementById('riskRegister').innerHTML = store.risks.map(r => {
+    const [cls,txt] = riskLevel(r.l,r.s);
+    return `<tr><td><strong style="color:var(--slate-900)">${r.id}</strong></td><td>${r.activity}</td><td>${r.hazard}</td>
+    <td style="text-align:center;font-weight:700">${r.l}</td><td style="text-align:center;font-weight:700">${r.s}</td>
+    <td><span class="badge ${cls}"><span class="badge-dot"></span> ${txt} (${r.l*r.s})</span></td>
+    <td style="max-width:200px;color:var(--slate-600)">${r.control}</td><td>${r.owner}</td></tr>`;
+  }).join('');
+
+  document.getElementById('riskList').innerHTML = store.risks.filter(r=>r.l*r.s>=10).map(r => `
+    <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--slate-100);">
+      <span style="min-width:40px;height:40px;border-radius:10px;background:var(--red-50);color:var(--red-600);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px">${r.l*r.s}</span>
+      <div><div style="font-weight:600;font-size:14px;color:var(--slate-800)">${r.hazard}</div><div style="font-size:12px;color:var(--slate-400)">${r.activity} — ${r.owner}</div></div>
+    </div>
+  `).join('') || '<div class="empty-state"><p>ไม่มีความเสี่ยงระดับสูง</p></div>';
+}
+function renderRiskMatrix() {
+  const colors = [
+    ['risk-med','risk-high','risk-high','risk-vhigh','risk-vhigh'],
+    ['risk-med','risk-med','risk-high','risk-high','risk-vhigh'],
+    ['risk-low','risk-med','risk-med','risk-high','risk-high'],
+    ['risk-low','risk-low','risk-med','risk-med','risk-high'],
+    ['risk-low','risk-low','risk-low','risk-med','risk-med'],
+  ];
+  let html = '';
+  for(let row=0;row<5;row++){
+    html += `<div class="y-label">${5-row}</div>`;
+    for(let col=0;col<5;col++){
+      html += `<div class="cell ${colors[row][col]}">${(5-row)*(col+1)}</div>`;
+    }
+  }
+  html += '<div></div>';
+  for(let i=1;i<=5;i++) html += `<div class="x-label">${i}</div>`;
+  document.getElementById('riskMatrix').innerHTML = html;
+}
+
+function renderEnvTable() {
+  document.getElementById('envTable').innerHTML = store.envRecords.map(e =>
+    `<tr><td>${e.date}</td><td><strong>${e.param}</strong></td><td style="font-weight:700;color:var(--slate-900)">${e.value}</td><td>${e.unit}</td><td>${e.std}</td><td><span class="badge badge-success"><span class="badge-dot"></span> ผ่าน</span></td><td>${e.point}</td></tr>`
+  ).join('');
+}
+function renderWaste() {
+  document.getElementById('wasteTable').innerHTML = store.waste.map(w => `
+    <tr><td>${w.date}</td><td>${w.type}</td><td>${w.desc}</td><td style="font-weight:600">${w.qty.toLocaleString()}</td>
+    <td>${w.method}</td><td>${w.company}</td><td><button class="btn btn-ghost btn-sm">📎 เอกสาร</button></td></tr>
+  `).join('');
+}
+function renderTraining() {
+  document.getElementById('trainingTable').innerHTML = store.training.map(t => `
+    <tr><td><strong style="color:var(--slate-900)">${t.id}</strong></td><td>${t.name}</td><td>${t.date}</td><td>${t.count} คน</td>
+    <td>${t.status==='completed'?t.pass+'/'+t.count:'-'}</td><td>${t.trainer}</td><td>${statusBadge(t.status)}</td></tr>
+  `).join('');
+}
+function renderDocuments() {
+  document.getElementById('docTable').innerHTML = store.documents.map(d => `
+    <tr><td><strong style="color:var(--slate-900)">${d.id}</strong></td><td>${d.name}</td><td><span class="badge badge-gray">${d.type}</span></td><td>v${d.ver}</td>
+    <td>${d.date}</td><td>${d.approver}</td><td>${statusBadge(d.status)}</td></tr>
+  `).join('');
+}
+function renderPPE() {
+  document.getElementById('ppeTable').innerHTML = store.ppe.map(p => {
+    const low = p.stock <= p.min;
+    return `<tr><td><strong style="color:var(--slate-900)">${p.id}</strong></td><td>${p.name}</td>
+    <td style="font-weight:700;color:${low?'var(--red-500)':'var(--slate-800)'}">${p.stock}</td>
+    <td>${p.min}</td><td>${low?'<span class="badge badge-danger"><span class="badge-dot"></span> ต่ำกว่าขั้นต่ำ</span>':'<span class="badge badge-success"><span class="badge-dot"></span> เพียงพอ</span>'}</td>
+    <td>${p.expiry}</td>
+    <td>${low?'<button class="btn btn-danger btn-sm">สั่งซื้อ</button>':'<button class="btn btn-ghost btn-sm">เบิก</button>'}</td></tr>`;
+  }).join('');
+}
+function renderAudits() {
+  document.getElementById('auditTable').innerHTML = store.audits.map(a => `
+    <tr><td><strong style="color:var(--slate-900)">${a.id}</strong></td><td>${a.type}</td><td>${a.scope}</td><td>${a.date}</td>
+    <td>${a.auditor}</td><td>${a.findings>0?'<span class="badge badge-warning"><span class="badge-dot"></span> '+a.findings+' ข้อ</span>':'<span class="badge badge-gray">-</span>'}</td>
+    <td>${statusBadge(a.status)}</td></tr>
+  `).join('');
+}
+function renderCAPA() {
+  document.getElementById('capaTable').innerHTML = store.capa.map(c => `
+    <tr><td><strong style="color:var(--slate-900)">${c.id}</strong></td><td><span class="badge badge-gray">${c.source}</span></td>
+    <td style="max-width:160px;color:var(--slate-600)">${c.problem}</td>
+    <td style="max-width:160px;color:var(--slate-600)">${c.root}</td>
+    <td style="max-width:160px;color:var(--slate-600)">${c.action}</td>
+    <td>${c.owner}</td><td>${c.due}</td><td>${statusBadge(c.status)}</td></tr>
+  `).join('');
+}
+
+// ===== KPI =====
+function renderKPI() {
+  const kpis = [
+    { label:'อัตราการเกิดอุบัติเหตุ (LTIR)', value:'เป้า < 1.0 | ปัจจุบัน 0.5', pct:50, color:'var(--emerald-500)' },
+    { label:'การฝึกอบรมครบถ้วน', value:'85%', pct:85, color:'var(--amber-500)' },
+    { label:'การตรวจสอบ PPE', value:'95%', pct:95, color:'var(--emerald-500)' },
+    { label:'การจัดการของเสียถูกวิธี', value:'90%', pct:90, color:'var(--emerald-500)' },
+    { label:'CAPA ปิดงานตามกำหนด', value:'65%', pct:65, color:'var(--red-500)' },
+  ];
+  document.getElementById('kpiContainer').innerHTML = kpis.map(k => `
+    <div class="kpi-item">
+      <div class="kpi-row"><span class="kpi-label">${k.label}</span><span class="kpi-value" style="color:${k.color}">${k.value}</span></div>
+      <div class="progress-bar"><div class="fill" style="width:${k.pct}%;background:${k.color}"></div></div>
+    </div>
+  `).join('');
+}
+
+// ===== CHART =====
+function renderIncidentChart() {
+  const months = ['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.'];
+  const accidents = [3,2,4,1,2,1];
+  const nearMisses = [5,4,6,3,4,3];
+  const maxVal = Math.max(...accidents,...nearMisses);
+  document.getElementById('incidentChart').innerHTML = months.map((m,i) => {
+    const h1 = (accidents[i]/maxVal)*160;
+    const h2 = (nearMisses[i]/maxVal)*160;
+    return `<div class="bar-col">
+      <div class="bar-value">${nearMisses[i]}</div>
+      <div class="bar" style="height:${h2}px;background:var(--amber-400);"></div>
+      <div class="bar-value">${accidents[i]}</div>
+      <div class="bar" style="height:${h1}px;background:var(--red-500);"></div>
+      <div class="bar-label">${m}</div>
+    </div>`;
+  }).join('');
+}
+
+// ===== ACTIVITY =====
+function renderActivity() {
+  const items = [
+    { time:'10:30', detail:'บันทึกการตรวจสอบความปลอดภัยประจำวัน - โซน A', type:'info' },
+    { time:'09:15', detail:'อบรมดับเพลิงเสร็จสิ้น - ผ่าน 45/45 คน', type:'success' },
+    { time:'เมื่อวาน 16:00', detail:'รายงาน Near Miss #INC-001 - วัสดุตกจากที่สูง', type:'danger' },
+    { time:'เมื่อวาน 14:30', detail:'ตรวจวัด PM2.5 = 35 µg/m³ (ผ่านมาตรฐาน)', type:'success' },
+    { time:'25 มี.ค.', detail:'ปิด CAPA #CAR-001 - ติดแผ่นกันลื่นทางลาด', type:'success' },
+  ];
+  document.getElementById('recentActivity').innerHTML = items.map(a => `
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:var(--${a.type==='danger'?'red-500':a.type==='success'?'emerald-500':'primary-500'})"></div>
+      <div><div class="time">${a.time}</div><div class="detail">${a.detail}</div></div>
+    </div>
+  `).join('');
+}
+
+// ===== CHECKLISTS =====
+const checklists = {
+  area: ['พื้นที่ทำงานสะอาด เป็นระเบียบ ไม่มีสิ่งกีดขวาง','ทางเดิน ทางขึ้น-ลง มีแสงสว่างเพียงพอ','ป้ายเตือนอันตรายติดตั้งครบถ้วนและชัดเจน','แนวกั้นบริเวณอันตรายมั่นคง สมบูรณ์','บันได/นั่งร้าน มีสภาพดี ผ่านการตรวจสอบ','ระบบไฟฟ้าชั่วคราวเป็นไปตามมาตรฐาน'],
+  ppe: ['คนงานทุกคนสวมหมวกนิรภัย','สวมรองเท้านิรภัยขณะปฏิบัติงาน','ใช้แว่นตานิรภัยในงานที่มีเศษวัสดุกระเด็น','ผู้ทำงานบนที่สูงสวมสายรัดนิรภัย','ใช้ถุงมือนิรภัยเหมาะสมกับลักษณะงาน','ใช้อุปกรณ์ป้องกันเสียงในพื้นที่เสียงดัง','สวมเสื้อสะท้อนแสงในพื้นที่มีรถ/เครื่องจักร'],
+  machine: ['เครื่องจักรผ่านการตรวจสอบก่อนใช้งาน','อุปกรณ์ป้องกันส่วนเคลื่อนที่ (Guard) อยู่ในตำแหน่ง','ผู้ควบคุมเครื่องจักรมีใบอนุญาตถูกต้อง','เครนและรอกผ่านการทดสอบและรับรอง','สลิงและอุปกรณ์ยก อยู่ในสภาพดี','ระบบ Lockout/Tagout (LOTO) พร้อมใช้งาน'],
+  fire: ['ถังดับเพลิงอยู่ในตำแหน่ง ไม่หมดอายุ','ทางหนีไฟไม่มีสิ่งกีดขวาง','ป้ายทางออกฉุกเฉินมองเห็นชัด','จุดรวมพลมีป้ายชัดเจน','ระบบแจ้งเตือนอัคคีภัยพร้อมใช้งาน'],
+  env: ['ไม่มีการรั่วไหลของน้ำมัน สารเคมี ลงดิน/น้ำ','บ่อดักตะกอนทำงานปกติ','จัดเก็บของเสียแยกประเภทถูกต้อง','มีการฉีดน้ำลดฝุ่นบริเวณที่ก่อฝุ่น','ไม่มีเสียงดังเกินมาตรฐานช่วงเวลาพักผ่อน','ต้นไม้และพื้นที่สีเขียวไม่ได้รับผลกระทบ']
+};
+function renderChecklists() {
+  Object.keys(checklists).forEach(key => {
+    const el = document.getElementById('checklist-'+key);
+    if(!el) return;
+    el.innerHTML = checklists[key].map((item,i) => `
+      <div class="checklist-item">
+        <div class="check-box" onclick="this.classList.toggle('checked')"><span style="font-size:14px">✓</span></div>
+        <div class="text"><div class="title">${item}</div></div>
+      </div>
+    `).join('');
+  });
+}
+function saveChecklist() {
+  const checked = document.querySelectorAll('.check-box.checked').length;
+  const total = document.querySelectorAll('.check-box').length;
+  alert(`บันทึกสำเร็จ!\n\nผลการตรวจ: ${checked}/${total} รายการ (${Math.round(checked/total*100)}%)`);
+}
+function printChecklist() { window.print(); }
+
+// ===== ADD FUNCTIONS =====
+let incCount = store.incidents.length;
+function addIncident() {
+  incCount++;
+  store.incidents.unshift({
+    id:'INC-'+String(incCount).padStart(3,'0'),
+    date: document.getElementById('inc-date').value,
+    type: document.getElementById('inc-type').value,
+    location: document.getElementById('inc-location').value || '-',
+    desc: document.getElementById('inc-desc').value || '-',
+    severity: document.getElementById('inc-severity').value,
+    status:'investigating'
+  });
+  renderIncidents(); closeModal('incidentModal');
+}
+let riskCount = store.risks.length;
+function addRisk() {
+  riskCount++;
+  store.risks.push({
+    id:'RSK-'+String(riskCount).padStart(3,'0'),
+    activity: document.getElementById('risk-activity').value,
+    hazard: document.getElementById('risk-hazard').value,
+    l: parseInt(document.getElementById('risk-l').value),
+    s: parseInt(document.getElementById('risk-s').value),
+    control: document.getElementById('risk-control').value,
+    owner: document.getElementById('risk-owner').value
+  });
+  renderRiskRegister(); closeModal('riskModal');
+}
+function addEnvRecord() {
+  store.envRecords.unshift({
+    date: document.getElementById('env-date').value,
+    param: document.getElementById('env-param').value,
+    value: parseFloat(document.getElementById('env-value').value),
+    unit:'-', std:'-', point: document.getElementById('env-point').value
+  });
+  renderEnvTable(); closeModal('envModal');
+}
+function addWaste() {
+  store.waste.unshift({
+    date: document.getElementById('waste-date').value,
+    type: document.getElementById('waste-type').value,
+    desc: document.getElementById('waste-desc').value,
+    qty: parseInt(document.getElementById('waste-qty').value),
+    method: document.getElementById('waste-method').value,
+    company: document.getElementById('waste-company').value
+  });
+  renderWaste(); closeModal('wasteModal');
+}
+let trainCount = store.training.length;
+function addTraining() {
+  trainCount++;
+  store.training.push({
+    id:'TRN-'+String(trainCount).padStart(3,'0'),
+    name: document.getElementById('train-name').value,
+    date: document.getElementById('train-date').value,
+    count: parseInt(document.getElementById('train-count').value),
+    pass:0, trainer: document.getElementById('train-trainer').value,
+    status:'planned'
+  });
+  renderTraining(); closeModal('trainingModal');
+}
+let capaCount = store.capa.length;
+function addCAPA() {
+  capaCount++;
+  store.capa.push({
+    id:'CAR-'+String(capaCount).padStart(3,'0'),
+    source: document.getElementById('capa-source').value,
+    problem: document.getElementById('capa-problem').value,
+    root: document.getElementById('capa-root').value,
+    action: document.getElementById('capa-action').value,
+    owner: document.getElementById('capa-owner').value,
+    due: document.getElementById('capa-due').value,
+    status:'in-progress'
+  });
+  renderCAPA(); closeModal('capaModal');
+}
+
+// ===== INVESTIGATION =====
+let invFilterStatus = 'all';
+let currentInvId = null;
+
+function invSeverityBadge(s) {
+  const map = { minor:['badge-success','เล็กน้อย'], moderate:['badge-warning','ปานกลาง'], serious:['badge-danger','รุนแรง'], fatal:['badge-danger','เสียชีวิต/ทุพพลภาพ'] };
+  const [cls,txt] = map[s] || ['badge-gray',s];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+}
+function invStatusBadge(s) {
+  const map = { investigating:['badge-warning','กำลังสอบสวน'], review:['badge-info','รอทบทวน'], closed:['badge-success','ปิดแล้ว'] };
+  const [cls,txt] = map[s] || ['badge-gray',s];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+}
+
+function renderInvestigations() {
+  const filtered = invFilterStatus==='all' ? store.investigations : store.investigations.filter(i=>i.status===invFilterStatus);
+  document.getElementById('invTable').innerHTML = filtered.length ? filtered.map(inv => `
+    <tr>
+      <td><strong style="color:var(--slate-900)">${inv.id}</strong></td>
+      <td><span class="badge badge-gray">${inv.ref}</span></td>
+      <td>${inv.date}</td>
+      <td><span class="badge badge-info"><span class="badge-dot"></span> ${inv.type}</span></td>
+      <td>${inv.location}</td>
+      <td>${invSeverityBadge(inv.severity)}</td>
+      <td>${inv.lead}</td>
+      <td>${invStatusBadge(inv.status)}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="showInvDetail('${inv.id}')">ดูรายละเอียด</button></td>
+    </tr>
+  `).join('') : '<tr><td colspan="9" style="text-align:center;color:var(--slate-400);padding:32px;">ไม่มีรายการ</td></tr>';
+
+  // Stats
+  document.getElementById('inv-open-count').textContent = store.investigations.filter(i=>i.status==='investigating').length;
+  document.getElementById('inv-review-count').textContent = store.investigations.filter(i=>i.status==='review').length;
+  document.getElementById('inv-closed-count').textContent = store.investigations.filter(i=>i.status==='closed').length;
+  document.getElementById('inv-total-count').textContent = store.investigations.length;
+
+  // Populate incident ref dropdown
+  const refSelect = document.getElementById('inv-ref');
+  if(refSelect && refSelect.options.length <= 1) {
+    store.incidents.forEach(inc => {
+      const opt = document.createElement('option');
+      opt.value = inc.id;
+      opt.textContent = `${inc.id} - ${inc.desc.substring(0,40)}...`;
+      refSelect.appendChild(opt);
+    });
+  }
+}
+
+function filterInv(status, el) {
+  invFilterStatus = status;
+  document.querySelectorAll('#page-investigation > .card .tab, #page-investigation .card .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderInvestigations();
+}
+
+function showInvDetail(id) {
+  const inv = store.investigations.find(i=>i.id===id);
+  if(!inv) return;
+  currentInvId = id;
+
+  // Hide list, show detail
+  document.getElementById('invDetailSection').style.display = 'block';
+
+  document.getElementById('invDetailTitle').textContent = `${inv.id} — ${inv.type}`;
+
+  // Steps
+  const steps = [
+    { label:'เกิดเหตุ', done:true },
+    { label:'รวบรวมหลักฐาน', done:inv.evidence.length > 0 },
+    { label:'วิเคราะห์สาเหตุ', done:!!inv.rca },
+    { label:'กำหนดมาตรการ', done:inv.actions.length > 0 },
+    { label:'ทบทวน/อนุมัติ', done:inv.status==='review' || inv.status==='closed' },
+    { label:'ปิดการสอบสวน', done:inv.status==='closed' },
+  ];
+  document.getElementById('invSteps').innerHTML = steps.map((s,i) => `
+    <div style="display:flex;align-items:center;gap:8px;${i<steps.length-1?'flex:1':''}">
+      <div style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
+        ${s.done ? 'background:var(--emerald-500);color:white' : 'background:var(--slate-100);color:var(--slate-400)'}">
+        ${s.done ? '✓' : i+1}
+      </div>
+      <span style="font-size:12px;font-weight:600;color:${s.done?'var(--emerald-600)':'var(--slate-400)'};white-space:nowrap">${s.label}</span>
+      ${i<steps.length-1 ? '<div style="flex:1;height:2px;background:' + (s.done?'var(--emerald-200)':'var(--slate-200)') + ';margin:0 4px;min-width:20px;"></div>' : ''}
+    </div>
+  `).join('');
+
+  // Basic info
+  const r = (l,v) => `<div style="display:flex;border-bottom:1px solid var(--slate-100);padding:10px 0;">
+    <div style="width:140px;font-size:12px;font-weight:600;color:var(--slate-500);flex-shrink:0">${l}</div>
+    <div style="font-size:13px;color:var(--slate-800)">${v}</div></div>`;
+  document.getElementById('invBasicInfo').innerHTML =
+    r('อ้างอิง', `<span class="badge badge-gray">${inv.ref}</span>`) +
+    r('ประเภท', inv.type) +
+    r('วันที่/เวลา', inv.date + ' เวลา ' + inv.time) +
+    r('สถานที่', inv.location) +
+    r('ความรุนแรง', invSeverityBadge(inv.severity)) +
+    r('รายละเอียด', inv.desc) +
+    r('สถานะ', invStatusBadge(inv.status)) +
+    r('หน.ทีมสอบสวน', inv.lead) +
+    r('สมาชิกทีม', inv.team.join(', '));
+
+  // Injured & Witnesses
+  const inj = inv.injured;
+  let personHtml = '<div style="font-size:13px;font-weight:700;color:var(--slate-700);margin-bottom:8px;">ผู้บาดเจ็บ</div>';
+  personHtml += r('ชื่อ', inj.name) + r('ตำแหน่ง/บริษัท', inj.position);
+  if(inj.age) personHtml += r('อายุ', inj.age + ' ปี') + r('ประสบการณ์', inj.exp);
+  personHtml += r('การบาดเจ็บ', inj.injuryType) + r('การรักษา', inj.treatment);
+  personHtml += '<div style="font-size:13px;font-weight:700;color:var(--slate-700);margin:16px 0 8px;">พยาน</div>';
+  personHtml += inv.witnesses.map((w,i) => `<div style="padding:8px 0;border-bottom:1px solid var(--slate-100);font-size:13px;display:flex;align-items:center;gap:8px;">
+    <span style="width:24px;height:24px;border-radius:6px;background:var(--slate-100);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--slate-500)">${i+1}</span> ${w}
+  </div>`).join('');
+  document.getElementById('invPersonInfo').innerHTML = personHtml;
+
+  // RCA
+  if(inv.rca) {
+    const rca = inv.rca;
+    let rcaHtml = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+      <span class="badge badge-info"><span class="badge-dot"></span> ${rca.method}</span>
+    </div>`;
+    rcaHtml += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div style="padding:14px;border-radius:12px;background:var(--red-50);border:1px solid var(--red-100);">
+        <div style="font-size:11px;font-weight:700;color:var(--red-600);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Unsafe Act</div>
+        <div style="font-size:13px;color:var(--red-600)">${rca.unsafeAct}</div>
+      </div>
+      <div style="padding:14px;border-radius:12px;background:var(--amber-50);border:1px solid var(--amber-100);">
+        <div style="font-size:11px;font-weight:700;color:var(--amber-600);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Unsafe Condition</div>
+        <div style="font-size:13px;color:var(--amber-600)">${rca.unsafeCond}</div>
+      </div>
+    </div>`;
+    rcaHtml += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div style="padding:14px;border-radius:12px;background:var(--primary-50);border:1px solid var(--primary-100);">
+        <div style="font-size:11px;font-weight:700;color:var(--primary-600);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Personal Factor</div>
+        <div style="font-size:13px;color:var(--primary-600)">${rca.personal}</div>
+      </div>
+      <div style="padding:14px;border-radius:12px;background:var(--violet-100);border:1px solid #d8b4fe;">
+        <div style="font-size:11px;font-weight:700;color:var(--violet-600);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Job Factor</div>
+        <div style="font-size:13px;color:var(--violet-600)">${rca.job}</div>
+      </div>
+    </div>`;
+    rcaHtml += `<div style="padding:16px;border-radius:12px;background:var(--slate-900);margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;color:var(--amber-400);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Root Cause (สาเหตุรากเหง้า)</div>
+      <div style="font-size:14px;color:var(--white);font-weight:600">${rca.root}</div>
+    </div>`;
+    if(rca.whys && rca.whys.length) {
+      rcaHtml += '<div style="font-size:13px;font-weight:700;color:var(--slate-700);margin-bottom:10px;">5 Whys Analysis</div>';
+      rcaHtml += rca.whys.map((w,i) => `
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;">
+          <div style="width:28px;height:28px;border-radius:8px;background:${i===rca.whys.length-1?'var(--red-500)':'var(--slate-200)'};color:${i===rca.whys.length-1?'white':'var(--slate-600)'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">W${i+1}</div>
+          <div style="font-size:13px;color:var(--slate-700);padding-top:4px;${i===rca.whys.length-1?'font-weight:700':''}">${w}</div>
+        </div>
+        ${i<rca.whys.length-1?'<div style="margin-left:14px;width:1px;height:12px;background:var(--slate-200);"></div>':''}
+      `).join('');
+    }
+    document.getElementById('invRCA').innerHTML = rcaHtml;
+  } else {
+    document.getElementById('invRCA').innerHTML = `
+      <div style="text-align:center;padding:24px;color:var(--slate-400);">
+        <div style="font-size:32px;margin-bottom:8px;opacity:0.4">🔍</div>
+        <p style="font-size:14px;margin-bottom:12px;">ยังไม่ได้วิเคราะห์สาเหตุ</p>
+        <button class="btn btn-warning btn-sm" onclick="openRCAModal('${inv.id}')">+ เพิ่มการวิเคราะห์สาเหตุ</button>
+      </div>`;
+  }
+
+  // Corrective Actions
+  if(inv.actions.length) {
+    const actTypeLabel = { immediate:'เฉพาะหน้า', corrective:'แก้ไข', preventive:'ป้องกัน' };
+    const actTypeBadge = { immediate:'badge-danger', corrective:'badge-warning', preventive:'badge-info' };
+    const hierLabel = { elimination:'กำจัด', substitution:'ทดแทน', engineering:'วิศวกรรม', administrative:'บริหาร', ppe:'PPE' };
+    let actHtml = '<div style="display:flex;flex-direction:column;gap:10px;">';
+    inv.actions.forEach((a,i) => {
+      actHtml += `<div style="padding:14px;border-radius:12px;border:1px solid var(--slate-200);background:var(--white);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+          <span class="badge ${actTypeBadge[a.type]}"><span class="badge-dot"></span> ${actTypeLabel[a.type]}</span>
+          <span class="badge badge-gray">${hierLabel[a.hierarchy] || a.hierarchy}</span>
+          ${a.status==='completed'?'<span class="badge badge-success"><span class="badge-dot"></span> เสร็จสิ้น</span>':'<span class="badge badge-warning"><span class="badge-dot"></span> กำลังดำเนินการ</span>'}
+        </div>
+        <div style="font-size:13px;color:var(--slate-700);margin-bottom:6px;">${a.desc}</div>
+        <div style="font-size:12px;color:var(--slate-400);">ผู้รับผิดชอบ: ${a.owner} | กำหนด: ${a.due}</div>
+      </div>`;
+    });
+    actHtml += '</div>';
+    actHtml += `<div style="margin-top:12px;"><button class="btn btn-success btn-sm" onclick="openActionModal('${inv.id}')">+ เพิ่มมาตรการ</button></div>`;
+    document.getElementById('invActions').innerHTML = actHtml;
+  } else {
+    document.getElementById('invActions').innerHTML = `
+      <div style="text-align:center;padding:24px;color:var(--slate-400);">
+        <div style="font-size:32px;margin-bottom:8px;opacity:0.4">🔧</div>
+        <p style="font-size:14px;margin-bottom:12px;">ยังไม่มีมาตรการแก้ไข</p>
+        <button class="btn btn-success btn-sm" onclick="openActionModal('${inv.id}')">+ เพิ่มมาตรการ</button>
+      </div>`;
+  }
+
+  // Timeline
+  document.getElementById('invTimeline').innerHTML = inv.timeline.map(t => `
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:var(--primary-500)"></div>
+      <div><div class="time">${t.time}</div><div class="detail">${t.event}</div></div>
+    </div>
+  `).join('');
+
+  // Evidence
+  document.getElementById('invEvidence').innerHTML = inv.evidence.length ?
+    `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">` +
+    inv.evidence.map((e,i) => `
+      <div style="padding:16px;border-radius:12px;border:1px solid var(--slate-200);display:flex;align-items:center;gap:12px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:var(--slate-100);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📎</div>
+        <div style="font-size:13px;color:var(--slate-700);font-weight:500;">${e}</div>
+      </div>
+    `).join('') + '</div>' :
+    '<div style="text-align:center;padding:24px;color:var(--slate-400);font-size:14px;">ยังไม่มีหลักฐาน</div>';
+
+  // Lessons Learned
+  document.getElementById('invLessons').innerHTML = inv.lessons.length ?
+    inv.lessons.map((l,i) => `
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--slate-100);">
+        <div style="width:24px;height:24px;border-radius:6px;background:var(--amber-50);color:var(--amber-600);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0">${i+1}</div>
+        <div style="font-size:13px;color:var(--slate-700);padding-top:2px;">${l}</div>
+      </div>
+    `).join('') :
+    '<div style="text-align:center;padding:24px;color:var(--slate-400);font-size:14px;">ยังไม่มีบทเรียน</div>';
+
+  // Signoff
+  document.getElementById('invSignoff').innerHTML = inv.signoff.length ?
+    inv.signoff.map(s => `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--slate-100);">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--slate-800)">${s.role}</div>
+          <div style="font-size:12px;color:var(--slate-400)">${s.name}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${s.date ? '<span style="font-size:12px;color:var(--slate-400)">'+s.date+'</span>' : ''}
+          ${s.signed ? '<span class="badge badge-success"><span class="badge-dot"></span> ลงนามแล้ว</span>' : '<button class="btn btn-ghost btn-sm">รอลงนาม</button>'}
+        </div>
+      </div>
+    `).join('') +
+    (inv.status==='review' ? `<div style="margin-top:16px;display:flex;gap:8px;justify-content:flex-end;">
+      <button class="btn btn-success btn-sm" onclick="closeInvestigation('${inv.id}')">✅ อนุมัติและปิดการสอบสวน</button>
+    </div>` : '') :
+    `<div style="text-align:center;padding:24px;color:var(--slate-400);font-size:14px;">ยังไม่มีการลงนาม</div>
+    ${inv.status==='investigating' && inv.rca && inv.actions.length ? '<div style="text-align:center;"><button class="btn btn-primary btn-sm" onclick="submitForReview(\''+inv.id+'\')">ส่งทบทวน/อนุมัติ</button></div>' : ''}`;
+}
+
+function closeInvDetail() {
+  document.getElementById('invDetailSection').style.display = 'none';
+  currentInvId = null;
+}
+
+function openRCAModal(id) {
+  document.getElementById('rca-inv-id').value = id;
+  openModal('invRCAModal');
+}
+function openActionModal(id) {
+  document.getElementById('act-inv-id').value = id;
+  openModal('invActionModal');
+}
+
+function saveRCA() {
+  const id = document.getElementById('rca-inv-id').value;
+  const inv = store.investigations.find(i=>i.id===id);
+  if(!inv) return;
+  inv.rca = {
+    method: document.getElementById('rca-method').value,
+    unsafeAct: document.getElementById('rca-unsafe-act').value,
+    unsafeCond: document.getElementById('rca-unsafe-cond').value,
+    personal: document.getElementById('rca-personal').value,
+    job: document.getElementById('rca-job').value,
+    root: document.getElementById('rca-root').value,
+    whys: [
+      document.getElementById('rca-why1').value,
+      document.getElementById('rca-why2').value,
+      document.getElementById('rca-why3').value,
+      document.getElementById('rca-why4').value,
+      document.getElementById('rca-why5').value,
+    ].filter(w=>w.trim())
+  };
+  closeModal('invRCAModal');
+  showInvDetail(id);
+}
+
+function saveAction() {
+  const id = document.getElementById('act-inv-id').value;
+  const inv = store.investigations.find(i=>i.id===id);
+  if(!inv) return;
+  inv.actions.push({
+    type: document.getElementById('act-type').value,
+    hierarchy: document.getElementById('act-hierarchy').value,
+    desc: document.getElementById('act-desc').value,
+    owner: document.getElementById('act-owner').value,
+    due: document.getElementById('act-due').value,
+    status: 'in-progress'
+  });
+  closeModal('invActionModal');
+  showInvDetail(id);
+}
+
+function submitForReview(id) {
+  const inv = store.investigations.find(i=>i.id===id);
+  if(!inv) return;
+  if(confirm('ส่งรายงานสอบสวนเพื่อทบทวน/อนุมัติ?')) {
+    inv.status = 'review';
+    renderInvestigations();
+    showInvDetail(id);
+  }
+}
+
+function closeInvestigation(id) {
+  const inv = store.investigations.find(i=>i.id===id);
+  if(!inv) return;
+  if(confirm('อนุมัติและปิดการสอบสวน ' + id + '?')) {
+    inv.status = 'closed';
+    inv.signoff.forEach(s => { s.signed = true; if(!s.date) s.date = new Date().toLocaleDateString('th-TH').replace(/\//g,'-'); });
+    renderInvestigations();
+    showInvDetail(id);
+  }
+}
+
+let invCount = store.investigations.length;
+function addInvestigation() {
+  invCount++;
+  const ref = document.getElementById('inv-ref').value || '-';
+  store.investigations.unshift({
+    id: 'INV-'+String(invCount).padStart(3,'0'),
+    ref: ref,
+    type: document.getElementById('inv-type').value,
+    date: document.getElementById('inv-date').value,
+    time: document.getElementById('inv-time').value,
+    location: document.getElementById('inv-location').value || '-',
+    severity: document.getElementById('inv-severity').value,
+    desc: document.getElementById('inv-desc').value || '-',
+    injured: {
+      name: document.getElementById('inv-injured-name').value || '-',
+      position: document.getElementById('inv-injured-pos').value || '-',
+      age: parseInt(document.getElementById('inv-injured-age').value) || 0,
+      exp: document.getElementById('inv-injured-exp').value || '-',
+      injuryType: document.getElementById('inv-injury-type').value || '-',
+      treatment: document.getElementById('inv-treatment').value || '-'
+    },
+    witnesses: (document.getElementById('inv-witnesses').value || '').split('\n').filter(w=>w.trim()),
+    lead: document.getElementById('inv-lead').value || '-',
+    team: (document.getElementById('inv-team').value || '').split(',').map(t=>t.trim()).filter(t=>t),
+    rca: null,
+    actions: [],
+    timeline: [{ time: document.getElementById('inv-time').value, event:'เกิดเหตุ: ' + (document.getElementById('inv-desc').value || '').substring(0,60) }],
+    evidence: [],
+    lessons: [],
+    signoff: [],
+    status: 'investigating',
+    submitDate: new Date().toLocaleDateString('th-TH').replace(/\//g,'-')
+  });
+  renderInvestigations();
+  closeModal('invModal');
+  alert('สร้างการสอบสวนสำเร็จ!');
+}
+
+// ===== WORK PERMIT =====
+let currentRole = 'contractor';
+let wpFilter = 'all';
+
+function switchRole(role) {
+  currentRole = role;
+  document.getElementById('role-contractor').classList.toggle('active', role==='contractor');
+  document.getElementById('role-safety').classList.toggle('active', role==='safety');
+  document.getElementById('wp-contractor-section').style.display = role==='contractor' ? 'block' : 'none';
+  document.getElementById('wp-safety-section').style.display = role==='safety' ? 'block' : 'none';
+  document.getElementById('currentRoleInfo').textContent = role==='contractor' ? 'กำลังใช้งาน: ผู้รับเหมา' : 'กำลังใช้งาน: จป.วิชาชีพ (Safety Officer)';
+  // Update sidebar footer
+  const avatar = document.querySelector('.sidebar-footer .avatar');
+  const userName = document.querySelector('.sidebar-footer .user-name');
+  const userRole = document.querySelector('.sidebar-footer .user-role');
+  if(role==='contractor') {
+    avatar.textContent='CR'; avatar.style.background='linear-gradient(135deg, var(--amber-500), var(--red-500))';
+    userName.textContent='ผู้รับเหมา'; userRole.textContent='Contractor';
+  } else {
+    avatar.textContent='SO'; avatar.style.background='linear-gradient(135deg, var(--primary-500), var(--violet-500))';
+    userName.textContent='Safety Officer'; userRole.textContent='จป.วิชาชีพ';
+  }
+  renderWorkPermits();
+}
+
+function wpStatusBadge(s) {
+  const map = {
+    pending:['badge-warning','รออนุมัติ'],
+    approved:['badge-success','อนุมัติแล้ว'],
+    rejected:['badge-danger','ไม่อนุมัติ'],
+    expired:['badge-gray','หมดอายุ']
+  };
+  const [cls,txt] = map[s] || ['badge-gray',s];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+}
+
+function wpRiskBadge(r) {
+  const map = { low:['badge-success','ต่ำ'], medium:['badge-warning','ปานกลาง'], high:['badge-danger','สูง'], critical:['badge-violet','สูงมาก'] };
+  const [cls,txt] = map[r] || ['badge-gray',r];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+}
+
+function renderWorkPermits() {
+  // Contractor table
+  document.getElementById('wpContractorTable').innerHTML = store.workPermits.map(wp => `
+    <tr>
+      <td><strong style="color:var(--slate-900)">${wp.id}</strong></td>
+      <td>${wp.type}</td>
+      <td>${wp.company}</td>
+      <td>${wp.location}</td>
+      <td>${wp.startDate}${wp.startDate!==wp.endDate?' ~ '+wp.endDate:''}</td>
+      <td>${wp.requester}</td>
+      <td>${wpStatusBadge(wp.status)}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="showWPDetail('${wp.id}')">ดู</button></td>
+    </tr>
+  `).join('');
+
+  // Safety officer table
+  const filtered = wpFilter==='all' ? store.workPermits : store.workPermits.filter(wp=>wp.status===wpFilter);
+  document.getElementById('wpSafetyTable').innerHTML = filtered.map(wp => {
+    let actionBtns = '';
+    if(wp.status==='pending') {
+      actionBtns = `
+        <button class="btn btn-success btn-sm" onclick="approveWP('${wp.id}')" style="margin-right:4px;">✅ อนุมัติ</button>
+        <button class="btn btn-danger btn-sm" onclick="rejectWP('${wp.id}')">❌ ไม่อนุมัติ</button>`;
+    } else {
+      actionBtns = `<button class="btn btn-ghost btn-sm" onclick="showWPDetail('${wp.id}')">ดู</button>`;
+    }
+    return `<tr>
+      <td><strong style="color:var(--slate-900)">${wp.id}</strong></td>
+      <td>${wp.type} ${wpRiskBadge(wp.risk)}</td>
+      <td>${wp.company}</td>
+      <td>${wp.location}</td>
+      <td>${wp.startDate}${wp.startDate!==wp.endDate?' ~ '+wp.endDate:''}</td>
+      <td>${wp.requester}</td>
+      <td>${wpStatusBadge(wp.status)}</td>
+      <td style="white-space:nowrap">${actionBtns}</td>
+    </tr>`;
+  }).join('');
+
+  // Stats
+  const pending = store.workPermits.filter(w=>w.status==='pending').length;
+  const approved = store.workPermits.filter(w=>w.status==='approved').length;
+  const rejected = store.workPermits.filter(w=>w.status==='rejected').length;
+  document.getElementById('wp-pending-count').textContent = pending;
+  document.getElementById('wp-approved-count').textContent = approved;
+  document.getElementById('wp-rejected-count').textContent = rejected;
+  document.getElementById('wp-total-count').textContent = store.workPermits.length;
+}
+
+function filterWP(status, el) {
+  wpFilter = status;
+  document.querySelectorAll('#wp-safety-section .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderWorkPermits();
+}
+
+function showWPDetail(id) {
+  const wp = store.workPermits.find(w=>w.id===id);
+  if(!wp) return;
+
+  const infoRow = (label,val) => `<div style="display:flex;border-bottom:1px solid var(--slate-100);padding:10px 0;">
+    <div style="width:160px;font-size:13px;font-weight:600;color:var(--slate-500);flex-shrink:0">${label}</div>
+    <div style="font-size:13px;color:var(--slate-800)">${val}</div></div>`;
+
+  document.getElementById('wpDetailContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+      <span style="font-size:22px;font-weight:800;color:var(--slate-900)">${wp.id}</span>
+      ${wpStatusBadge(wp.status)} ${wpRiskBadge(wp.risk)}
+    </div>
+    ${infoRow('ประเภทงาน', wp.type)}
+    ${infoRow('บริษัท', wp.company)}
+    ${infoRow('ผู้ขอ', wp.requester)}
+    ${infoRow('จำนวนคนงาน', wp.workers + ' คน')}
+    ${infoRow('สถานที่', wp.location)}
+    ${infoRow('วันที่ทำงาน', wp.startDate + (wp.startDate!==wp.endDate?' ถึง '+wp.endDate:''))}
+    ${infoRow('เวลา', wp.timeStart + ' - ' + wp.timeEnd)}
+    ${infoRow('รายละเอียดงาน', wp.desc)}
+    ${infoRow('มาตรการความปลอดภัย', wp.safety)}
+    ${infoRow('PPE ที่ใช้', wp.ppe.map(p=>`<span class="badge badge-info" style="margin:2px">${p}</span>`).join(' '))}
+    ${infoRow('วันที่ส่งคำขอ', wp.submitDate)}
+    ${wp.approver ? infoRow('ผู้อนุมัติ/ปฏิเสธ', wp.approver) : ''}
+    ${wp.approveDate && wp.status!=='pending' ? infoRow('วันที่พิจารณา', wp.approveDate) : ''}
+    ${wp.rejectReason ? `<div style="margin-top:12px;padding:14px 18px;border-radius:12px;background:var(--red-50);border:1px solid var(--red-100);">
+      <div style="font-size:12px;font-weight:700;color:var(--red-600);margin-bottom:4px;">เหตุผลที่ไม่อนุมัติ:</div>
+      <div style="font-size:13px;color:var(--red-600)">${wp.rejectReason}</div></div>` : ''}
+  `;
+
+  let actions = `<button class="btn btn-ghost" onclick="closeModal('wpDetailModal')">ปิด</button>`;
+  if(wp.status==='pending' && currentRole==='safety') {
+    actions = `<button class="btn btn-ghost" onclick="closeModal('wpDetailModal')">ปิด</button>
+      <button class="btn btn-danger" onclick="closeModal('wpDetailModal');rejectWP('${wp.id}')">❌ ไม่อนุมัติ</button>
+      <button class="btn btn-success" onclick="closeModal('wpDetailModal');approveWP('${wp.id}')">✅ อนุมัติ</button>`;
+  }
+  document.getElementById('wpDetailActions').innerHTML = actions;
+  openModal('wpDetailModal');
+}
+
+function approveWP(id) {
+  const wp = store.workPermits.find(w=>w.id===id);
+  if(!wp) return;
+  if(confirm(`อนุมัติใบอนุญาตทำงาน ${wp.id}\n${wp.type} - ${wp.company}\nสถานที่: ${wp.location}\n\nยืนยันการอนุมัติ?`)) {
+    wp.status = 'approved';
+    wp.approver = 'จป.สมชาย';
+    wp.approveDate = new Date().toLocaleDateString('th-TH').replace(/\//g,'-');
+    renderWorkPermits();
+  }
+}
+
+function rejectWP(id) {
+  const wp = store.workPermits.find(w=>w.id===id);
+  if(!wp) return;
+  const reason = prompt(`ไม่อนุมัติใบอนุญาต ${wp.id}\n${wp.type} - ${wp.company}\n\nกรุณาระบุเหตุผล:`);
+  if(reason && reason.trim()) {
+    wp.status = 'rejected';
+    wp.approver = 'จป.สมชาย';
+    wp.approveDate = new Date().toLocaleDateString('th-TH').replace(/\//g,'-');
+    wp.rejectReason = reason.trim();
+    renderWorkPermits();
+  }
+}
+
+let wpCount = store.workPermits.length;
+function addWorkPermit() {
+  wpCount++;
+  const ppeChecks = document.querySelectorAll('#wp-ppe-checks input[type="checkbox"]');
+  const ppeList = [];
+  ppeChecks.forEach(cb => { if(cb.checked) ppeList.push(cb.parentElement.textContent.trim()); });
+
+  store.workPermits.unshift({
+    id: 'WP-'+String(wpCount).padStart(3,'0'),
+    type: document.getElementById('wp-type').value,
+    company: document.getElementById('wp-company').value || '-',
+    requester: document.getElementById('wp-requester').value || '-',
+    workers: parseInt(document.getElementById('wp-workers').value) || 0,
+    location: document.getElementById('wp-location').value || '-',
+    startDate: document.getElementById('wp-start').value,
+    endDate: document.getElementById('wp-end').value,
+    timeStart: document.getElementById('wp-time-start').value,
+    timeEnd: document.getElementById('wp-time-end').value,
+    desc: document.getElementById('wp-desc').value || '-',
+    safety: document.getElementById('wp-safety').value || '-',
+    ppe: ppeList,
+    risk: document.getElementById('wp-risk').value,
+    status: 'pending',
+    submitDate: new Date().toLocaleDateString('th-TH').replace(/\//g,'-'),
+    approver: '', approveDate: '', rejectReason: ''
+  });
+  renderWorkPermits();
+  closeModal('wpModal');
+  alert('ส่งคำขอใบอนุญาตทำงานสำเร็จ!\nรอ จป. พิจารณาอนุมัติ');
+}
+
+// ===== INIT =====
+renderIncidents();
+renderRiskRegister();
+renderRiskMatrix();
+renderEnvTable();
+renderWaste();
+renderTraining();
+renderDocuments();
+renderPPE();
+renderAudits();
+renderCAPA();
+renderIncidentChart();
+renderKPI();
+renderActivity();
+renderChecklists();
+renderWorkPermits();
+renderInvestigations();
+</script>
+</body>
+</html>
