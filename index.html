@@ -611,6 +611,27 @@ tr:last-child td { border-bottom: none; }
 .login-bg-shapes .s2 { width: 300px; height: 300px; bottom: -80px; left: -80px; }
 .login-bg-shapes .s3 { width: 200px; height: 200px; top: 40%; left: 60%; }
 
+/* ========== LANGUAGE SWITCHER ========== */
+.lang-switcher {
+  display: flex; gap: 4px; background: var(--slate-100); border-radius: 8px; padding: 3px;
+}
+.lang-btn {
+  padding: 5px 12px; border: none; border-radius: 6px; font-size: 12px;
+  font-weight: 600; cursor: pointer; transition: var(--transition);
+  background: transparent; color: var(--slate-500); font-family: inherit;
+  display: flex; align-items: center; gap: 4px;
+}
+.lang-btn:hover { color: var(--slate-700); }
+.lang-btn.active {
+  background: var(--white); color: var(--slate-800);
+  box-shadow: var(--shadow-sm);
+}
+.login-lang-switcher {
+  display: flex; justify-content: center; gap: 4px; margin-bottom: 24px;
+  background: var(--slate-100); border-radius: 8px; padding: 3px; width: fit-content; margin-left: auto; margin-right: auto;
+}
+.login-lang-switcher .lang-btn { padding: 6px 16px; font-size: 13px; }
+
 /* ========== CLOCK ========== */
 .clock-display {
   display: flex; align-items: center; gap: 8px;
@@ -680,31 +701,37 @@ tr:last-child td { border-bottom: none; }
       <div class="login-logo-icon">SC</div>
       <div class="login-logo-text">LAWI MY SafeConstruct</div>
     </div>
-    <div class="login-subtitle">ระบบจัดการความปลอดภัยและสิ่งแวดล้อม<br>ISO 45001 & ISO 14001</div>
+    <div class="login-subtitle" data-i18n="loginSubtitle">ระบบจัดการความปลอดภัยและสิ่งแวดล้อม</div>
+    <div style="text-align:center;font-size:11px;color:var(--slate-400);margin-top:-20px;margin-bottom:16px;">ISO 45001 & ISO 14001</div>
+
+    <div class="login-lang-switcher">
+      <button class="lang-btn active" data-lang="th" onclick="setLanguage('th')">🇹🇭 TH</button>
+      <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
+    </div>
 
     <div class="form-group">
-      <label>ชื่อผู้ใช้ / Username</label>
-      <input type="text" id="login-username" placeholder="กรอกชื่อผู้ใช้" autocomplete="off">
+      <label data-i18n="username">ชื่อผู้ใช้ / Username</label>
+      <input type="text" id="login-username" data-i18n-ph="usernamePh" placeholder="กรอกชื่อผู้ใช้" autocomplete="off">
     </div>
     <div class="form-group">
-      <label>รหัสผ่าน / Password</label>
-      <input type="password" id="login-password" placeholder="กรอกรหัสผ่าน">
+      <label data-i18n="password">รหัสผ่าน / Password</label>
+      <input type="password" id="login-password" data-i18n-ph="passwordPh" placeholder="กรอกรหัสผ่าน">
     </div>
     <div class="form-group">
-      <label>เข้าสู่ระบบในฐานะ</label>
+      <label data-i18n="loginAs">เข้าสู่ระบบในฐานะ</label>
       <select id="login-role">
-        <option value="safety">จป.วิชาชีพ (Safety Officer)</option>
-        <option value="manager">ผู้จัดการโครงการ (Project Manager)</option>
-        <option value="contractor">ผู้รับเหมา (Contractor)</option>
-        <option value="env">เจ้าหน้าที่สิ่งแวดล้อม (Environment Officer)</option>
-        <option value="admin">ผู้ดูแลระบบ (Admin)</option>
+        <option value="safety" data-i18n="roleSafety">จป.วิชาชีพ (Safety Officer)</option>
+        <option value="manager" data-i18n="roleManager">ผู้จัดการโครงการ (Project Manager)</option>
+        <option value="contractor" data-i18n="roleContractor">ผู้รับเหมา (Contractor)</option>
+        <option value="env" data-i18n="roleEnv">เจ้าหน้าที่สิ่งแวดล้อม (Environment Officer)</option>
+        <option value="admin" data-i18n="roleAdmin">ผู้ดูแลระบบ (Admin)</option>
       </select>
     </div>
     <div id="login-error" style="display:none;padding:10px 14px;border-radius:10px;background:var(--red-50);color:var(--red-600);font-size:13px;font-weight:500;margin-bottom:16px;border:1px solid var(--red-100);"></div>
-    <button class="login-btn" onclick="doLogin()">เข้าสู่ระบบ</button>
+    <button class="login-btn" onclick="doLogin()" data-i18n="loginBtn">เข้าสู่ระบบ</button>
     <div class="login-footer">
       LAWI MY SafeConstruct v2.0 — Construction SHE Management System<br>
-      Demo: ใส่ชื่อผู้ใช้อะไรก็ได้ รหัสผ่าน <strong>1234</strong>
+      Demo: <span data-i18n="loginDemo">ใส่ชื่อผู้ใช้อะไรก็ได้ รหัสผ่าน</span> <strong>1234</strong>
     </div>
   </div>
 </div>
@@ -729,24 +756,24 @@ tr:last-child td { border-bottom: none; }
   </div>
 
   <div class="nav-menu">
-    <div class="nav-section">Overview</div>
-    <div class="nav-item active" data-page="dashboard"><span class="icon">📊</span> แดชบอร์ด</div>
-    <div class="nav-item" data-page="incidents"><span class="icon">🚨</span> รายงานเหตุการณ์ <span class="nav-badge">2</span></div>
-    <div class="nav-item" data-page="investigation"><span class="icon">🔬</span> สอบสวนอุบัติเหตุ <span class="nav-badge">2</span></div>
-    <div class="nav-item" data-page="risk"><span class="icon">⚠️</span> ประเมินความเสี่ยง</div>
-    <div class="nav-item" data-page="inspection"><span class="icon">📋</span> ตรวจสอบความปลอดภัย</div>
+    <div class="nav-section" data-i18n="navOverview">Overview</div>
+    <div class="nav-item active" data-page="dashboard"><span class="icon">📊</span> <span data-i18n="navDashboard">แดชบอร์ด</span></div>
+    <div class="nav-item" data-page="incidents"><span class="icon">🚨</span> <span data-i18n="navIncidents">รายงานเหตุการณ์</span> <span class="nav-badge">2</span></div>
+    <div class="nav-item" data-page="investigation"><span class="icon">🔬</span> <span data-i18n="navInvestigation">สอบสวนอุบัติเหตุ</span> <span class="nav-badge">2</span></div>
+    <div class="nav-item" data-page="risk"><span class="icon">⚠️</span> <span data-i18n="navRisk">ประเมินความเสี่ยง</span></div>
+    <div class="nav-item" data-page="inspection"><span class="icon">📋</span> <span data-i18n="navInspection">ตรวจสอบความปลอดภัย</span></div>
 
-    <div class="nav-section">สิ่งแวดล้อม</div>
-    <div class="nav-item" data-page="environment"><span class="icon">🌿</span> การจัดการสิ่งแวดล้อม</div>
-    <div class="nav-item" data-page="waste"><span class="icon">♻️</span> การจัดการของเสีย</div>
+    <div class="nav-section" data-i18n="navEnvironment">สิ่งแวดล้อม</div>
+    <div class="nav-item" data-page="environment"><span class="icon">🌿</span> <span data-i18n="navEnvMgmt">การจัดการสิ่งแวดล้อม</span></div>
+    <div class="nav-item" data-page="waste"><span class="icon">♻️</span> <span data-i18n="navWaste">การจัดการของเสีย</span></div>
 
-    <div class="nav-section">จัดการระบบ</div>
-    <div class="nav-item" data-page="training"><span class="icon">🎓</span> การฝึกอบรม</div>
-    <div class="nav-item" data-page="documents"><span class="icon">📁</span> เอกสาร ISO</div>
-    <div class="nav-item" data-page="ppe"><span class="icon">🦺</span> อุปกรณ์ PPE <span class="nav-badge">1</span></div>
-    <div class="nav-item" data-page="audit"><span class="icon">🔍</span> Audit</div>
-    <div class="nav-item" data-page="workpermit"><span class="icon">📝</span> Work Permit <span class="nav-badge">3</span></div>
-    <div class="nav-item" data-page="corrective"><span class="icon">🔧</span> CAPA</div>
+    <div class="nav-section" data-i18n="navSystem">จัดการระบบ</div>
+    <div class="nav-item" data-page="training"><span class="icon">🎓</span> <span data-i18n="navTraining">การฝึกอบรม</span></div>
+    <div class="nav-item" data-page="documents"><span class="icon">📁</span> <span data-i18n="navDocuments">เอกสาร ISO</span></div>
+    <div class="nav-item" data-page="ppe"><span class="icon">🦺</span> <span data-i18n="navPPE">อุปกรณ์ PPE</span> <span class="nav-badge">1</span></div>
+    <div class="nav-item" data-page="audit"><span class="icon">🔍</span> <span data-i18n="navAudit">Audit</span></div>
+    <div class="nav-item" data-page="workpermit"><span class="icon">📝</span> <span data-i18n="navWorkPermit">Work Permit</span> <span class="nav-badge">3</span></div>
+    <div class="nav-item" data-page="corrective"><span class="icon">🔧</span> <span data-i18n="navCAPA">CAPA</span></div>
   </div>
 
   <div class="sidebar-footer">
@@ -771,6 +798,10 @@ tr:last-child td { border-bottom: none; }
         <span id="clockTime">00:00:00</span>
       </div>
       <span class="topbar-date" id="currentDate"></span>
+      <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="th" onclick="setLanguage('th')">🇹🇭 TH</button>
+        <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
+      </div>
       <button class="topbar-btn" title="การแจ้งเตือน" onclick="navTo('dashboard')">🔔<span class="dot"></span></button>
       <div style="position:relative;">
         <div class="user-menu-btn" id="userMenuBtn" onclick="toggleUserMenu()">
@@ -785,11 +816,11 @@ tr:last-child td { border-bottom: none; }
             <div class="ud-name" id="udName">Safety Officer</div>
             <div class="ud-email" id="udEmail">safety@safeconstruct.com</div>
           </div>
-          <div class="ud-item" onclick="navTo('dashboard');closeUserMenu();">📊 แดชบอร์ด</div>
-          <div class="ud-item" onclick="alert('โปรไฟล์ — ฟีเจอร์กำลังพัฒนา');closeUserMenu();">👤 โปรไฟล์ของฉัน</div>
-          <div class="ud-item" onclick="alert('ตั้งค่า — ฟีเจอร์กำลังพัฒนา');closeUserMenu();">⚙️ ตั้งค่า</div>
+          <div class="ud-item" onclick="navTo('dashboard');closeUserMenu();">📊 <span data-i18n="myDashboard">แดชบอร์ด</span></div>
+          <div class="ud-item" onclick="alert('โปรไฟล์ — ฟีเจอร์กำลังพัฒนา');closeUserMenu();">👤 <span data-i18n="myProfile">โปรไฟล์ของฉัน</span></div>
+          <div class="ud-item" onclick="alert('ตั้งค่า — ฟีเจอร์กำลังพัฒนา');closeUserMenu();">⚙️ <span data-i18n="settings">ตั้งค่า</span></div>
           <div class="ud-divider"></div>
-          <div class="ud-item danger" onclick="doLogout()">🚪 ออกจากระบบ</div>
+          <div class="ud-item danger" onclick="doLogout()">🚪 <span data-i18n="logout">ออกจากระบบ</span></div>
         </div>
       </div>
     </div>
@@ -802,30 +833,30 @@ tr:last-child td { border-bottom: none; }
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon green">🛡️</div>
-          <div class="stat-label">วันปลอดภัย (Safe Days)</div>
+          <div class="stat-label" data-i18n="safeDays">วันปลอดภัย (Safe Days)</div>
           <div class="stat-value" style="color:var(--emerald-600)">247</div>
-          <div class="stat-sub">วันตั้งแต่อุบัติเหตุครั้งล่าสุด</div>
+          <div class="stat-sub" data-i18n="safeDaysSub">วันตั้งแต่อุบัติเหตุครั้งล่าสุด</div>
           <div class="stat-glow" style="background:var(--emerald-500)"></div>
         </div>
         <div class="stat-card">
           <div class="stat-icon red">🚨</div>
-          <div class="stat-label">อุบัติเหตุเดือนนี้</div>
+          <div class="stat-label" data-i18n="monthIncidents">อุบัติเหตุเดือนนี้</div>
           <div class="stat-value" style="color:var(--red-500)">2</div>
-          <div class="stat-sub"><span class="stat-trend down">-50%</span> จากเดือนก่อน</div>
+          <div class="stat-sub"><span class="stat-trend down">-50%</span> <span data-i18n="monthIncidentsSub">จากเดือนก่อน</span></div>
           <div class="stat-glow" style="background:var(--red-500)"></div>
         </div>
         <div class="stat-card">
           <div class="stat-icon amber">⚡</div>
-          <div class="stat-label">Near Miss เดือนนี้</div>
+          <div class="stat-label" data-i18n="nearMiss">Near Miss เดือนนี้</div>
           <div class="stat-value" style="color:var(--amber-600)">5</div>
-          <div class="stat-sub">รายงาน Near Miss ทั้งหมด</div>
+          <div class="stat-sub" data-i18n="nearMissSub">รายงาน Near Miss ทั้งหมด</div>
           <div class="stat-glow" style="background:var(--amber-500)"></div>
         </div>
         <div class="stat-card">
           <div class="stat-icon blue">📈</div>
-          <div class="stat-label">คะแนนความปลอดภัย</div>
+          <div class="stat-label" data-i18n="safetyScore">คะแนนความปลอดภัย</div>
           <div class="stat-value" style="color:var(--primary-600)">92<span style="font-size:20px">%</span></div>
-          <div class="stat-sub">จากการตรวจประเมินล่าสุด</div>
+          <div class="stat-sub" data-i18n="safetyScoreSub">จากการตรวจประเมินล่าสุด</div>
           <div class="stat-glow" style="background:var(--primary-500)"></div>
         </div>
       </div>
@@ -833,19 +864,19 @@ tr:last-child td { border-bottom: none; }
       <div class="grid-2">
         <div class="card">
           <div class="card-header">
-            <h3><span class="h-icon" style="background:var(--red-50)">📈</span> สถิติเหตุการณ์ (6 เดือน)</h3>
+            <h3><span class="h-icon" style="background:var(--red-50)">📈</span> <span data-i18n="incidentStats">สถิติเหตุการณ์ (6 เดือน)</span></h3>
           </div>
           <div class="card-body">
             <div class="bar-chart" id="incidentChart"></div>
             <div class="chart-legend">
-              <span><span class="dot" style="background:var(--red-500)"></span> อุบัติเหตุ</span>
+              <span><span class="dot" style="background:var(--red-500)"></span> <span data-i18n="accident">อุบัติเหตุ</span></span>
               <span><span class="dot" style="background:var(--amber-400)"></span> Near Miss</span>
             </div>
           </div>
         </div>
         <div class="card">
           <div class="card-header">
-            <h3><span class="h-icon" style="background:var(--emerald-50)">🎯</span> เป้าหมาย KPI ความปลอดภัย</h3>
+            <h3><span class="h-icon" style="background:var(--emerald-50)">🎯</span> <span data-i18n="kpiTitle">เป้าหมาย KPI ความปลอดภัย</span></h3>
           </div>
           <div class="card-body" id="kpiContainer"></div>
         </div>
@@ -854,13 +885,13 @@ tr:last-child td { border-bottom: none; }
       <div class="grid-2">
         <div class="card">
           <div class="card-header">
-            <h3><span class="h-icon" style="background:var(--primary-50)">🕐</span> กิจกรรมล่าสุด</h3>
+            <h3><span class="h-icon" style="background:var(--primary-50)">🕐</span> <span data-i18n="recentAct">กิจกรรมล่าสุด</span></h3>
           </div>
           <div class="card-body" id="recentActivity"></div>
         </div>
         <div class="card">
           <div class="card-header">
-            <h3><span class="h-icon" style="background:var(--amber-50)">🔔</span> การแจ้งเตือน</h3>
+            <h3><span class="h-icon" style="background:var(--amber-50)">🔔</span> <span data-i18n="notifications">การแจ้งเตือน</span></h3>
           </div>
           <div class="card-body">
             <div class="alert alert-danger"><span class="alert-icon">🚨</span> พบ Near Miss บริเวณโซน A - รอการตรวจสอบ</div>
@@ -876,15 +907,15 @@ tr:last-child td { border-bottom: none; }
     <div class="page" id="page-incidents">
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--red-50)">🚨</span> รายการอุบัติเหตุ/เหตุการณ์</h3>
-          <button class="btn btn-danger btn-sm" onclick="openModal('incidentModal')">+ รายงานใหม่</button>
+          <h3><span class="h-icon" style="background:var(--red-50)">🚨</span> <span data-i18n="incidentList">รายการอุบัติเหตุ/เหตุการณ์</span></h3>
+          <button class="btn btn-danger btn-sm" onclick="openModal('incidentModal')" data-i18n="newReport">+ รายงานใหม่</button>
         </div>
         <div class="card-body" style="padding-bottom:0;">
           <div class="tabs">
-            <div class="tab active" onclick="filterIncidents('all',this)">ทั้งหมด</div>
-            <div class="tab" onclick="filterIncidents('accident',this)">อุบัติเหตุ</div>
+            <div class="tab active" onclick="filterIncidents('all',this)" data-i18n="all">ทั้งหมด</div>
+            <div class="tab" onclick="filterIncidents('accident',this)" data-i18n="accident">อุบัติเหตุ</div>
             <div class="tab" onclick="filterIncidents('near-miss',this)">Near Miss</div>
-            <div class="tab" onclick="filterIncidents('unsafe',this)">สภาพไม่ปลอดภัย</div>
+            <div class="tab" onclick="filterIncidents('unsafe',this)" data-i18n="unsafeCondition">สภาพไม่ปลอดภัย</div>
           </div>
         </div>
         <div class="card-body-flush">
@@ -902,24 +933,24 @@ tr:last-child td { border-bottom: none; }
     <div class="page" id="page-investigation">
       <!-- Stats -->
       <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
-        <div class="stat-card"><div class="stat-icon red">🔬</div><div class="stat-label">กำลังสอบสวน</div><div class="stat-value" style="color:var(--red-500)" id="inv-open-count">0</div></div>
-        <div class="stat-card"><div class="stat-icon amber">📝</div><div class="stat-label">รอทบทวน</div><div class="stat-value" style="color:var(--amber-600)" id="inv-review-count">0</div></div>
-        <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-label">ปิดการสอบสวน</div><div class="stat-value" style="color:var(--emerald-600)" id="inv-closed-count">0</div></div>
-        <div class="stat-card"><div class="stat-icon blue">📊</div><div class="stat-label">ทั้งหมด</div><div class="stat-value" style="color:var(--primary-600)" id="inv-total-count">0</div></div>
+        <div class="stat-card"><div class="stat-icon red">🔬</div><div class="stat-label" data-i18n="invOpen">กำลังสอบสวน</div><div class="stat-value" style="color:var(--red-500)" id="inv-open-count">0</div></div>
+        <div class="stat-card"><div class="stat-icon amber">📝</div><div class="stat-label" data-i18n="invReview">รอทบทวน</div><div class="stat-value" style="color:var(--amber-600)" id="inv-review-count">0</div></div>
+        <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-label" data-i18n="invClosed">ปิดการสอบสวน</div><div class="stat-value" style="color:var(--emerald-600)" id="inv-closed-count">0</div></div>
+        <div class="stat-card"><div class="stat-icon blue">📊</div><div class="stat-label" data-i18n="invTotal">ทั้งหมด</div><div class="stat-value" style="color:var(--primary-600)" id="inv-total-count">0</div></div>
       </div>
 
       <!-- Investigation List -->
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--red-50)">🔬</span> รายการสอบสวนอุบัติเหตุ</h3>
-          <button class="btn btn-danger btn-sm" onclick="openModal('invModal')">+ สร้างการสอบสวนใหม่</button>
+          <h3><span class="h-icon" style="background:var(--red-50)">🔬</span> <span data-i18n="invList">รายการสอบสวนอุบัติเหตุ</span></h3>
+          <button class="btn btn-danger btn-sm" onclick="openModal('invModal')" data-i18n="newInv">+ สร้างการสอบสวนใหม่</button>
         </div>
         <div class="card-body" style="padding-bottom:0;">
           <div class="tabs">
-            <div class="tab active" onclick="filterInv('all',this)">ทั้งหมด</div>
-            <div class="tab" onclick="filterInv('investigating',this)">กำลังสอบสวน</div>
-            <div class="tab" onclick="filterInv('review',this)">รอทบทวน</div>
-            <div class="tab" onclick="filterInv('closed',this)">ปิดแล้ว</div>
+            <div class="tab active" onclick="filterInv('all',this)" data-i18n="all">ทั้งหมด</div>
+            <div class="tab" onclick="filterInv('investigating',this)" data-i18n="investigating">กำลังสอบสวน</div>
+            <div class="tab" onclick="filterInv('review',this)" data-i18n="review">รอทบทวน</div>
+            <div class="tab" onclick="filterInv('closed',this)" data-i18n="closed">ปิดแล้ว</div>
           </div>
         </div>
         <div class="card-body-flush">
@@ -1010,7 +1041,7 @@ tr:last-child td { border-bottom: none; }
       <div class="grid-2">
         <div class="card">
           <div class="card-header">
-            <h3><span class="h-icon" style="background:var(--amber-50)">📐</span> Risk Matrix (5x5)</h3>
+            <h3><span class="h-icon" style="background:var(--amber-50)">📐</span> <span data-i18n="riskMatrix">Risk Matrix (5x5)</span></h3>
           </div>
           <div class="card-body">
             <div class="risk-matrix" id="riskMatrix"></div>
@@ -1024,15 +1055,15 @@ tr:last-child td { border-bottom: none; }
         </div>
         <div class="card">
           <div class="card-header">
-            <h3><span class="h-icon" style="background:var(--red-50)">🔥</span> ความเสี่ยงสูง</h3>
-            <button class="btn btn-warning btn-sm" onclick="openModal('riskModal')">+ เพิ่ม</button>
+            <h3><span class="h-icon" style="background:var(--red-50)">🔥</span> <span data-i18n="highRisk">ความเสี่ยงสูง</span></h3>
+            <button class="btn btn-warning btn-sm" onclick="openModal('riskModal')" data-i18n="addRisk">+ เพิ่ม</button>
           </div>
           <div class="card-body" id="riskList"></div>
         </div>
       </div>
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--amber-50)">📋</span> ทะเบียนความเสี่ยง (Risk Register)</h3>
+          <h3><span class="h-icon" style="background:var(--amber-50)">📋</span> <span data-i18n="riskRegister">ทะเบียนความเสี่ยง (Risk Register)</span></h3>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1049,7 +1080,7 @@ tr:last-child td { border-bottom: none; }
     <div class="page" id="page-inspection">
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--emerald-50)">📋</span> แบบตรวจสอบความปลอดภัยประจำวัน</h3>
+          <h3><span class="h-icon" style="background:var(--emerald-50)">📋</span> <span data-i18n="dailyInspection">แบบตรวจสอบความปลอดภัยประจำวัน</span></h3>
           <div style="display:flex;gap:8px;">
             <button class="btn btn-ghost btn-sm" onclick="printChecklist()">🖨️ พิมพ์</button>
             <button class="btn btn-success btn-sm" onclick="saveChecklist()">💾 บันทึก</button>
@@ -1095,7 +1126,7 @@ tr:last-child td { border-bottom: none; }
 
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--emerald-50)">📊</span> บันทึกการตรวจวัดสิ่งแวดล้อม</h3>
+          <h3><span class="h-icon" style="background:var(--emerald-50)">📊</span> <span data-i18n="envMonitoring">บันทึกการตรวจวัดสิ่งแวดล้อม</span></h3>
           <button class="btn btn-primary btn-sm" onclick="openModal('envModal')">+ เพิ่มบันทึก</button>
         </div>
         <div class="card-body-flush">
@@ -1109,7 +1140,7 @@ tr:last-child td { border-bottom: none; }
       </div>
 
       <div class="card">
-        <div class="card-header"><h3><span class="h-icon" style="background:var(--emerald-50)">🌿</span> แผนจัดการสิ่งแวดล้อม (ISO 14001)</h3></div>
+        <div class="card-header"><h3><span class="h-icon" style="background:var(--emerald-50)">🌿</span> <span data-i18n="envPlan">แผนจัดการสิ่งแวดล้อม (ISO 14001)</span></h3></div>
         <div class="card-body-flush">
           <div class="table-wrap">
             <table>
@@ -1137,7 +1168,7 @@ tr:last-child td { border-bottom: none; }
       </div>
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--emerald-50)">♻️</span> บันทึกการจัดการของเสีย</h3>
+          <h3><span class="h-icon" style="background:var(--emerald-50)">♻️</span> <span data-i18n="wasteLog">บันทึกการจัดการของเสีย</span></h3>
           <button class="btn btn-primary btn-sm" onclick="openModal('wasteModal')">+ เพิ่มบันทึก</button>
         </div>
         <div class="card-body-flush">
@@ -1155,8 +1186,8 @@ tr:last-child td { border-bottom: none; }
     <div class="page" id="page-training">
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--violet-100)">🎓</span> แผนการฝึกอบรมความปลอดภัย</h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('trainingModal')">+ เพิ่มหลักสูตร</button>
+          <h3><span class="h-icon" style="background:var(--violet-100)">🎓</span> <span data-i18n="trainingPlan">แผนการฝึกอบรมความปลอดภัย</span></h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('trainingModal')" data-i18n="addCourse">+ เพิ่มหลักสูตร</button>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1168,7 +1199,7 @@ tr:last-child td { border-bottom: none; }
         </div>
       </div>
       <div class="card">
-        <div class="card-header"><h3><span class="h-icon" style="background:var(--primary-50)">📚</span> หลักสูตรบังคับ (ISO 45001 Clause 7.2)</h3></div>
+        <div class="card-header"><h3><span class="h-icon" style="background:var(--primary-50)">📚</span> <span data-i18n="mandatory">หลักสูตรบังคับ (ISO 45001 Clause 7.2)</span></h3></div>
         <div class="card-body-flush">
           <div class="table-wrap">
             <table>
@@ -1192,8 +1223,8 @@ tr:last-child td { border-bottom: none; }
     <div class="page" id="page-documents">
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--primary-50)">📁</span> ระบบเอกสาร (Document Control - ISO 7.5)</h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('docModal')">+ เพิ่มเอกสาร</button>
+          <h3><span class="h-icon" style="background:var(--primary-50)">📁</span> <span data-i18n="docControl">ระบบเอกสาร (Document Control - ISO 7.5)</span></h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('docModal')" data-i18n="addDoc">+ เพิ่มเอกสาร</button>
         </div>
         <div class="card-body" style="padding-bottom:0;">
           <div class="tabs">
@@ -1219,8 +1250,8 @@ tr:last-child td { border-bottom: none; }
     <div class="page" id="page-ppe">
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--amber-50)">🦺</span> ระบบจัดการอุปกรณ์ PPE</h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('ppeModal')">+ เบิก/เพิ่ม PPE</button>
+          <h3><span class="h-icon" style="background:var(--amber-50)">🦺</span> <span data-i18n="ppeMgmt">ระบบจัดการอุปกรณ์ PPE</span></h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('ppeModal')" data-i18n="addPPE">+ เบิก/เพิ่ม PPE</button>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1237,8 +1268,8 @@ tr:last-child td { border-bottom: none; }
     <div class="page" id="page-audit">
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--violet-100)">🔍</span> แผนการตรวจประเมิน (Audit Plan)</h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('auditModal')">+ สร้างแผน</button>
+          <h3><span class="h-icon" style="background:var(--violet-100)">🔍</span> <span data-i18n="auditPlan">แผนการตรวจประเมิน (Audit Plan)</span></h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('auditModal')" data-i18n="addAudit">+ สร้างแผน</button>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1255,8 +1286,8 @@ tr:last-child td { border-bottom: none; }
     <div class="page" id="page-corrective">
       <div class="card">
         <div class="card-header">
-          <h3><span class="h-icon" style="background:var(--amber-50)">🔧</span> การแก้ไข/ป้องกัน (CAPA)</h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('capaModal')">+ สร้าง CAPA</button>
+          <h3><span class="h-icon" style="background:var(--amber-50)">🔧</span> <span data-i18n="capaTitle">การแก้ไข/ป้องกัน (CAPA)</span></h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('capaModal')" data-i18n="addCAPA">+ สร้าง CAPA</button>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1276,10 +1307,10 @@ tr:last-child td { border-bottom: none; }
         <div class="card-body" style="padding:14px 24px;">
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
             <div style="display:flex;align-items:center;gap:12px;">
-              <span style="font-size:14px;font-weight:600;color:var(--slate-600);">เข้าสู่ระบบในฐานะ:</span>
+              <span style="font-size:14px;font-weight:600;color:var(--slate-600);" data-i18n="wpAsRole">เข้าสู่ระบบในฐานะ:</span>
               <div class="tabs" style="margin-bottom:0;">
-                <div class="tab active" id="role-contractor" onclick="switchRole('contractor')">👷 ผู้รับเหมา</div>
-                <div class="tab" id="role-safety" onclick="switchRole('safety')">🛡️ จป.วิชาชีพ</div>
+                <div class="tab active" id="role-contractor" onclick="switchRole('contractor')">👷 <span data-i18n="wpContractor">ผู้รับเหมา</span></div>
+                <div class="tab" id="role-safety" onclick="switchRole('safety')">🛡️ <span data-i18n="wpSafety">จป.วิชาชีพ</span></div>
               </div>
             </div>
             <div id="currentRoleInfo" style="font-size:13px;color:var(--slate-400);font-weight:500;">กำลังใช้งาน: ผู้รับเหมา</div>
@@ -1291,8 +1322,8 @@ tr:last-child td { border-bottom: none; }
       <div id="wp-contractor-section">
         <div class="card">
           <div class="card-header">
-            <h3><span class="h-icon" style="background:var(--primary-50)">📝</span> ขอใบอนุญาตทำงาน (Work Permit)</h3>
-            <button class="btn btn-primary btn-sm" onclick="openModal('wpModal')">+ ขอใบอนุญาตใหม่</button>
+            <h3><span class="h-icon" style="background:var(--primary-50)">📝</span> <span data-i18n="wpTitle">ขอใบอนุญาตทำงาน (Work Permit)</span></h3>
+            <button class="btn btn-primary btn-sm" onclick="openModal('wpModal')" data-i18n="newWP">+ ขอใบอนุญาตใหม่</button>
           </div>
           <div class="card-body-flush">
             <div class="table-wrap">
@@ -1308,23 +1339,23 @@ tr:last-child td { border-bottom: none; }
       <!-- Safety Officer: Approve Permits -->
       <div id="wp-safety-section" style="display:none;">
         <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
-          <div class="stat-card"><div class="stat-icon amber">⏳</div><div class="stat-label">รออนุมัติ</div><div class="stat-value" style="color:var(--amber-600)" id="wp-pending-count">0</div></div>
-          <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-label">อนุมัติแล้ว</div><div class="stat-value" style="color:var(--emerald-600)" id="wp-approved-count">0</div></div>
-          <div class="stat-card"><div class="stat-icon red">❌</div><div class="stat-label">ไม่อนุมัติ</div><div class="stat-value" style="color:var(--red-500)" id="wp-rejected-count">0</div></div>
-          <div class="stat-card"><div class="stat-icon blue">📋</div><div class="stat-label">ทั้งหมด</div><div class="stat-value" style="color:var(--primary-600)" id="wp-total-count">0</div></div>
+          <div class="stat-card"><div class="stat-icon amber">⏳</div><div class="stat-label" data-i18n="wpPending">รออนุมัติ</div><div class="stat-value" style="color:var(--amber-600)" id="wp-pending-count">0</div></div>
+          <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-label" data-i18n="wpApproved">อนุมัติแล้ว</div><div class="stat-value" style="color:var(--emerald-600)" id="wp-approved-count">0</div></div>
+          <div class="stat-card"><div class="stat-icon red">❌</div><div class="stat-label" data-i18n="wpRejected">ไม่อนุมัติ</div><div class="stat-value" style="color:var(--red-500)" id="wp-rejected-count">0</div></div>
+          <div class="stat-card"><div class="stat-icon blue">📋</div><div class="stat-label" data-i18n="wpTotal">ทั้งหมด</div><div class="stat-value" style="color:var(--primary-600)" id="wp-total-count">0</div></div>
         </div>
 
         <div class="card">
           <div class="card-header">
-            <h3><span class="h-icon" style="background:var(--emerald-50)">🛡️</span> รายการใบอนุญาต — อนุมัติโดย จป.</h3>
+            <h3><span class="h-icon" style="background:var(--emerald-50)">🛡️</span> <span data-i18n="wpApproveBy">รายการใบอนุญาต — อนุมัติโดย จป.</span></h3>
           </div>
           <div class="card-body" style="padding-bottom:0;">
             <div class="tabs">
-              <div class="tab active" onclick="filterWP('all',this)">ทั้งหมด</div>
-              <div class="tab" onclick="filterWP('pending',this)">รออนุมัติ</div>
-              <div class="tab" onclick="filterWP('approved',this)">อนุมัติแล้ว</div>
-              <div class="tab" onclick="filterWP('rejected',this)">ไม่อนุมัติ</div>
-              <div class="tab" onclick="filterWP('expired',this)">หมดอายุ</div>
+              <div class="tab active" onclick="filterWP('all',this)" data-i18n="all">ทั้งหมด</div>
+              <div class="tab" onclick="filterWP('pending',this)" data-i18n="pending">รออนุมัติ</div>
+              <div class="tab" onclick="filterWP('approved',this)" data-i18n="approved">อนุมัติแล้ว</div>
+              <div class="tab" onclick="filterWP('rejected',this)" data-i18n="rejected">ไม่อนุมัติ</div>
+              <div class="tab" onclick="filterWP('expired',this)" data-i18n="expired">หมดอายุ</div>
             </div>
           </div>
           <div class="card-body-flush">
@@ -1694,6 +1725,217 @@ tr:last-child td { border-bottom: none; }
 </div>
 
 <script>
+// ===== i18n TRANSLATIONS =====
+const LANG = {
+  th: {
+    // Login
+    loginSubtitle:'ระบบจัดการความปลอดภัยและสิ่งแวดล้อม',
+    username:'ชื่อผู้ใช้ / Username', password:'รหัสผ่าน / Password',
+    usernamePh:'กรอกชื่อผู้ใช้', passwordPh:'กรอกรหัสผ่าน',
+    loginAs:'เข้าสู่ระบบในฐานะ', loginBtn:'เข้าสู่ระบบ',
+    loginDemo:'ใส่ชื่อผู้ใช้อะไรก็ได้ รหัสผ่าน',
+    loginErrUser:'กรุณากรอกชื่อผู้ใช้', loginErrPass:'รหัสผ่านไม่ถูกต้อง (Demo: 1234)',
+    // Roles
+    roleSafety:'จป.วิชาชีพ (Safety Officer)', roleManager:'ผู้จัดการโครงการ (Project Manager)',
+    roleContractor:'ผู้รับเหมา (Contractor)', roleEnv:'เจ้าหน้าที่สิ่งแวดล้อม (Environment Officer)',
+    roleAdmin:'ผู้ดูแลระบบ (Admin)',
+    // Sidebar nav
+    navOverview:'ภาพรวม', navDashboard:'แดชบอร์ด', navIncidents:'รายงานเหตุการณ์',
+    navInvestigation:'สอบสวนอุบัติเหตุ', navRisk:'ประเมินความเสี่ยง', navInspection:'ตรวจสอบความปลอดภัย',
+    navEnvironment:'สิ่งแวดล้อม', navEnvMgmt:'การจัดการสิ่งแวดล้อม', navWaste:'การจัดการของเสีย',
+    navSystem:'จัดการระบบ', navTraining:'การฝึกอบรม', navDocuments:'เอกสาร ISO',
+    navPPE:'อุปกรณ์ PPE', navAudit:'Audit', navCAPA:'CAPA', navWorkPermit:'Work Permit',
+    // Page titles
+    titleDashboard:'แดชบอร์ด', titleIncidents:'รายงานอุบัติเหตุ/เหตุการณ์', titleRisk:'การประเมินความเสี่ยง',
+    titleInspection:'ตรวจสอบความปลอดภัย', titleEnvironment:'การจัดการสิ่งแวดล้อม', titleWaste:'การจัดการของเสีย',
+    titleTraining:'การฝึกอบรม', titleDocuments:'เอกสาร ISO', titlePPE:'อุปกรณ์ PPE',
+    titleAudit:'การตรวจประเมิน (Audit)', titleCAPA:'การแก้ไข/ป้องกัน (CAPA)',
+    titleWorkPermit:'ใบอนุญาตทำงาน (Work Permit)', titleInvestigation:'สอบสวนอุบัติเหตุ (Accident Investigation)',
+    // Dashboard
+    safeDays:'วันปลอดภัย (Safe Days)', safeDaysSub:'วันตั้งแต่อุบัติเหตุครั้งล่าสุด',
+    monthIncidents:'อุบัติเหตุเดือนนี้', monthIncidentsSub:'จากเดือนก่อน',
+    nearMiss:'Near Miss เดือนนี้', nearMissSub:'รายงาน Near Miss ทั้งหมด',
+    safetyScore:'คะแนนความปลอดภัย', safetyScoreSub:'จากการตรวจประเมินล่าสุด',
+    incidentStats:'สถิติเหตุการณ์ (6 เดือน)', kpiTitle:'เป้าหมาย KPI ความปลอดภัย',
+    recentAct:'กิจกรรมล่าสุด', notifications:'การแจ้งเตือน',
+    accident:'อุบัติเหตุ',
+    // KPI
+    kpiLTIR:'อัตราการเกิดอุบัติเหตุ (LTIR)', kpiTraining:'การฝึกอบรมครบถ้วน',
+    kpiPPE:'การตรวจสอบ PPE', kpiWaste:'การจัดการของเสียถูกวิธี', kpiCAPA:'CAPA ปิดงานตามกำหนด',
+    // Common
+    all:'ทั้งหมด', view:'ดู', save:'บันทึก', cancel:'ยกเลิก', print:'พิมพ์', add:'เพิ่ม',
+    create:'สร้าง', submit:'ส่ง', approve:'อนุมัติ', reject:'ไม่อนุมัติ', close:'ปิด',
+    date:'วันที่', time:'เวลา', type:'ประเภท', location:'สถานที่', status:'สถานะ', detail:'รายละเอียด',
+    severity:'ความรุนแรง', responsible:'ผู้รับผิดชอบ', action:'การดำเนินการ', remark:'หมายเหตุ',
+    // Badges
+    low:'ต่ำ', medium:'ปานกลาง', high:'สูง', critical:'วิกฤต', veryHigh:'สูงมาก',
+    investigating:'กำลังสอบสวน', closed:'ปิดแล้ว', corrective:'แก้ไข/ป้องกัน',
+    completed:'เสร็จสิ้น', planned:'วางแผน', inProgress:'กำลังดำเนินการ',
+    active:'ใช้งาน', review:'รอทบทวน', pending:'รออนุมัติ', approved:'อนุมัติแล้ว',
+    rejected:'ไม่อนุมัติ', expired:'หมดอายุ', passed:'ผ่าน',
+    unsafeCondition:'สภาพไม่ปลอดภัย', environmental:'สิ่งแวดล้อม',
+    belowMin:'ต่ำกว่าขั้นต่ำ', sufficient:'เพียงพอ',
+    // Incident
+    incidentList:'รายการอุบัติเหตุ/เหตุการณ์', newReport:'+ รายงานใหม่',
+    // Risk
+    riskMatrix:'Risk Matrix (5x5)', highRisk:'ความเสี่ยงสูง', riskRegister:'ทะเบียนความเสี่ยง (Risk Register)',
+    addRisk:'+ เพิ่ม', hazard:'อันตราย', control:'มาตรการ',
+    // Inspection
+    dailyInspection:'แบบตรวจสอบความปลอดภัยประจำวัน', inspector:'ผู้ตรวจ', inspDate:'วันที่ตรวจ',
+    chkArea:'สภาพพื้นที่ทำงาน', chkPPE:'อุปกรณ์ PPE', chkMachine:'เครื่องจักรและอุปกรณ์',
+    chkFire:'ระบบป้องกันอัคคีภัย', chkEnv:'สิ่งแวดล้อม (ISO 14001)', remarkPh:'ระบุข้อสังเกตหรือสิ่งที่ต้องแก้ไข...',
+    // Env
+    envMonitoring:'บันทึกการตรวจวัดสิ่งแวดล้อม', envPlan:'แผนจัดการสิ่งแวดล้อม (ISO 14001)',
+    param:'พารามิเตอร์', measured:'ค่าที่วัด', unit:'หน่วย', standard:'มาตรฐาน', point:'จุดตรวจวัด',
+    // Waste
+    totalWaste:'ของเสียทั้งหมด', recyclable:'รีไซเคิลได้', hazWaste:'ของเสียอันตราย', properDisposal:'กำจัดถูกวิธี',
+    wasteLog:'บันทึกการจัดการของเสีย', qty:'ปริมาณ (กก.)', method:'วิธีกำจัด', company:'บริษัท',
+    // Training
+    trainingPlan:'แผนการฝึกอบรมความปลอดภัย', addCourse:'+ เพิ่มหลักสูตร',
+    mandatory:'หลักสูตรบังคับ (ISO 45001 Clause 7.2)', course:'หลักสูตร', trainees:'ผู้เข้าอบรม',
+    pass:'ผ่าน', trainer:'วิทยากร', frequency:'ความถี่', target:'กลุ่มเป้าหมาย',
+    // Documents
+    docControl:'ระบบเอกสาร (Document Control - ISO 7.5)', addDoc:'+ เพิ่มเอกสาร',
+    docName:'ชื่อเอกสาร', version:'ฉบับที่', approver:'ผู้อนุมัติ',
+    policy:'นโยบาย', sop:'SOP', form:'แบบฟอร์ม', permit:'ใบอนุญาต',
+    // PPE
+    ppeMgmt:'ระบบจัดการอุปกรณ์ PPE', addPPE:'+ เบิก/เพิ่ม PPE',
+    equipment:'อุปกรณ์', stock:'คงเหลือ', minimum:'ขั้นต่ำ', expiry:'หมดอายุ',
+    orderNow:'สั่งซื้อ', withdraw:'เบิก',
+    // Audit
+    auditPlan:'แผนการตรวจประเมิน (Audit Plan)', addAudit:'+ สร้างแผน',
+    scope:'ขอบเขต', auditor:'ผู้ตรวจ', findings:'ข้อค้นพบ',
+    // CAPA
+    capaTitle:'การแก้ไข/ป้องกัน (CAPA)', addCAPA:'+ สร้าง CAPA',
+    source:'ที่มา', problem:'ปัญหา', rootCause:'สาเหตุ', dueDate:'กำหนด',
+    // Work Permit
+    wpTitle:'ใบอนุญาตทำงาน (Work Permit)', newWP:'+ ขอใบอนุญาตใหม่',
+    wpAsRole:'เข้าสู่ระบบในฐานะ:', wpContractor:'ผู้รับเหมา', wpSafety:'จป.วิชาชีพ',
+    wpUsing:'กำลังใช้งาน:', wpPending:'รออนุมัติ', wpApproved:'อนุมัติแล้ว',
+    wpRejected:'ไม่อนุมัติ', wpTotal:'ทั้งหมด', wpExpired:'หมดอายุ',
+    wpApproveBy:'รายการใบอนุญาต — อนุมัติโดย จป.',
+    requester:'ผู้ขอ', workers:'คนงาน', workDate:'วันที่ทำงาน',
+    // Investigation
+    invOpen:'กำลังสอบสวน', invReview:'รอทบทวน', invClosed:'ปิดการสอบสวน',
+    invTotal:'ทั้งหมด', invList:'รายการสอบสวนอุบัติเหตุ', newInv:'+ สร้างการสอบสวนใหม่',
+    // User menu
+    myDashboard:'แดชบอร์ด', myProfile:'โปรไฟล์ของฉัน', settings:'ตั้งค่า', logout:'ออกจากระบบ',
+    language:'ภาษา',
+  },
+  en: {
+    loginSubtitle:'Safety & Environmental Management System',
+    username:'Username', password:'Password',
+    usernamePh:'Enter username', passwordPh:'Enter password',
+    loginAs:'Login as', loginBtn:'Login',
+    loginDemo:'Enter any username, password',
+    loginErrUser:'Please enter username', loginErrPass:'Incorrect password (Demo: 1234)',
+    roleSafety:'Safety Officer', roleManager:'Project Manager',
+    roleContractor:'Contractor', roleEnv:'Environment Officer', roleAdmin:'Admin',
+    navOverview:'Overview', navDashboard:'Dashboard', navIncidents:'Incident Reports',
+    navInvestigation:'Accident Investigation', navRisk:'Risk Assessment', navInspection:'Safety Inspection',
+    navEnvironment:'Environment', navEnvMgmt:'Environmental Mgmt', navWaste:'Waste Management',
+    navSystem:'System', navTraining:'Training', navDocuments:'ISO Documents',
+    navPPE:'PPE Equipment', navAudit:'Audit', navCAPA:'CAPA', navWorkPermit:'Work Permit',
+    titleDashboard:'Dashboard', titleIncidents:'Incident Reports', titleRisk:'Risk Assessment',
+    titleInspection:'Safety Inspection', titleEnvironment:'Environmental Management', titleWaste:'Waste Management',
+    titleTraining:'Training', titleDocuments:'ISO Documents', titlePPE:'PPE Equipment',
+    titleAudit:'Audit', titleCAPA:'CAPA', titleWorkPermit:'Work Permit', titleInvestigation:'Accident Investigation',
+    safeDays:'Safe Days', safeDaysSub:'Days since last accident',
+    monthIncidents:'Incidents This Month', monthIncidentsSub:'from previous month',
+    nearMiss:'Near Miss This Month', nearMissSub:'Total Near Miss reports',
+    safetyScore:'Safety Score', safetyScoreSub:'From latest audit',
+    incidentStats:'Incident Statistics (6 Months)', kpiTitle:'Safety KPI Targets',
+    recentAct:'Recent Activity', notifications:'Notifications',
+    accident:'Accident',
+    kpiLTIR:'Lost Time Injury Rate (LTIR)', kpiTraining:'Training Completion',
+    kpiPPE:'PPE Inspection', kpiWaste:'Proper Waste Disposal', kpiCAPA:'CAPA Closed on Time',
+    all:'All', view:'View', save:'Save', cancel:'Cancel', print:'Print', add:'Add',
+    create:'Create', submit:'Submit', approve:'Approve', reject:'Reject', close:'Close',
+    date:'Date', time:'Time', type:'Type', location:'Location', status:'Status', detail:'Detail',
+    severity:'Severity', responsible:'Responsible', action:'Action', remark:'Remark',
+    low:'Low', medium:'Medium', high:'High', critical:'Critical', veryHigh:'Very High',
+    investigating:'Investigating', closed:'Closed', corrective:'Corrective',
+    completed:'Completed', planned:'Planned', inProgress:'In Progress',
+    active:'Active', review:'Under Review', pending:'Pending', approved:'Approved',
+    rejected:'Rejected', expired:'Expired', passed:'Passed',
+    unsafeCondition:'Unsafe Condition', environmental:'Environmental',
+    belowMin:'Below Minimum', sufficient:'Sufficient',
+    incidentList:'Incident / Event List', newReport:'+ New Report',
+    riskMatrix:'Risk Matrix (5x5)', highRisk:'High Risks', riskRegister:'Risk Register',
+    addRisk:'+ Add', hazard:'Hazard', control:'Control Measures',
+    dailyInspection:'Daily Safety Inspection Checklist', inspector:'Inspector', inspDate:'Inspection Date',
+    chkArea:'Work Area Condition', chkPPE:'PPE', chkMachine:'Machinery & Equipment',
+    chkFire:'Fire Protection', chkEnv:'Environment (ISO 14001)', remarkPh:'Enter observations or issues to correct...',
+    envMonitoring:'Environmental Monitoring Records', envPlan:'Environmental Management Plan (ISO 14001)',
+    param:'Parameter', measured:'Measured Value', unit:'Unit', standard:'Standard', point:'Monitoring Point',
+    totalWaste:'Total Waste', recyclable:'Recyclable', hazWaste:'Hazardous Waste', properDisposal:'Proper Disposal',
+    wasteLog:'Waste Management Records', qty:'Quantity (kg)', method:'Disposal Method', company:'Company',
+    trainingPlan:'Safety Training Plan', addCourse:'+ Add Course',
+    mandatory:'Mandatory Courses (ISO 45001 Clause 7.2)', course:'Course', trainees:'Trainees',
+    pass:'Passed', trainer:'Trainer', frequency:'Frequency', target:'Target Group',
+    docControl:'Document Control (ISO 7.5)', addDoc:'+ Add Document',
+    docName:'Document Name', version:'Version', approver:'Approver',
+    policy:'Policy', sop:'SOP', form:'Form', permit:'Permit',
+    ppeMgmt:'PPE Management System', addPPE:'+ Withdraw/Add PPE',
+    equipment:'Equipment', stock:'In Stock', minimum:'Minimum', expiry:'Expiry',
+    orderNow:'Order Now', withdraw:'Withdraw',
+    auditPlan:'Audit Plan', addAudit:'+ Create Plan',
+    scope:'Scope', auditor:'Auditor', findings:'Findings',
+    capaTitle:'Corrective & Preventive Actions (CAPA)', addCAPA:'+ Create CAPA',
+    source:'Source', problem:'Problem', rootCause:'Root Cause', dueDate:'Due Date',
+    wpTitle:'Work Permit', newWP:'+ New Permit Request',
+    wpAsRole:'Login as:', wpContractor:'Contractor', wpSafety:'Safety Officer',
+    wpUsing:'Current role:', wpPending:'Pending', wpApproved:'Approved',
+    wpRejected:'Rejected', wpTotal:'Total', wpExpired:'Expired',
+    wpApproveBy:'Permit List — Approved by Safety Officer',
+    requester:'Requester', workers:'Workers', workDate:'Work Date',
+    invOpen:'Investigating', invReview:'Under Review', invClosed:'Investigation Closed',
+    invTotal:'Total', invList:'Accident Investigation List', newInv:'+ New Investigation',
+    myDashboard:'Dashboard', myProfile:'My Profile', settings:'Settings', logout:'Logout',
+    language:'Language',
+  }
+};
+
+let currentLang = localStorage.getItem('app-lang') || 'th';
+function t(key) { return (LANG[currentLang] && LANG[currentLang][key]) || LANG.th[key] || key; }
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('app-lang', lang);
+  applyLanguage();
+}
+
+function applyLanguage() {
+  // Update all elements with data-i18n attribute
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+      el.placeholder = t(key);
+    } else if(el.tagName === 'OPTION') {
+      el.textContent = t(key);
+    } else {
+      el.textContent = t(key);
+    }
+  });
+  // Update all data-i18n-ph (placeholder)
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    el.placeholder = t(el.dataset.i18nPh);
+  });
+  // Update page title
+  const activePage = document.querySelector('.nav-item.active');
+  if(activePage) {
+    const page = activePage.dataset.page;
+    const titleKey = 'title' + page.charAt(0).toUpperCase() + page.slice(1);
+    document.getElementById('pageTitle').textContent = t(titleKey);
+  }
+  // Update lang selector highlight
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === currentLang);
+  });
+  // Re-render tables (they use t() function for badges)
+  if(typeof renderAll === 'function') renderAll();
+}
+
 // ===== DATA =====
 const store = {
   incidents: [
@@ -1886,8 +2128,8 @@ function doLogin() {
   const role = document.getElementById('login-role').value;
   const errEl = document.getElementById('login-error');
 
-  if(!username) { errEl.style.display='block'; errEl.textContent='กรุณากรอกชื่อผู้ใช้'; return; }
-  if(password !== '1234') { errEl.style.display='block'; errEl.textContent='รหัสผ่านไม่ถูกต้อง (Demo: 1234)'; return; }
+  if(!username) { errEl.style.display='block'; errEl.textContent=t('loginErrUser'); return; }
+  if(password !== '1234') { errEl.style.display='block'; errEl.textContent=t('loginErrPass'); return; }
 
   errEl.style.display = 'none';
   const rc = roleConfig[role];
@@ -1965,13 +2207,13 @@ updateClock();
 setInterval(updateClock, 1000);
 
 // ===== NAV =====
-const titles = {
-  dashboard:'แดชบอร์ด', incidents:'รายงานอุบัติเหตุ/เหตุการณ์', risk:'การประเมินความเสี่ยง',
-  inspection:'ตรวจสอบความปลอดภัย', environment:'การจัดการสิ่งแวดล้อม', waste:'การจัดการของเสีย',
-  training:'การฝึกอบรม', documents:'เอกสาร ISO', ppe:'อุปกรณ์ PPE',
-  audit:'การตรวจประเมิน (Audit)', corrective:'การแก้ไข/ป้องกัน (CAPA)',
-  workpermit:'ใบอนุญาตทำงาน (Work Permit)',
-  investigation:'สอบสวนอุบัติเหตุ (Accident Investigation)'
+const titleKeys = {
+  dashboard:'titleDashboard', incidents:'titleIncidents', risk:'titleRisk',
+  inspection:'titleInspection', environment:'titleEnvironment', waste:'titleWaste',
+  training:'titleTraining', documents:'titleDocuments', ppe:'titlePPE',
+  audit:'titleAudit', corrective:'titleCAPA',
+  workpermit:'titleWorkPermit',
+  investigation:'titleInvestigation'
 };
 
 function navTo(page) {
@@ -1980,7 +2222,7 @@ function navTo(page) {
   });
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
-  document.getElementById('pageTitle').textContent = titles[page] || page;
+  document.getElementById('pageTitle').textContent = t(titleKeys[page] || page);
   if(window.innerWidth < 768) toggleSidebar();
 }
 
@@ -1997,7 +2239,8 @@ function toggleSidebar() {
 
 // ===== DATE =====
 const today = new Date();
-document.getElementById('currentDate').textContent = today.toLocaleDateString('th-TH',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
+const dateLocale = currentLang === 'en' ? 'en-US' : 'th-TH';
+document.getElementById('currentDate').textContent = today.toLocaleDateString(dateLocale,{weekday:'short',year:'numeric',month:'short',day:'numeric'});
 document.querySelectorAll('input[type="date"]').forEach(d => d.valueAsDate = today);
 
 // ===== MODAL =====
@@ -2009,24 +2252,24 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
 
 // ===== BADGES =====
 function severityBadge(s) {
-  const map = { low:['badge-success','ต่ำ'], medium:['badge-warning','ปานกลาง'], high:['badge-danger','สูง'], critical:['badge-danger','วิกฤต'] };
-  const [cls,txt] = map[s] || ['badge-gray',s];
-  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+  const map = { low:['badge-success','low'], medium:['badge-warning','medium'], high:['badge-danger','high'], critical:['badge-danger','critical'] };
+  const [cls,key] = map[s] || ['badge-gray',s];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${t(key)}</span>`;
 }
 function statusBadge(s) {
   const map = {
-    investigating:['badge-warning','กำลังสอบสวน'], closed:['badge-success','ปิดแล้ว'],
-    corrective:['badge-info','แก้ไข/ป้องกัน'], completed:['badge-success','เสร็จสิ้น'],
-    planned:['badge-info','วางแผน'], 'in-progress':['badge-warning','กำลังดำเนินการ'],
-    active:['badge-success','ใช้งาน'], review:['badge-warning','รอทบทวน']
+    investigating:['badge-warning','investigating'], closed:['badge-success','closed'],
+    corrective:['badge-info','corrective'], completed:['badge-success','completed'],
+    planned:['badge-info','planned'], 'in-progress':['badge-warning','inProgress'],
+    active:['badge-success','active'], review:['badge-warning','review']
   };
-  const [cls,txt] = map[s] || ['badge-gray',s];
-  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+  const [cls,key] = map[s] || ['badge-gray',s];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${t(key)}</span>`;
 }
-function typeBadge(t) {
-  const map = { accident:['badge-danger','อุบัติเหตุ'], 'near-miss':['badge-warning','Near Miss'], unsafe:['badge-info','สภาพไม่ปลอดภัย'], env:['badge-success','สิ่งแวดล้อม'] };
-  const [cls,txt] = map[t] || ['badge-gray',t];
-  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+function typeBadge(tp) {
+  const map = { accident:['badge-danger','accident'], 'near-miss':['badge-warning','Near Miss'], unsafe:['badge-info','unsafeCondition'], env:['badge-success','environmental'] };
+  const [cls,key] = map[tp] || ['badge-gray',tp];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${key==='Near Miss'?key:t(key)}</span>`;
 }
 
 // ===== RENDERS =====
@@ -2046,10 +2289,10 @@ function filterIncidents(type, el) {
 
 function riskLevel(l,s) {
   const r = l*s;
-  if(r<=4) return ['badge-success','ต่ำ'];
-  if(r<=9) return ['badge-warning','ปานกลาง'];
-  if(r<=16) return ['badge-danger','สูง'];
-  return ['badge-violet','สูงมาก'];
+  if(r<=4) return ['badge-success',t('low')];
+  if(r<=9) return ['badge-warning',t('medium')];
+  if(r<=16) return ['badge-danger',t('high')];
+  return ['badge-violet',t('veryHigh')];
 }
 function renderRiskRegister() {
   document.getElementById('riskRegister').innerHTML = store.risks.map(r => {
@@ -2089,7 +2332,7 @@ function renderRiskMatrix() {
 
 function renderEnvTable() {
   document.getElementById('envTable').innerHTML = store.envRecords.map(e =>
-    `<tr><td>${e.date}</td><td><strong>${e.param}</strong></td><td style="font-weight:700;color:var(--slate-900)">${e.value}</td><td>${e.unit}</td><td>${e.std}</td><td><span class="badge badge-success"><span class="badge-dot"></span> ผ่าน</span></td><td>${e.point}</td></tr>`
+    `<tr><td>${e.date}</td><td><strong>${e.param}</strong></td><td style="font-weight:700;color:var(--slate-900)">${e.value}</td><td>${e.unit}</td><td>${e.std}</td><td><span class="badge badge-success"><span class="badge-dot"></span> ${t('passed')}</span></td><td>${e.point}</td></tr>`
   ).join('');
 }
 function renderWaste() {
@@ -2115,9 +2358,9 @@ function renderPPE() {
     const low = p.stock <= p.min;
     return `<tr><td><strong style="color:var(--slate-900)">${p.id}</strong></td><td>${p.name}</td>
     <td style="font-weight:700;color:${low?'var(--red-500)':'var(--slate-800)'}">${p.stock}</td>
-    <td>${p.min}</td><td>${low?'<span class="badge badge-danger"><span class="badge-dot"></span> ต่ำกว่าขั้นต่ำ</span>':'<span class="badge badge-success"><span class="badge-dot"></span> เพียงพอ</span>'}</td>
+    <td>${p.min}</td><td>${low?'<span class="badge badge-danger"><span class="badge-dot"></span> '+t('belowMin')+'</span>':'<span class="badge badge-success"><span class="badge-dot"></span> '+t('sufficient')+'</span>'}</td>
     <td>${p.expiry}</td>
-    <td>${low?'<button class="btn btn-danger btn-sm">สั่งซื้อ</button>':'<button class="btn btn-ghost btn-sm">เบิก</button>'}</td></tr>`;
+    <td>${low?'<button class="btn btn-danger btn-sm">'+t('orderNow')+'</button>':'<button class="btn btn-ghost btn-sm">'+t('withdraw')+'</button>'}</td></tr>`;
   }).join('');
 }
 function renderAudits() {
@@ -2140,11 +2383,11 @@ function renderCAPA() {
 // ===== KPI =====
 function renderKPI() {
   const kpis = [
-    { label:'อัตราการเกิดอุบัติเหตุ (LTIR)', value:'เป้า < 1.0 | ปัจจุบัน 0.5', pct:50, color:'var(--emerald-500)' },
-    { label:'การฝึกอบรมครบถ้วน', value:'85%', pct:85, color:'var(--amber-500)' },
-    { label:'การตรวจสอบ PPE', value:'95%', pct:95, color:'var(--emerald-500)' },
-    { label:'การจัดการของเสียถูกวิธี', value:'90%', pct:90, color:'var(--emerald-500)' },
-    { label:'CAPA ปิดงานตามกำหนด', value:'65%', pct:65, color:'var(--red-500)' },
+    { label:t('kpiLTIR'), value:(currentLang==='en'?'Target < 1.0 | Current 0.5':'เป้า < 1.0 | ปัจจุบัน 0.5'), pct:50, color:'var(--emerald-500)' },
+    { label:t('kpiTraining'), value:'85%', pct:85, color:'var(--amber-500)' },
+    { label:t('kpiPPE'), value:'95%', pct:95, color:'var(--emerald-500)' },
+    { label:t('kpiWaste'), value:'90%', pct:90, color:'var(--emerald-500)' },
+    { label:t('kpiCAPA'), value:'65%', pct:65, color:'var(--red-500)' },
   ];
   document.getElementById('kpiContainer').innerHTML = kpis.map(k => `
     <div class="kpi-item">
@@ -2300,14 +2543,14 @@ let invFilterStatus = 'all';
 let currentInvId = null;
 
 function invSeverityBadge(s) {
-  const map = { minor:['badge-success','เล็กน้อย'], moderate:['badge-warning','ปานกลาง'], serious:['badge-danger','รุนแรง'], fatal:['badge-danger','เสียชีวิต/ทุพพลภาพ'] };
-  const [cls,txt] = map[s] || ['badge-gray',s];
-  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+  const map = { minor:['badge-success','low'], moderate:['badge-warning','medium'], serious:['badge-danger','high'], fatal:['badge-danger','critical'] };
+  const [cls,key] = map[s] || ['badge-gray',s];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${t(key)}</span>`;
 }
 function invStatusBadge(s) {
-  const map = { investigating:['badge-warning','กำลังสอบสวน'], review:['badge-info','รอทบทวน'], closed:['badge-success','ปิดแล้ว'] };
-  const [cls,txt] = map[s] || ['badge-gray',s];
-  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+  const map = { investigating:['badge-warning','investigating'], review:['badge-info','review'], closed:['badge-success','closed'] };
+  const [cls,key] = map[s] || ['badge-gray',s];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${t(key)}</span>`;
 }
 
 function renderInvestigations() {
@@ -2659,7 +2902,7 @@ function switchRole(role) {
   document.getElementById('role-safety').classList.toggle('active', role==='safety');
   document.getElementById('wp-contractor-section').style.display = role==='contractor' ? 'block' : 'none';
   document.getElementById('wp-safety-section').style.display = role==='safety' ? 'block' : 'none';
-  document.getElementById('currentRoleInfo').textContent = role==='contractor' ? 'กำลังใช้งาน: ผู้รับเหมา' : 'กำลังใช้งาน: จป.วิชาชีพ (Safety Officer)';
+  document.getElementById('currentRoleInfo').textContent = t('wpUsing') + ' ' + (role==='contractor' ? t('wpContractor') : t('wpSafety'));
   // Update sidebar footer
   const avatar = document.querySelector('.sidebar-footer .avatar');
   const userName = document.querySelector('.sidebar-footer .user-name');
@@ -2676,19 +2919,19 @@ function switchRole(role) {
 
 function wpStatusBadge(s) {
   const map = {
-    pending:['badge-warning','รออนุมัติ'],
-    approved:['badge-success','อนุมัติแล้ว'],
-    rejected:['badge-danger','ไม่อนุมัติ'],
-    expired:['badge-gray','หมดอายุ']
+    pending:['badge-warning','pending'],
+    approved:['badge-success','approved'],
+    rejected:['badge-danger','rejected'],
+    expired:['badge-gray','expired']
   };
-  const [cls,txt] = map[s] || ['badge-gray',s];
-  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+  const [cls,key] = map[s] || ['badge-gray',s];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${t(key)}</span>`;
 }
 
 function wpRiskBadge(r) {
-  const map = { low:['badge-success','ต่ำ'], medium:['badge-warning','ปานกลาง'], high:['badge-danger','สูง'], critical:['badge-violet','สูงมาก'] };
-  const [cls,txt] = map[r] || ['badge-gray',r];
-  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${txt}</span>`;
+  const map = { low:['badge-success','low'], medium:['badge-warning','medium'], high:['badge-danger','high'], critical:['badge-violet','veryHigh'] };
+  const [cls,key] = map[r] || ['badge-gray',r];
+  return `<span class="badge ${cls}"><span class="badge-dot"></span> ${t(key)}</span>`;
 }
 
 function renderWorkPermits() {
@@ -2842,23 +3085,44 @@ function addWorkPermit() {
   alert('ส่งคำขอใบอนุญาตทำงานสำเร็จ!\nรอ จป. พิจารณาอนุมัติ');
 }
 
+// ===== RENDER ALL (for language switch) =====
+function renderAll() {
+  renderIncidents();
+  renderRiskRegister();
+  renderRiskMatrix();
+  renderEnvTable();
+  renderWaste();
+  renderTraining();
+  renderDocuments();
+  renderPPE();
+  renderAudits();
+  renderCAPA();
+  renderIncidentChart();
+  renderKPI();
+  renderActivity();
+  renderChecklists();
+  renderWorkPermits();
+  renderInvestigations();
+  // Update page title
+  const activePage = document.querySelector('.nav-item.active');
+  if(activePage) {
+    const page = activePage.dataset.page;
+    document.getElementById('pageTitle').textContent = t(titleKeys[page] || page);
+  }
+  // Update date display
+  const locale = currentLang === 'en' ? 'en-US' : 'th-TH';
+  document.getElementById('currentDate').textContent = new Date().toLocaleDateString(locale, {weekday:'short',year:'numeric',month:'short',day:'numeric'});
+  // Update work permit role info
+  if(currentRole === 'contractor') {
+    document.getElementById('currentRoleInfo').textContent = t('wpUsing') + ' ' + t('wpContractor');
+  } else {
+    document.getElementById('currentRoleInfo').textContent = t('wpUsing') + ' ' + t('wpSafety');
+  }
+}
+
 // ===== INIT =====
-renderIncidents();
-renderRiskRegister();
-renderRiskMatrix();
-renderEnvTable();
-renderWaste();
-renderTraining();
-renderDocuments();
-renderPPE();
-renderAudits();
-renderCAPA();
-renderIncidentChart();
-renderKPI();
-renderActivity();
-renderChecklists();
-renderWorkPermits();
-renderInvestigations();
+applyLanguage();
+renderAll();
 </script>
 </body>
 </html>
