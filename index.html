@@ -1960,7 +1960,7 @@ tr:last-child td { border-bottom: none; }
   <div class="modal">
     <div class="modal-title"><span class="modal-icon" style="background:var(--amber-50)">♦️</span> เพิ่มรายการสารเคมี NFPA 704</div>
     <div class="form-group"><label>ชื่อสารเคมี/วัสดุ</label><input type="text" id="nfpa704-name" placeholder="เช่น ดีเซล, กรดซัลฟิวริก"></div>
-    <div class="form-group"><label>สถานที่จัดเก็บ</label><input type="text" id="nfpa704-location" placeholder="เช่น ถังเก็บเชื้อเพลิง โซน A"></div>
+    <div class="form-group"><label>สถานที่จัดเก็บ</label><select id="nfpa704-location" class="loc-select" onchange="handleLocationChange(this)"></select></div>
     <div class="form-row">
       <div class="form-group"><label style="color:var(--primary-600)">Health (0-4)</label><select id="nfpa704-h"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
       <div class="form-group"><label style="color:var(--red-500)">Fire (0-4)</label><select id="nfpa704-f"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
@@ -1986,7 +1986,7 @@ tr:last-child td { border-bottom: none; }
       <div class="form-group"><label>CAS Number</label><input type="text" id="msds-cas" placeholder="เช่น 7664-93-9"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>สถานที่จัดเก็บ</label><input type="text" id="msds-location" placeholder="เช่น ห้องเคมีบำบัดน้ำ"></div>
+      <div class="form-group"><label>สถานที่จัดเก็บ</label><select id="msds-location" class="loc-select" onchange="handleLocationChange(this)"></select></div>
       <div class="form-group"><label>ปริมาณ (ลิตร/กก.)</label><input type="text" id="msds-qty" placeholder="เช่น 500 ลิตร"></div>
     </div>
     <div class="form-row">
@@ -2032,7 +2032,7 @@ tr:last-child td { border-bottom: none; }
       <div class="form-group"><label>สารเคมี</label><input type="text" id="exp-chemical" placeholder="เช่น H₂SO₄"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>พื้นที่</label><input type="text" id="exp-area" placeholder="เช่น ห้องเคมีบำบัดน้ำ"></div>
+      <div class="form-group"><label>พื้นที่</label><select id="exp-area" class="loc-select" onchange="handleLocationChange(this)"></select></div>
       <div class="form-group"><label>ค่าที่วัดได้</label><input type="text" id="exp-measured" placeholder="เช่น 0.5 mg/m³"></div>
     </div>
     <div class="form-row">
@@ -2132,7 +2132,7 @@ tr:last-child td { border-bottom: none; }
         <select id="inc-severity"><option value="low">ต่ำ</option><option value="medium">ปานกลาง</option><option value="high">สูง</option><option value="critical">วิกฤต</option></select>
       </div>
     </div>
-    <div class="form-group"><label>สถานที่เกิดเหตุ</label><input type="text" id="inc-location" placeholder="เช่น โซน A อาคาร 1 ชั้น 3"></div>
+    <div class="form-group"><label>สถานที่เกิดเหตุ</label><select id="inc-location" class="loc-select" onchange="handleLocationChange(this)"></select></div>
     <div class="form-group"><label>รายละเอียด</label><textarea id="inc-desc" rows="3" placeholder="อธิบายเหตุการณ์ที่เกิดขึ้น..."></textarea></div>
     <div class="form-group"><label>ผู้บาดเจ็บ (ถ้ามี)</label><input type="text" id="inc-injured" placeholder="ชื่อ-สกุล, ตำแหน่ง"></div>
     <div class="form-group"><label>การดำเนินการเบื้องต้น</label><textarea id="inc-action" rows="2" placeholder="มาตรการเบื้องต้นที่ดำเนินการ..."></textarea></div>
@@ -2178,7 +2178,7 @@ tr:last-child td { border-bottom: none; }
     </div>
     <div class="form-row">
       <div class="form-group"><label>ค่ามาตรฐาน</label><input type="text" id="env-std" placeholder="เช่น < 50"></div>
-      <div class="form-group"><label>จุดตรวจวัด</label><input type="text" id="env-point" placeholder="เช่น ริมรั้วด้านทิศเหนือ"></div>
+      <div class="form-group"><label>จุดตรวจวัด</label><select id="env-point" class="loc-select" onchange="handleLocationChange(this)"></select></div>
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('envModal')">ยกเลิก</button>
@@ -2279,7 +2279,7 @@ tr:last-child td { border-bottom: none; }
       <div class="form-group"><label>เวลา</label><input type="time" id="inv-time" value="10:00"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>สถานที่เกิดเหตุ</label><input type="text" id="inv-location" placeholder="เช่น โซน A ชั้น 5"></div>
+      <div class="form-group"><label>สถานที่เกิดเหตุ</label><select id="inv-location" class="loc-select" onchange="handleLocationChange(this)"></select></div>
       <div class="form-group"><label>ความรุนแรง</label>
         <select id="inv-severity">
           <option value="minor">เล็กน้อย (Minor) - ปฐมพยาบาลเบื้องต้น</option>
@@ -2434,7 +2434,7 @@ tr:last-child td { border-bottom: none; }
     <div class="form-group"><label>ชื่อบริษัทผู้รับเหมา</label><input type="text" id="wp-company" placeholder="เช่น บจก. ก่อสร้างไทย"></div>
     <div class="form-group"><label>ชื่อผู้ขออนุญาต</label><input type="text" id="wp-requester" placeholder="ชื่อ-สกุล ผู้รับผิดชอบ"></div>
     <div class="form-group"><label>จำนวนคนงาน</label><input type="number" id="wp-workers" placeholder="จำนวนคนงานที่จะเข้าทำงาน"></div>
-    <div class="form-group"><label>สถานที่ทำงาน</label><input type="text" id="wp-location" placeholder="เช่น โซน A ชั้น 5 อาคาร 1"></div>
+    <div class="form-group"><label>สถานที่ทำงาน</label><select id="wp-location" class="loc-select" onchange="handleLocationChange(this)"></select></div>
     <div class="form-row">
       <div class="form-group"><label>วันที่เริ่มทำงาน</label><input type="date" id="wp-start"></div>
       <div class="form-group"><label>วันที่สิ้นสุด</label><input type="date" id="wp-end"></div>
@@ -4059,7 +4059,13 @@ document.getElementById('currentDate').textContent = today.toLocaleDateString(da
 document.querySelectorAll('input[type="date"]').forEach(d => d.valueAsDate = today);
 
 // ===== MODAL =====
-function openModal(id) { document.getElementById(id).classList.add('show'); }
+function openModal(id) {
+  document.getElementById(id).classList.add('show');
+  // Initialize location dropdowns inside this modal
+  document.querySelectorAll('#'+id+' select.loc-select').forEach(sel => {
+    if(!sel.innerHTML || sel.options.length <= 1) sel.innerHTML = locationOptions('');
+  });
+}
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if(e.target === m) m.classList.remove('show'); });
@@ -5369,6 +5375,129 @@ function renderAll() {
   } else {
     document.getElementById('currentRoleInfo').textContent = t('wpUsing') + ' ' + t('wpSafety');
   }
+}
+
+// ===== LOCATION SYSTEM =====
+const defaultLocations = [
+  // === Fuel Handling System (KKS: H) ===
+  { id:'LOC-H01', kks:'HFA', name:'Fuel Receiving Area', nameTh:'พื้นที่รับเชื้อเพลิง/ขยะ', icon:'🚛', group:'fuel' },
+  { id:'LOC-H02', kks:'HFB', name:'Fuel Warehouse', nameTh:'คลังเชื้อเพลิง/โกดังขยะ', icon:'🏭', group:'fuel' },
+  { id:'LOC-H03', kks:'HFC', name:'Fuel Preparation/Shredder', nameTh:'พื้นที่เตรียมเชื้อเพลิง/เครื่องสับย่อย', icon:'⚙️', group:'fuel' },
+  { id:'LOC-H04', kks:'HFD', name:'Fuel Tower/Bunker', nameTh:'หอเชื้อเพลิง/Bunker', icon:'🗼', group:'fuel' },
+  { id:'LOC-H05', kks:'HFE', name:'Fuel Conveyor System', nameTh:'ระบบลำเลียงเชื้อเพลิง Conveyor', icon:'🔄', group:'fuel' },
+  { id:'LOC-H06', kks:'HFF', name:'Fuel Crane/Grab', nameTh:'เครน/แขนกลคีบเชื้อเพลิง', icon:'🏗️', group:'fuel' },
+  { id:'LOC-H07', kks:'HFG', name:'Fuel Yard/Open Storage', nameTh:'ลานกองเชื้อเพลิงชีวมวล', icon:'🌿', group:'fuel' },
+  // === Combustion & Boiler (KKS: H/C) ===
+  { id:'LOC-C01', kks:'HHA', name:'Combustion Chamber/Grate', nameTh:'ห้องเผาไหม้/ตะกรับ', icon:'🔥', group:'boiler' },
+  { id:'LOC-C02', kks:'HHB', name:'Boiler House', nameTh:'อาคาร Boiler', icon:'♨️', group:'boiler' },
+  { id:'LOC-C03', kks:'HHC', name:'Superheater/Economizer', nameTh:'Superheater/Economizer', icon:'🌡️', group:'boiler' },
+  { id:'LOC-C04', kks:'HHD', name:'Steam Drum', nameTh:'Steam Drum', icon:'💨', group:'boiler' },
+  { id:'LOC-C05', kks:'HHE', name:'Soot Blower Area', nameTh:'ระบบเป่าเขม่า Soot Blower', icon:'💨', group:'boiler' },
+  { id:'LOC-C06', kks:'CFA', name:'ID Fan/FD Fan', nameTh:'พัดลม ID Fan/FD Fan', icon:'🌀', group:'boiler' },
+  // === Flue Gas Treatment (KKS: H/R) ===
+  { id:'LOC-R01', kks:'HNA', name:'Flue Gas Treatment/Scrubber', nameTh:'ระบบบำบัดก๊าซไอเสีย/Scrubber', icon:'🌫️', group:'fluegas' },
+  { id:'LOC-R02', kks:'HNB', name:'Bag Filter/ESP', nameTh:'ระบบกรองฝุ่น Bag Filter/ESP', icon:'🔬', group:'fluegas' },
+  { id:'LOC-R03', kks:'HNC', name:'SCR/SNCR System', nameTh:'ระบบ SCR/SNCR ลด NOx', icon:'🧪', group:'fluegas' },
+  { id:'LOC-R04', kks:'HND', name:'Stack/Chimney', nameTh:'ปล่องไอเสีย Stack', icon:'🏭', group:'fluegas' },
+  { id:'LOC-R05', kks:'HNE', name:'Lime/Reagent Silo', nameTh:'ไซโลปูนขาว/สารดูดซับ', icon:'🗄️', group:'fluegas' },
+  // === Ash & Residue Handling (KKS: H) ===
+  { id:'LOC-A01', kks:'HMA', name:'Bottom Ash System', nameTh:'ระบบเถ้าหนัก Bottom Ash', icon:'⬇️', group:'ash' },
+  { id:'LOC-A02', kks:'HMB', name:'Fly Ash System', nameTh:'ระบบเถ้าลอย Fly Ash', icon:'⬆️', group:'ash' },
+  { id:'LOC-A03', kks:'HMC', name:'Ash Silo/Storage', nameTh:'ไซโลเถ้า/พื้นที่เก็บเถ้า', icon:'🗑️', group:'ash' },
+  // === Turbine & Generator (KKS: M) ===
+  { id:'LOC-M01', kks:'MAA', name:'Turbine Hall', nameTh:'อาคาร Turbine', icon:'⚡', group:'turbine' },
+  { id:'LOC-M02', kks:'MAB', name:'Generator', nameTh:'เครื่องกำเนิดไฟฟ้า Generator', icon:'🔋', group:'turbine' },
+  { id:'LOC-M03', kks:'MAC', name:'Condenser', nameTh:'เครื่องควบแน่น Condenser', icon:'❄️', group:'turbine' },
+  { id:'LOC-M04', kks:'MAD', name:'Feed Water Pump', nameTh:'ปั๊มน้ำป้อน Feed Water Pump', icon:'💧', group:'turbine' },
+  // === Electrical System (KKS: G/B) ===
+  { id:'LOC-E01', kks:'BAA', name:'Main Transformer Yard', nameTh:'ลาน Transformer หลัก', icon:'🔌', group:'electrical' },
+  { id:'LOC-E02', kks:'BAB', name:'HV Switchgear Room', nameTh:'ห้อง HV Switchgear', icon:'⚡', group:'electrical' },
+  { id:'LOC-E03', kks:'BAC', name:'MDB/LV Switchgear Room', nameTh:'ห้อง MDB/LV Switchgear', icon:'🔧', group:'electrical' },
+  { id:'LOC-E04', kks:'BAD', name:'MCC Room', nameTh:'ห้อง MCC', icon:'🎛️', group:'electrical' },
+  { id:'LOC-E05', kks:'BAE', name:'Cable Tray/Tunnel', nameTh:'รางสาย/อุโมงค์สายไฟ', icon:'🔗', group:'electrical' },
+  { id:'LOC-E06', kks:'BAF', name:'Emergency Generator', nameTh:'เครื่องกำเนิดไฟฟ้าฉุกเฉิน', icon:'🔋', group:'electrical' },
+  // === Water & Chemical System (KKS: P/G) ===
+  { id:'LOC-W01', kks:'GHC', name:'Water Treatment Plant', nameTh:'ระบบผลิตน้ำ/บำบัดน้ำ', icon:'💧', group:'water' },
+  { id:'LOC-W02', kks:'GHD', name:'Cooling Tower', nameTh:'หอหล่อเย็น Cooling Tower', icon:'❄️', group:'water' },
+  { id:'LOC-W03', kks:'PAA', name:'Chemical Dosing Room', nameTh:'ห้องเคมีบำบัดน้ำ/จ่ายสารเคมี', icon:'🧪', group:'water' },
+  { id:'LOC-W04', kks:'PAB', name:'Chemical Storage', nameTh:'คลังสารเคมี', icon:'☣️', group:'water' },
+  { id:'LOC-W05', kks:'PAC', name:'Wastewater Treatment', nameTh:'ระบบบำบัดน้ำเสีย', icon:'🚿', group:'water' },
+  // === Control & Utility (KKS: C/N) ===
+  { id:'LOC-U01', kks:'CJA', name:'Central Control Room (CCR)', nameTh:'ห้องควบคุมส่วนกลาง CCR', icon:'🖥️', group:'utility' },
+  { id:'LOC-U02', kks:'CJB', name:'Local Control Panel', nameTh:'ตู้ควบคุมประจำจุด', icon:'🎛️', group:'utility' },
+  { id:'LOC-U03', kks:'NAA', name:'Compressed Air System', nameTh:'ระบบลมอัด Compressed Air', icon:'💨', group:'utility' },
+  { id:'LOC-U04', kks:'NAB', name:'Fire Pump House', nameTh:'อาคารปั๊มดับเพลิง', icon:'🚒', group:'utility' },
+  { id:'LOC-U05', kks:'NAC', name:'Diesel Tank/Fuel Storage', nameTh:'ถังเก็บน้ำมันดีเซล', icon:'⛽', group:'utility' },
+  // === General Areas ===
+  { id:'LOC-G01', kks:'-', name:'Admin/Office Building', nameTh:'อาคารสำนักงาน/บริหาร', icon:'🏢', group:'general' },
+  { id:'LOC-G02', kks:'-', name:'Weighbridge', nameTh:'เครื่องชั่งน้ำหนัก Weighbridge', icon:'⚖️', group:'general' },
+  { id:'LOC-G03', kks:'-', name:'Guard House/Gate', nameTh:'ป้อมยาม/ประตูทางเข้า', icon:'🚧', group:'general' },
+  { id:'LOC-G04', kks:'-', name:'Workshop/Maintenance', nameTh:'โรงซ่อมบำรุง/Workshop', icon:'🔩', group:'general' },
+  { id:'LOC-G05', kks:'-', name:'Parking/Laydown Area', nameTh:'ลานจอดรถ/พื้นที่วางของ', icon:'🅿️', group:'general' },
+  { id:'LOC-G06', kks:'-', name:'Perimeter/Fence', nameTh:'แนวรั้วรอบโรงไฟฟ้า', icon:'🏗️', group:'general' },
+];
+
+function getLocations() {
+  const custom = store.customLocations || [];
+  return [...defaultLocations, ...custom];
+}
+
+function locationOptions(selectedVal) {
+  const locs = getLocations();
+  const groups = {
+    fuel: '🔶 ระบบเชื้อเพลิง (Fuel Handling)',
+    boiler: '🔴 เตาเผา/Boiler (Combustion)',
+    fluegas: '🟣 บำบัดก๊าซไอเสีย (Flue Gas)',
+    ash: '⚫ ระบบเถ้า (Ash Handling)',
+    turbine: '🔵 Turbine/Generator',
+    electrical: '🟡 ระบบไฟฟ้า (Electrical)',
+    water: '🟢 น้ำ/สารเคมี (Water/Chemical)',
+    utility: '⚪ ควบคุม/สาธารณูปโภค (Utility)',
+    general: '🟤 พื้นที่ทั่วไป (General)',
+    custom: '📍 สถานที่เพิ่มเอง'
+  };
+  let html = '<option value="">-- เลือกสถานที่ --</option>';
+  const groupOrder = ['fuel','boiler','fluegas','ash','turbine','electrical','water','utility','general','custom'];
+  groupOrder.forEach(g => {
+    const items = locs.filter(l => (l.group||'custom') === g);
+    if(items.length === 0) return;
+    html += `<optgroup label="${groups[g]||g}">`;
+    items.forEach(l => {
+      const kksTag = l.kks && l.kks !== '-' ? '['+l.kks+'] ' : '';
+      const label = currentLang==='en' ? kksTag+l.name : kksTag+l.nameTh;
+      const val = l.nameTh + ' (' + l.name + ')';
+      const sel = (selectedVal === val || selectedVal === l.name || selectedVal === l.nameTh) ? ' selected' : '';
+      html += `<option value="${val}"${sel}>${l.icon} ${label}</option>`;
+    });
+    html += '</optgroup>';
+  });
+  html += '<option value="__custom__">➕ เพิ่มสถานที่ใหม่...</option>';
+  return html;
+}
+
+function handleLocationChange(selectEl) {
+  if(selectEl.value === '__custom__') {
+    const name = prompt('ชื่อสถานที่ใหม่ (ภาษาไทย):');
+    if(!name) { selectEl.value = ''; return; }
+    const nameEn = prompt('ชื่อสถานที่ (English):', name) || name;
+    const kks = prompt('KKS Tag (ถ้ามี, เช่น HFA):', '') || '-';
+    const newLoc = { id:'LOC-C'+Date.now(), kks: kks, name: nameEn, nameTh: name, icon:'📍', group:'custom' };
+    if(!store.customLocations) store.customLocations = [];
+    store.customLocations.push(newLoc);
+    saveProjectStore();
+    const newVal = newLoc.nameTh + ' (' + newLoc.name + ')';
+    // Refresh all location dropdowns
+    refreshLocationDropdowns();
+    selectEl.innerHTML = locationOptions(newVal);
+    selectEl.value = newVal;
+  }
+}
+
+function refreshLocationDropdowns() {
+  document.querySelectorAll('select.loc-select').forEach(sel => {
+    const curVal = sel.value;
+    sel.innerHTML = locationOptions(curVal);
+  });
 }
 
 // ===== EXCEL EXPORT =====
