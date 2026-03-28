@@ -631,6 +631,72 @@ tr:last-child td { border-bottom: none; }
   background: var(--slate-100); border-radius: 8px; padding: 3px; width: fit-content; margin-left: auto; margin-right: auto;
 }
 .login-lang-switcher .lang-btn { padding: 6px 16px; font-size: 13px; }
+.login-link { text-align:center; margin-top:16px; font-size:13px; color:var(--slate-500); }
+.login-link a { color:var(--primary-500); font-weight:600; cursor:pointer; text-decoration:none; }
+.login-link a:hover { text-decoration:underline; }
+.register-screen {
+  position: fixed; inset: 0; z-index: 10000;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+.register-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.project-screen {
+  position: fixed; inset: 0; z-index: 9998;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+.project-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.project-box {
+  background: var(--white); border-radius: 24px; padding: 40px 36px;
+  width: 92%; max-width: 560px; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+  animation: slideUp 0.5s ease; max-height: 90vh; overflow-y: auto;
+}
+.project-grid { display:grid; gap:12px; margin-top:20px; }
+.project-card {
+  display:flex; align-items:center; gap:16px; padding:16px 20px;
+  border:2px solid var(--slate-200); border-radius:16px; cursor:pointer;
+  transition: var(--transition); background:var(--white);
+}
+.project-card:hover { border-color:var(--primary-400); background:var(--primary-50); transform:translateY(-2px); box-shadow:0 4px 12px rgba(59,130,246,0.15); }
+.project-card .proj-icon {
+  width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center;
+  font-size:20px; font-weight:800; color:white; flex-shrink:0;
+}
+.project-card .proj-info { flex:1; min-width:0; }
+.project-card .proj-name { font-size:15px; font-weight:700; color:var(--slate-800); }
+.project-card .proj-desc { font-size:12px; color:var(--slate-400); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.project-card .proj-code { font-size:11px; font-weight:600; color:var(--primary-500); background:var(--primary-50); padding:2px 8px; border-radius:6px; }
+.project-card .proj-delete { padding:4px 8px; border:none; background:none; color:var(--slate-300); cursor:pointer; font-size:16px; transition:var(--transition); border-radius:8px; }
+.project-card .proj-delete:hover { color:var(--red-500); background:var(--red-50); }
+.add-project-card {
+  display:flex; align-items:center; justify-content:center; gap:8px; padding:16px;
+  border:2px dashed var(--slate-200); border-radius:16px; cursor:pointer;
+  transition:var(--transition); color:var(--slate-400); font-weight:600; font-size:14px;
+}
+.add-project-card:hover { border-color:var(--emerald-400); color:var(--emerald-600); background:var(--emerald-50); }
+.register-box {
+  background: var(--white); border-radius: 24px; padding: 40px 36px;
+  width: 90%; max-width: 460px; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+  animation: slideUp 0.5s ease; max-height: 90vh; overflow-y: auto;
+}
+.register-box .form-group { margin-bottom: 16px; }
+.register-box .form-group label { font-size: 13px; font-weight: 600; color: var(--slate-600); display:block; margin-bottom:4px; }
+.register-box .form-group input, .register-box .form-group select {
+  width: 100%; padding: 11px 14px; border: 1.5px solid var(--slate-200);
+  border-radius: 12px; font-size: 14px; font-family: inherit;
+  transition: var(--transition); background: var(--slate-50); box-sizing:border-box;
+}
+.register-box .form-group input:focus, .register-box .form-group select:focus {
+  outline: none; border-color: var(--primary-500); background: var(--white);
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+}
+.register-box .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:480px) { .register-box .form-row { grid-template-columns:1fr; } }
+.password-strength { height:4px; border-radius:2px; background:var(--slate-100); margin-top:6px; overflow:hidden; }
+.password-strength .bar { height:100%; border-radius:2px; transition:width 0.3s,background 0.3s; width:0; }
+.password-strength-text { font-size:11px; margin-top:2px; font-weight:500; }
 
 /* ========== CLOCK ========== */
 .clock-display {
@@ -729,9 +795,123 @@ tr:last-child td { border-bottom: none; }
     </div>
     <div id="login-error" style="display:none;padding:10px 14px;border-radius:10px;background:var(--red-50);color:var(--red-600);font-size:13px;font-weight:500;margin-bottom:16px;border:1px solid var(--red-100);"></div>
     <button class="login-btn" onclick="doLogin()" data-i18n="loginBtn">เข้าสู่ระบบ</button>
+    <div class="login-link">
+      <span data-i18n="noAccount">ยังไม่มีบัญชี?</span> <a onclick="showRegister()" data-i18n="registerLink">สมัครสมาชิก</a>
+    </div>
     <div class="login-footer">
-      LAWI MY SafeConstruct v2.0 — Construction SHE Management System<br>
-      Demo: <span data-i18n="loginDemo">ใส่ชื่อผู้ใช้อะไรก็ได้ รหัสผ่าน</span> <strong>1234</strong>
+      LAWI MY SafeConstruct v2.0 — Construction SHE Management System
+    </div>
+  </div>
+</div>
+
+<!-- ===== REGISTER SCREEN ===== -->
+<div class="register-screen hidden" id="registerScreen">
+  <div class="login-bg-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+    <div class="shape s3"></div>
+  </div>
+  <div class="register-box">
+    <div class="login-logo" style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:8px;">
+      <div class="login-logo-icon" style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--emerald-500),var(--primary-500));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;">SC</div>
+      <div style="font-size:20px;font-weight:800;color:var(--slate-900);">LAWI MY SafeConstruct</div>
+    </div>
+    <div style="text-align:center;color:var(--slate-400);font-size:13px;margin-bottom:24px;" data-i18n="regSubtitle">สมัครสมาชิกเพื่อเข้าใช้งานระบบ</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label data-i18n="regFirstName">ชื่อ</label>
+        <input type="text" id="reg-firstname" data-i18n-ph="regFirstNamePh" placeholder="ชื่อจริง">
+      </div>
+      <div class="form-group">
+        <label data-i18n="regLastName">นามสกุล</label>
+        <input type="text" id="reg-lastname" data-i18n-ph="regLastNamePh" placeholder="นามสกุล">
+      </div>
+    </div>
+    <div class="form-group">
+      <label data-i18n="regUsername">ชื่อผู้ใช้ (Username)</label>
+      <input type="text" id="reg-username" data-i18n-ph="regUsernamePh" placeholder="ตั้งชื่อผู้ใช้สำหรับ Login" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label data-i18n="regEmail">อีเมล</label>
+      <input type="email" id="reg-email" data-i18n-ph="regEmailPh" placeholder="example@company.com">
+    </div>
+    <div class="form-group">
+      <label data-i18n="regPhone">เบอร์โทรศัพท์</label>
+      <input type="tel" id="reg-phone" data-i18n-ph="regPhonePh" placeholder="0xx-xxx-xxxx">
+    </div>
+    <div class="form-group">
+      <label data-i18n="regRole">ตำแหน่ง / บทบาท</label>
+      <select id="reg-role">
+        <option value="safety" data-i18n="roleSafety">จป.วิชาชีพ (Safety Officer)</option>
+        <option value="manager" data-i18n="roleManager">ผู้จัดการโครงการ (Project Manager)</option>
+        <option value="contractor" data-i18n="roleContractor">ผู้รับเหมา (Contractor)</option>
+        <option value="env" data-i18n="roleEnv">เจ้าหน้าที่สิ่งแวดล้อม (Environment Officer)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label data-i18n="regCompany">บริษัท / หน่วยงาน</label>
+      <input type="text" id="reg-company" data-i18n-ph="regCompanyPh" placeholder="ชื่อบริษัทหรือหน่วยงาน">
+    </div>
+    <div class="form-group">
+      <label data-i18n="regPassword">รหัสผ่าน</label>
+      <input type="password" id="reg-password" data-i18n-ph="regPasswordPh" placeholder="ตั้งรหัสผ่าน (อย่างน้อย 4 ตัว)" oninput="checkPasswordStrength()">
+      <div class="password-strength"><div class="bar" id="pw-strength-bar"></div></div>
+      <div class="password-strength-text" id="pw-strength-text"></div>
+    </div>
+    <div class="form-group">
+      <label data-i18n="regConfirmPassword">ยืนยันรหัสผ่าน</label>
+      <input type="password" id="reg-confirm-password" data-i18n-ph="regConfirmPh" placeholder="กรอกรหัสผ่านอีกครั้ง">
+    </div>
+    <div id="reg-error" style="display:none;padding:10px 14px;border-radius:10px;background:var(--red-50);color:var(--red-600);font-size:13px;font-weight:500;margin-bottom:14px;border:1px solid var(--red-100);"></div>
+    <div id="reg-success" style="display:none;padding:10px 14px;border-radius:10px;background:var(--emerald-50);color:var(--emerald-600);font-size:13px;font-weight:500;margin-bottom:14px;border:1px solid var(--emerald-100);"></div>
+    <button class="login-btn" onclick="doRegister()" data-i18n="regBtn" style="background:linear-gradient(135deg,var(--emerald-600),#059669);">สมัครสมาชิก</button>
+    <div class="login-link" style="margin-top:14px;">
+      <span data-i18n="hasAccount">มีบัญชีแล้ว?</span> <a onclick="hideRegister()" data-i18n="backToLogin">เข้าสู่ระบบ</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROJECT SELECTION SCREEN ===== -->
+<div class="project-screen hidden" id="projectScreen">
+  <div class="login-bg-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+    <div class="shape s3"></div>
+  </div>
+  <div class="project-box">
+    <div class="login-logo" style="display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:8px;">
+      <div class="login-logo-icon" style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--primary-500),var(--emerald-500));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;">SC</div>
+      <div style="font-size:20px;font-weight:800;color:var(--slate-900);">LAWI MY SafeConstruct</div>
+    </div>
+    <div style="text-align:center;color:var(--slate-400);font-size:13px;margin-bottom:8px;" data-i18n="projSelectSubtitle">เลือกโครงการที่ต้องการเข้าใช้งาน</div>
+    <div style="text-align:center;font-size:12px;color:var(--slate-300);margin-bottom:4px;" id="projWelcomeUser"></div>
+    <div class="project-grid" id="projectGrid"></div>
+
+    <!-- Add Project Form (hidden by default) -->
+    <div id="addProjectForm" style="display:none;margin-top:16px;padding:20px;border:2px solid var(--emerald-200);border-radius:16px;background:var(--emerald-50);">
+      <div style="font-size:14px;font-weight:700;color:var(--slate-700);margin-bottom:12px;" data-i18n="projAddTitle">เพิ่มโครงการใหม่</div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label style="font-size:12px;font-weight:600;color:var(--slate-600);" data-i18n="projCode">รหัสโครงการ</label>
+        <input type="text" id="proj-code" placeholder="เช่น GP5, GGH2" style="width:100%;padding:10px 14px;border:1.5px solid var(--slate-200);border-radius:10px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label style="font-size:12px;font-weight:600;color:var(--slate-600);" data-i18n="projName">ชื่อโครงการ</label>
+        <input type="text" id="proj-name" placeholder="เช่น โรงไฟฟ้าพลังงานแสงอาทิตย์" style="width:100%;padding:10px 14px;border:1.5px solid var(--slate-200);border-radius:10px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label style="font-size:12px;font-weight:600;color:var(--slate-600);" data-i18n="projLocation">สถานที่</label>
+        <input type="text" id="proj-location" placeholder="เช่น จ.สงขลา" style="width:100%;padding:10px 14px;border:1.5px solid var(--slate-200);border-radius:10px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+      </div>
+      <div id="proj-error" style="display:none;padding:8px 12px;border-radius:8px;background:var(--red-50);color:var(--red-600);font-size:12px;font-weight:500;margin-bottom:10px;border:1px solid var(--red-100);"></div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost btn-sm" onclick="toggleAddProject(false)" data-i18n="cancel" style="flex:1;">ยกเลิก</button>
+        <button class="btn btn-primary btn-sm" onclick="doAddProject()" style="flex:1;background:var(--emerald-600);" data-i18n="projAddBtn">เพิ่มโครงการ</button>
+      </div>
+    </div>
+
+    <div class="login-link" style="margin-top:16px;">
+      <a onclick="backToLogin()" data-i18n="projBackLogin">ออกจากระบบ</a>
     </div>
   </div>
 </div>
@@ -752,6 +932,11 @@ tr:last-child td { border-bottom: none; }
     <div class="iso-tags">
       <span class="iso-tag">ISO 45001:2018</span>
       <span class="iso-tag">ISO 14001:2015</span>
+    </div>
+    <div id="sidebarProjectBadge" onclick="showProjectSelector()" style="margin-top:8px;padding:8px 12px;background:rgba(255,255,255,0.1);border-radius:10px;cursor:pointer;transition:all 0.2s;border:1px solid rgba(255,255,255,0.1);" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);" data-i18n="projCurrent">โครงการปัจจุบัน</div>
+      <div id="sidebarProjectName" style="font-size:13px;font-weight:700;color:white;margin-top:2px;">-</div>
+      <div id="sidebarProjectCode" style="font-size:10px;color:rgba(255,255,255,0.5);">-</div>
     </div>
   </div>
 
@@ -774,6 +959,8 @@ tr:last-child td { border-bottom: none; }
     <div class="nav-item" data-page="audit"><span class="icon">🔍</span> <span data-i18n="navAudit">Audit</span></div>
     <div class="nav-item" data-page="workpermit"><span class="icon">📝</span> <span data-i18n="navWorkPermit">Work Permit</span> <span class="nav-badge">3</span></div>
     <div class="nav-item" data-page="corrective"><span class="icon">🔧</span> <span data-i18n="navCAPA">CAPA</span></div>
+    <div class="nav-item" data-page="activitylog"><span class="icon">📒</span> <span data-i18n="navActivityLog">บันทึกเข้า-ออกระบบ</span></div>
+    <div class="nav-item" data-page="users"><span class="icon">👤</span> <span data-i18n="navUsers">จัดการผู้ใช้</span></div>
   </div>
 
   <div class="sidebar-footer">
@@ -833,9 +1020,9 @@ tr:last-child td { border-bottom: none; }
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon green">🛡️</div>
-          <div class="stat-label" data-i18n="safeDays">วันปลอดภัย (Safe Days)</div>
-          <div class="stat-value" style="color:var(--emerald-600)">247</div>
-          <div class="stat-sub" data-i18n="safeDaysSub">วันตั้งแต่อุบัติเหตุครั้งล่าสุด</div>
+          <div class="stat-label" data-i18n="safeDays">ชั่วโมงปลอดภัย (Safe Hours)</div>
+          <div class="stat-value" id="safeDaysTimer" style="color:var(--emerald-600);font-size:1.2rem;line-height:1.4">--:--:--</div>
+          <div class="stat-sub" data-i18n="safeDaysSub">นับตั้งแต่อุบัติเหตุครั้งล่าสุด</div>
           <div class="stat-glow" style="background:var(--emerald-500)"></div>
         </div>
         <div class="stat-card">
@@ -1370,6 +1557,106 @@ tr:last-child td { border-bottom: none; }
       </div>
     </div>
 
+    <!-- ===== USER MANAGEMENT ===== -->
+    <div class="page" id="page-users">
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+        <div class="stat-card">
+          <div class="stat-icon blue">👤</div>
+          <div class="stat-label" data-i18n="usersTotal">ผู้ใช้ทั้งหมด</div>
+          <div class="stat-value" style="color:var(--primary-600)" id="users-total-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">🛡️</div>
+          <div class="stat-label">Safety Officers</div>
+          <div class="stat-value" style="color:var(--emerald-600)" id="users-safety-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber">👷</div>
+          <div class="stat-label">Contractors</div>
+          <div class="stat-value" style="color:var(--amber-600)" id="users-contractor-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon violet">📊</div>
+          <div class="stat-label">Managers</div>
+          <div class="stat-value" style="color:var(--violet-600)" id="users-manager-count">0</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--primary-50)">👤</span> <span data-i18n="usersTitle">รายชื่อผู้ใช้ที่ลงทะเบียน</span></h3>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="userColNo">#</th>
+                  <th data-i18n="userColName">ชื่อ-สกุล</th>
+                  <th data-i18n="userColUsername">Username</th>
+                  <th data-i18n="userColEmail">อีเมล</th>
+                  <th data-i18n="userColPhone">โทรศัพท์</th>
+                  <th data-i18n="userColRole">ตำแหน่ง</th>
+                  <th data-i18n="userColCompany">บริษัท</th>
+                  <th data-i18n="userColRegDate">วันที่สมัคร</th>
+                  <th data-i18n="userColActions">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="usersTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ACTIVITY LOG ===== -->
+    <div class="page" id="page-activitylog">
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+        <div class="stat-card">
+          <div class="stat-icon green">🔑</div>
+          <div class="stat-label" data-i18n="logTotalLogin">เข้าสู่ระบบทั้งหมด</div>
+          <div class="stat-value" style="color:var(--emerald-600)" id="log-login-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red">🚪</div>
+          <div class="stat-label" data-i18n="logTotalLogout">ออกจากระบบทั้งหมด</div>
+          <div class="stat-value" style="color:var(--red-500)" id="log-logout-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue">👥</div>
+          <div class="stat-label" data-i18n="logUniqueUsers">ผู้ใช้ที่เข้าระบบ</div>
+          <div class="stat-value" style="color:var(--primary-600)" id="log-unique-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber">📅</div>
+          <div class="stat-label" data-i18n="logToday">กิจกรรมวันนี้</div>
+          <div class="stat-value" style="color:var(--amber-600)" id="log-today-count">0</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--primary-50)">📒</span> <span data-i18n="activityLogTitle">บันทึกการเข้า-ออกระบบ</span></h3>
+          <button class="btn btn-ghost btn-sm" onclick="clearActivityLog()" data-i18n="clearLog">ล้างบันทึก</button>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th data-i18n="logColDate">วันที่-เวลา</th>
+                  <th data-i18n="logColUser">ผู้ใช้</th>
+                  <th data-i18n="logColRole">ตำแหน่ง</th>
+                  <th data-i18n="logColAction">การกระทำ</th>
+                  <th data-i18n="logColDuration">ระยะเวลาใช้งาน</th>
+                </tr>
+              </thead>
+              <tbody id="activityLogTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1745,14 +2032,54 @@ const LANG = {
     navEnvironment:'สิ่งแวดล้อม', navEnvMgmt:'การจัดการสิ่งแวดล้อม', navWaste:'การจัดการของเสีย',
     navSystem:'จัดการระบบ', navTraining:'การฝึกอบรม', navDocuments:'เอกสาร ISO',
     navPPE:'อุปกรณ์ PPE', navAudit:'Audit', navCAPA:'CAPA', navWorkPermit:'Work Permit',
+    navActivityLog:'บันทึกเข้า-ออกระบบ',
     // Page titles
     titleDashboard:'แดชบอร์ด', titleIncidents:'รายงานอุบัติเหตุ/เหตุการณ์', titleRisk:'การประเมินความเสี่ยง',
     titleInspection:'ตรวจสอบความปลอดภัย', titleEnvironment:'การจัดการสิ่งแวดล้อม', titleWaste:'การจัดการของเสีย',
     titleTraining:'การฝึกอบรม', titleDocuments:'เอกสาร ISO', titlePPE:'อุปกรณ์ PPE',
     titleAudit:'การตรวจประเมิน (Audit)', titleCAPA:'การแก้ไข/ป้องกัน (CAPA)',
     titleWorkPermit:'ใบอนุญาตทำงาน (Work Permit)', titleInvestigation:'สอบสวนอุบัติเหตุ (Accident Investigation)',
+    titleActivityLog:'บันทึกการเข้า-ออกระบบ',
+    // Activity Log
+    activityLogTitle:'บันทึกการเข้า-ออกระบบ', clearLog:'ล้างบันทึก',
+    logTotalLogin:'เข้าสู่ระบบทั้งหมด', logTotalLogout:'ออกจากระบบทั้งหมด',
+    logUniqueUsers:'ผู้ใช้ที่เข้าระบบ', logToday:'กิจกรรมวันนี้',
+    logColDate:'วันที่-เวลา', logColUser:'ผู้ใช้', logColRole:'ตำแหน่ง',
+    logColAction:'การกระทำ', logColDuration:'ระยะเวลาใช้งาน',
+    logActionLogin:'เข้าสู่ระบบ', logActionLogout:'ออกจากระบบ',
+    logConfirmClear:'ยืนยันล้างบันทึกทั้งหมด?',
+    // Registration
+    noAccount:'ยังไม่มีบัญชี?', registerLink:'สมัครสมาชิก',
+    regSubtitle:'สมัครสมาชิกเพื่อเข้าใช้งานระบบ',
+    regFirstName:'ชื่อ', regLastName:'นามสกุล', regUsername:'ชื่อผู้ใช้ (Username)',
+    regEmail:'อีเมล', regPhone:'เบอร์โทรศัพท์', regRole:'ตำแหน่ง / บทบาท',
+    regCompany:'บริษัท / หน่วยงาน', regPassword:'รหัสผ่าน', regConfirmPassword:'ยืนยันรหัสผ่าน',
+    regFirstNamePh:'ชื่อจริง', regLastNamePh:'นามสกุล', regUsernamePh:'ตั้งชื่อผู้ใช้สำหรับ Login',
+    regEmailPh:'example@company.com', regPhonePh:'0xx-xxx-xxxx', regCompanyPh:'ชื่อบริษัทหรือหน่วยงาน',
+    regPasswordPh:'ตั้งรหัสผ่าน (อย่างน้อย 4 ตัว)', regConfirmPh:'กรอกรหัสผ่านอีกครั้ง',
+    regBtn:'สมัครสมาชิก', hasAccount:'มีบัญชีแล้ว?', backToLogin:'เข้าสู่ระบบ',
+    regErrRequired:'กรุณากรอกข้อมูลให้ครบถ้วน', regErrUserExists:'ชื่อผู้ใช้นี้ถูกใช้แล้ว',
+    regErrPassShort:'รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร', regErrPassMatch:'รหัสผ่านไม่ตรงกัน',
+    regErrEmail:'รูปแบบอีเมลไม่ถูกต้อง',
+    regSuccess:'สมัครสมาชิกสำเร็จ! กำลังกลับไปหน้าเข้าสู่ระบบ...',
+    pwWeak:'อ่อน', pwMedium:'ปานกลาง', pwStrong:'แข็งแรง', pwVeryStrong:'แข็งแรงมาก',
+    // User Management
+    navUsers:'จัดการผู้ใช้', titleUsers:'จัดการผู้ใช้งาน',
+    usersTitle:'รายชื่อผู้ใช้ที่ลงทะเบียน', usersTotal:'ผู้ใช้ทั้งหมด',
+    userColNo:'#', userColName:'ชื่อ-สกุล', userColUsername:'Username',
+    userColEmail:'อีเมล', userColPhone:'โทรศัพท์', userColRole:'ตำแหน่ง',
+    userColCompany:'บริษัท', userColRegDate:'วันที่สมัคร', userColActions:'จัดการ',
+    userDeleteConfirm:'ยืนยันลบผู้ใช้นี้?', userNoData:'ยังไม่มีผู้ใช้ที่ลงทะเบียน',
+    // Projects
+    projSelectSubtitle:'เลือกโครงการที่ต้องการเข้าใช้งาน',
+    projCurrent:'โครงการปัจจุบัน', projBackLogin:'ออกจากระบบ',
+    projAddTitle:'เพิ่มโครงการใหม่', projCode:'รหัสโครงการ', projName:'ชื่อโครงการ',
+    projLocation:'สถานที่', projAddBtn:'เพิ่มโครงการ', projAddNew:'+ เพิ่มโครงการใหม่',
+    projErrRequired:'กรุณากรอกรหัสและชื่อโครงการ', projErrExists:'รหัสโครงการนี้มีอยู่แล้ว',
+    projDeleteConfirm:'ยืนยันลบโครงการนี้? ข้อมูลทั้งหมดในโครงการจะถูกลบ',
+    projWelcome:'สวัสดี',
     // Dashboard
-    safeDays:'วันปลอดภัย (Safe Days)', safeDaysSub:'วันตั้งแต่อุบัติเหตุครั้งล่าสุด',
+    safeDays:'ชั่วโมงปลอดภัย (Safe Hours)', safeDaysSub:'นับตั้งแต่อุบัติเหตุครั้งล่าสุด',
     monthIncidents:'อุบัติเหตุเดือนนี้', monthIncidentsSub:'จากเดือนก่อน',
     nearMiss:'Near Miss เดือนนี้', nearMissSub:'รายงาน Near Miss ทั้งหมด',
     safetyScore:'คะแนนความปลอดภัย', safetyScoreSub:'จากการตรวจประเมินล่าสุด',
@@ -1836,11 +2163,50 @@ const LANG = {
     navEnvironment:'Environment', navEnvMgmt:'Environmental Mgmt', navWaste:'Waste Management',
     navSystem:'System', navTraining:'Training', navDocuments:'ISO Documents',
     navPPE:'PPE Equipment', navAudit:'Audit', navCAPA:'CAPA', navWorkPermit:'Work Permit',
+    navActivityLog:'Activity Log',
     titleDashboard:'Dashboard', titleIncidents:'Incident Reports', titleRisk:'Risk Assessment',
     titleInspection:'Safety Inspection', titleEnvironment:'Environmental Management', titleWaste:'Waste Management',
     titleTraining:'Training', titleDocuments:'ISO Documents', titlePPE:'PPE Equipment',
     titleAudit:'Audit', titleCAPA:'CAPA', titleWorkPermit:'Work Permit', titleInvestigation:'Accident Investigation',
-    safeDays:'Safe Days', safeDaysSub:'Days since last accident',
+    titleActivityLog:'Activity Log',
+    activityLogTitle:'Login/Logout Activity Log', clearLog:'Clear Log',
+    logTotalLogin:'Total Logins', logTotalLogout:'Total Logouts',
+    logUniqueUsers:'Unique Users', logToday:'Today\'s Activity',
+    logColDate:'Date/Time', logColUser:'User', logColRole:'Role',
+    logColAction:'Action', logColDuration:'Session Duration',
+    logActionLogin:'Login', logActionLogout:'Logout',
+    logConfirmClear:'Confirm clear all logs?',
+    // Registration
+    noAccount:'Don\'t have an account?', registerLink:'Register',
+    regSubtitle:'Register to access the system',
+    regFirstName:'First Name', regLastName:'Last Name', regUsername:'Username',
+    regEmail:'Email', regPhone:'Phone Number', regRole:'Position / Role',
+    regCompany:'Company / Organization', regPassword:'Password', regConfirmPassword:'Confirm Password',
+    regFirstNamePh:'First name', regLastNamePh:'Last name', regUsernamePh:'Set your username for Login',
+    regEmailPh:'example@company.com', regPhonePh:'0xx-xxx-xxxx', regCompanyPh:'Company or organization name',
+    regPasswordPh:'Set password (min 4 characters)', regConfirmPh:'Re-enter password',
+    regBtn:'Register', hasAccount:'Already have an account?', backToLogin:'Login',
+    regErrRequired:'Please fill in all required fields', regErrUserExists:'This username is already taken',
+    regErrPassShort:'Password must be at least 4 characters', regErrPassMatch:'Passwords do not match',
+    regErrEmail:'Invalid email format',
+    regSuccess:'Registration successful! Redirecting to login...',
+    pwWeak:'Weak', pwMedium:'Medium', pwStrong:'Strong', pwVeryStrong:'Very Strong',
+    // User Management
+    navUsers:'User Management', titleUsers:'User Management',
+    usersTitle:'Registered Users', usersTotal:'Total Users',
+    userColNo:'#', userColName:'Full Name', userColUsername:'Username',
+    userColEmail:'Email', userColPhone:'Phone', userColRole:'Role',
+    userColCompany:'Company', userColRegDate:'Registered', userColActions:'Actions',
+    userDeleteConfirm:'Confirm delete this user?', userNoData:'No registered users yet',
+    // Projects
+    projSelectSubtitle:'Select a project to access',
+    projCurrent:'Current Project', projBackLogin:'Logout',
+    projAddTitle:'Add New Project', projCode:'Project Code', projName:'Project Name',
+    projLocation:'Location', projAddBtn:'Add Project', projAddNew:'+ Add New Project',
+    projErrRequired:'Please enter project code and name', projErrExists:'This project code already exists',
+    projDeleteConfirm:'Confirm delete this project? All project data will be deleted.',
+    projWelcome:'Hello',
+    safeDays:'Safe Hours', safeDaysSub:'Time since last accident',
     monthIncidents:'Incidents This Month', monthIncidentsSub:'from previous month',
     nearMiss:'Near Miss This Month', nearMissSub:'Total Near Miss reports',
     safetyScore:'Safety Score', safetyScoreSub:'From latest audit',
@@ -1937,7 +2303,7 @@ function applyLanguage() {
 }
 
 // ===== DATA =====
-const store = {
+const defaultStoreData = {
   incidents: [
     { id:'INC-001', date:'2569-03-15', type:'near-miss', location:'โซน A ชั้น 5', desc:'วัสดุตกจากที่สูงเฉียดคนงาน', severity:'high', status:'investigating' },
     { id:'INC-002', date:'2569-03-10', type:'accident', location:'โซน B พื้นที่ขุดดิน', desc:'คนงานลื่นล้มบริเวณทางลาด', severity:'medium', status:'closed' },
@@ -2111,6 +2477,183 @@ const store = {
   ]
 };
 
+let store = JSON.parse(JSON.stringify(defaultStoreData));
+let currentProjectId = null;
+
+// ===== PROJECT SYSTEM =====
+const defaultProjects = [
+  { id:'GP4', code:'GP4', name:'โรงไฟฟ้าขยะท่าโรงช้าง', location:'จ.สุราษฎร์ธานี', color:'linear-gradient(135deg,#f59e0b,#ef4444)', createdAt:'2026-01-01T00:00:00.000Z' },
+  { id:'GGH', code:'GGH', name:'โรงไฟฟ้าชีวมวลเทพา', location:'จ.สงขลา', color:'linear-gradient(135deg,#10b981,#3b82f6)', createdAt:'2026-01-01T00:00:00.000Z' }
+];
+
+function getProjects() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('projects') || 'null');
+    if(!saved || saved.length === 0) {
+      localStorage.setItem('projects', JSON.stringify(defaultProjects));
+      return JSON.parse(JSON.stringify(defaultProjects));
+    }
+    return saved;
+  } catch(e) { return JSON.parse(JSON.stringify(defaultProjects)); }
+}
+
+function saveProjects(projects) {
+  localStorage.setItem('projects', JSON.stringify(projects));
+}
+
+function getProjectStore(projectId) {
+  try {
+    const saved = JSON.parse(localStorage.getItem('projectStore_' + projectId) || 'null');
+    if(saved) return saved;
+    return JSON.parse(JSON.stringify(defaultStoreData));
+  } catch(e) { return JSON.parse(JSON.stringify(defaultStoreData)); }
+}
+
+function saveProjectStore(projectId) {
+  if(!projectId) return;
+  localStorage.setItem('projectStore_' + projectId, JSON.stringify(store));
+}
+
+function selectProject(projectId) {
+  // Save current project data if any
+  if(currentProjectId) saveProjectStore(currentProjectId);
+
+  currentProjectId = projectId;
+  const projects = getProjects();
+  const proj = projects.find(p => p.id === projectId);
+  if(!proj) return;
+
+  // Load project store
+  store = getProjectStore(projectId);
+
+  // Update sidebar badge
+  document.getElementById('sidebarProjectName').textContent = proj.name;
+  document.getElementById('sidebarProjectCode').textContent = proj.code + ' — ' + (proj.location || '');
+
+  // Hide project screen
+  document.getElementById('projectScreen').classList.add('hidden');
+
+  // Refresh all tables
+  refreshAllTables();
+}
+
+function showProjectSelector() {
+  // Save current project data before showing selector
+  if(currentProjectId) saveProjectStore(currentProjectId);
+
+  const screen = document.getElementById('projectScreen');
+  screen.classList.remove('hidden');
+
+  // Update welcome text
+  if(currentUser) {
+    document.getElementById('projWelcomeUser').textContent = t('projWelcome') + ', ' + currentUser.username;
+  }
+
+  renderProjectGrid();
+}
+
+function renderProjectGrid() {
+  const projects = getProjects();
+  const grid = document.getElementById('projectGrid');
+  const colors = [
+    'linear-gradient(135deg,#f59e0b,#ef4444)',
+    'linear-gradient(135deg,#10b981,#3b82f6)',
+    'linear-gradient(135deg,#8b5cf6,#ec4899)',
+    'linear-gradient(135deg,#06b6d4,#3b82f6)',
+    'linear-gradient(135deg,#f97316,#f59e0b)',
+    'linear-gradient(135deg,#14b8a6,#10b981)',
+  ];
+
+  grid.innerHTML = projects.map((p, i) => {
+    const col = p.color || colors[i % colors.length];
+    return `<div class="project-card" onclick="selectProject('${p.id}')">
+      <div class="proj-icon" style="background:${col}">${p.code.substring(0,2)}</div>
+      <div class="proj-info">
+        <div class="proj-name">${p.name}</div>
+        <div class="proj-desc">${p.location || ''}</div>
+      </div>
+      <span class="proj-code">${p.code}</span>
+      ${defaultProjects.some(dp => dp.id === p.id) ? '' : `<button class="proj-delete" onclick="event.stopPropagation();deleteProject('${p.id}')" title="ลบ">🗑️</button>`}
+    </div>`;
+  }).join('') + `<div class="add-project-card" onclick="toggleAddProject(true)">
+    <span data-i18n="projAddNew">+ เพิ่มโครงการใหม่</span>
+  </div>`;
+}
+
+function toggleAddProject(show) {
+  const form = document.getElementById('addProjectForm');
+  form.style.display = show ? 'block' : 'none';
+  if(!show) {
+    document.getElementById('proj-code').value = '';
+    document.getElementById('proj-name').value = '';
+    document.getElementById('proj-location').value = '';
+    document.getElementById('proj-error').style.display = 'none';
+  }
+}
+
+function doAddProject() {
+  const code = document.getElementById('proj-code').value.trim().toUpperCase();
+  const name = document.getElementById('proj-name').value.trim();
+  const location = document.getElementById('proj-location').value.trim();
+  const errEl = document.getElementById('proj-error');
+
+  if(!code || !name) {
+    errEl.style.display = 'block'; errEl.textContent = t('projErrRequired'); return;
+  }
+
+  const projects = getProjects();
+  if(projects.some(p => p.id === code)) {
+    errEl.style.display = 'block'; errEl.textContent = t('projErrExists'); return;
+  }
+
+  const colors = ['linear-gradient(135deg,#8b5cf6,#ec4899)','linear-gradient(135deg,#06b6d4,#3b82f6)','linear-gradient(135deg,#f97316,#f59e0b)','linear-gradient(135deg,#14b8a6,#10b981)'];
+  projects.push({
+    id: code, code, name, location,
+    color: colors[projects.length % colors.length],
+    createdAt: new Date().toISOString()
+  });
+  saveProjects(projects);
+  toggleAddProject(false);
+  renderProjectGrid();
+}
+
+function deleteProject(id) {
+  if(!confirm(t('projDeleteConfirm'))) return;
+  let projects = getProjects();
+  projects = projects.filter(p => p.id !== id);
+  saveProjects(projects);
+  localStorage.removeItem('projectStore_' + id);
+  localStorage.removeItem('activityLogs_' + id);
+  renderProjectGrid();
+}
+
+function backToLogin() {
+  document.getElementById('projectScreen').classList.add('hidden');
+  doLogout();
+}
+
+function refreshAllTables() {
+  // Trigger re-rendering of all data tables
+  if(typeof renderIncidents === 'function') renderIncidents('all');
+  if(typeof renderRisks === 'function') renderRisks();
+  if(typeof renderInspections === 'function') renderInspections();
+  if(typeof renderEnv === 'function') renderEnv();
+  if(typeof renderWaste === 'function') renderWaste();
+  if(typeof renderTraining === 'function') renderTraining();
+  if(typeof renderDocuments === 'function') renderDocuments();
+  if(typeof renderPPE === 'function') renderPPE();
+  if(typeof renderAudits === 'function') renderAudits();
+  if(typeof renderCAPA === 'function') renderCAPA();
+  if(typeof renderWPContractor === 'function') renderWPContractor();
+  if(typeof renderWPSafety === 'function') renderWPSafety();
+  if(typeof renderInvestigations === 'function') renderInvestigations();
+  if(typeof renderActivityLog === 'function') renderActivityLog();
+  if(typeof renderUsersTable === 'function') renderUsersTable();
+}
+
+// Auto-save project store periodically
+setInterval(() => { if(currentProjectId) saveProjectStore(currentProjectId); }, 30000);
+
 // ===== LOGIN / LOGOUT / AUTH =====
 const roleConfig = {
   safety:   { label:'จป.วิชาชีพ', labelEn:'Safety Officer', initials:'SO', color:'linear-gradient(135deg,var(--primary-500),var(--violet-500))', email:'safety@safeconstruct.com' },
@@ -2125,21 +2668,39 @@ let currentUser = null;
 function doLogin() {
   const username = document.getElementById('login-username').value.trim();
   const password = document.getElementById('login-password').value;
-  const role = document.getElementById('login-role').value;
+  let role = document.getElementById('login-role').value;
   const errEl = document.getElementById('login-error');
 
   if(!username) { errEl.style.display='block'; errEl.textContent=t('loginErrUser'); return; }
-  if(password !== '1234') { errEl.style.display='block'; errEl.textContent=t('loginErrPass'); return; }
+
+  // Check registered users first, then fallback to demo password
+  const regUsers = getRegisteredUsers();
+  const foundUser = regUsers.find(u => u.username.toLowerCase() === username.toLowerCase());
+  if(foundUser) {
+    if(foundUser.password !== password) {
+      errEl.style.display='block'; errEl.textContent=t('loginErrPass'); return;
+    }
+    role = foundUser.role;
+    document.getElementById('login-role').value = role;
+  } else {
+    if(password !== '1234') { errEl.style.display='block'; errEl.textContent=t('loginErrPass'); return; }
+  }
 
   errEl.style.display = 'none';
   const rc = roleConfig[role];
-  currentUser = { username, role, ...rc };
+  const displayName = foundUser ? (foundUser.firstname + ' ' + foundUser.lastname) : username;
+  currentUser = { username: displayName, role, ...rc };
+  if(foundUser) { currentUser.email = foundUser.email; }
 
   // Update all UI
   updateUserUI();
 
-  // Hide login
+  // Log login activity
+  addActivityLog('login', displayName, role, rc.label);
+
+  // Hide login, show project selector
   document.getElementById('loginScreen').classList.add('hidden');
+  showProjectSelector();
 }
 
 // Enter key to login
@@ -2169,6 +2730,10 @@ function updateUserUI() {
 
 function doLogout() {
   closeUserMenu();
+  // Log logout activity before clearing user
+  if(currentUser) {
+    addActivityLog('logout', currentUser.username, currentUser.role, currentUser.label);
+  }
   currentUser = null;
   // Reset form
   document.getElementById('login-username').value = '';
@@ -2195,6 +2760,285 @@ document.addEventListener('click', e => {
   }
 });
 
+// ===== ACTIVITY LOG SYSTEM =====
+function getActivityLogs() {
+  const key = currentProjectId ? 'activityLogs_' + currentProjectId : 'activityLogs';
+  try { return JSON.parse(localStorage.getItem(key) || '[]'); }
+  catch(e) { return []; }
+}
+
+function saveActivityLogs(logs) {
+  const key = currentProjectId ? 'activityLogs_' + currentProjectId : 'activityLogs';
+  localStorage.setItem(key, JSON.stringify(logs));
+}
+
+function addActivityLog(action, username, roleKey, roleLabel) {
+  const logs = getActivityLogs();
+  const now = new Date();
+  const entry = {
+    id: Date.now(),
+    timestamp: now.toISOString(),
+    username: username,
+    roleKey: roleKey,
+    roleLabel: roleLabel,
+    action: action // 'login' or 'logout'
+  };
+  logs.unshift(entry);
+  // Keep max 500 entries
+  if(logs.length > 500) logs.length = 500;
+  saveActivityLogs(logs);
+  renderActivityLog();
+}
+
+function formatLogDate(isoStr) {
+  const d = new Date(isoStr);
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const yyyy = d.getFullYear();
+  const hh = String(d.getHours()).padStart(2,'0');
+  const mi = String(d.getMinutes()).padStart(2,'0');
+  const ss = String(d.getSeconds()).padStart(2,'0');
+  return `${dd}/${mm}/${yyyy} ${hh}:${mi}:${ss}`;
+}
+
+function calcSessionDuration(logs, index) {
+  const entry = logs[index];
+  if(entry.action !== 'logout') return '-';
+  // Find matching login (next entry with same user & action=login)
+  for(let i = index+1; i < logs.length; i++) {
+    if(logs[i].username === entry.username && logs[i].action === 'login') {
+      const diff = Math.floor((new Date(entry.timestamp) - new Date(logs[i].timestamp)) / 1000);
+      if(diff < 0) return '-';
+      const h = Math.floor(diff / 3600);
+      const m = Math.floor((diff % 3600) / 60);
+      const s = diff % 60;
+      const parts = [];
+      if(h > 0) parts.push(h + ' ' + (currentLang === 'th' ? 'ชม.' : 'hr'));
+      if(m > 0) parts.push(m + ' ' + (currentLang === 'th' ? 'น.' : 'min'));
+      parts.push(s + ' ' + (currentLang === 'th' ? 'วิ.' : 'sec'));
+      return parts.join(' ');
+    }
+  }
+  return '-';
+}
+
+function renderActivityLog() {
+  const logs = getActivityLogs();
+  const tbody = document.getElementById('activityLogTable');
+  if(!tbody) return;
+
+  // Stats
+  const loginCount = logs.filter(l => l.action === 'login').length;
+  const logoutCount = logs.filter(l => l.action === 'logout').length;
+  const uniqueUsers = [...new Set(logs.map(l => l.username))].length;
+  const today = new Date().toDateString();
+  const todayCount = logs.filter(l => new Date(l.timestamp).toDateString() === today).length;
+
+  const el = id => document.getElementById(id);
+  if(el('log-login-count')) el('log-login-count').textContent = loginCount;
+  if(el('log-logout-count')) el('log-logout-count').textContent = logoutCount;
+  if(el('log-unique-count')) el('log-unique-count').textContent = uniqueUsers;
+  if(el('log-today-count')) el('log-today-count').textContent = todayCount;
+
+  if(logs.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--slate-400);">' +
+      (currentLang === 'th' ? 'ยังไม่มีบันทึกกิจกรรม' : 'No activity logs yet') + '</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = logs.map((log, i) => {
+    const isLogin = log.action === 'login';
+    const actionText = isLogin ? t('logActionLogin') : t('logActionLogout');
+    const badgeColor = isLogin ? 'background:var(--emerald-50);color:var(--emerald-600);' : 'background:var(--red-50);color:var(--red-600);';
+    const icon = isLogin ? '🔑' : '🚪';
+    const duration = calcSessionDuration(logs, i);
+    return `<tr>
+      <td>${logs.length - i}</td>
+      <td>${formatLogDate(log.timestamp)}</td>
+      <td><strong>${log.username}</strong></td>
+      <td>${log.roleLabel}</td>
+      <td><span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;${badgeColor}">${icon} ${actionText}</span></td>
+      <td>${duration}</td>
+    </tr>`;
+  }).join('');
+}
+
+function clearActivityLog() {
+  if(!confirm(t('logConfirmClear'))) return;
+  const key = currentProjectId ? 'activityLogs_' + currentProjectId : 'activityLogs';
+  localStorage.removeItem(key);
+  renderActivityLog();
+}
+
+// Initial render
+renderActivityLog();
+
+// ===== REGISTRATION SYSTEM =====
+function getRegisteredUsers() {
+  try { return JSON.parse(localStorage.getItem('registeredUsers') || '[]'); }
+  catch(e) { return []; }
+}
+
+function saveRegisteredUsers(users) {
+  localStorage.setItem('registeredUsers', JSON.stringify(users));
+}
+
+function showRegister() {
+  document.getElementById('registerScreen').classList.remove('hidden');
+}
+
+function hideRegister() {
+  document.getElementById('registerScreen').classList.add('hidden');
+  clearRegForm();
+}
+
+function clearRegForm() {
+  ['reg-firstname','reg-lastname','reg-username','reg-email','reg-phone','reg-company','reg-password','reg-confirm-password'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('reg-role').selectedIndex = 0;
+  document.getElementById('reg-error').style.display = 'none';
+  document.getElementById('reg-success').style.display = 'none';
+  document.getElementById('pw-strength-bar').style.width = '0';
+  document.getElementById('pw-strength-text').textContent = '';
+}
+
+function checkPasswordStrength() {
+  const pw = document.getElementById('reg-password').value;
+  const bar = document.getElementById('pw-strength-bar');
+  const txt = document.getElementById('pw-strength-text');
+  let score = 0;
+  if(pw.length >= 4) score++;
+  if(pw.length >= 8) score++;
+  if(/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+  if(/[0-9]/.test(pw)) score++;
+  if(/[^A-Za-z0-9]/.test(pw)) score++;
+
+  const levels = [
+    { w:'0%', c:'var(--slate-300)', t:'' },
+    { w:'20%', c:'var(--red-500)', t:t('pwWeak') },
+    { w:'40%', c:'var(--amber-500)', t:t('pwMedium') },
+    { w:'60%', c:'var(--amber-500)', t:t('pwMedium') },
+    { w:'80%', c:'var(--emerald-500)', t:t('pwStrong') },
+    { w:'100%', c:'var(--emerald-600)', t:t('pwVeryStrong') }
+  ];
+  const lv = levels[score] || levels[0];
+  bar.style.width = lv.w;
+  bar.style.background = lv.c;
+  txt.textContent = lv.t;
+  txt.style.color = lv.c;
+}
+
+function doRegister() {
+  const firstname = document.getElementById('reg-firstname').value.trim();
+  const lastname = document.getElementById('reg-lastname').value.trim();
+  const username = document.getElementById('reg-username').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  const role = document.getElementById('reg-role').value;
+  const company = document.getElementById('reg-company').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const confirmPw = document.getElementById('reg-confirm-password').value;
+  const errEl = document.getElementById('reg-error');
+  const sucEl = document.getElementById('reg-success');
+
+  errEl.style.display = 'none';
+  sucEl.style.display = 'none';
+
+  // Validation
+  if(!firstname || !lastname || !username || !email || !password) {
+    errEl.style.display = 'block'; errEl.textContent = t('regErrRequired'); return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errEl.style.display = 'block'; errEl.textContent = t('regErrEmail'); return;
+  }
+  if(password.length < 4) {
+    errEl.style.display = 'block'; errEl.textContent = t('regErrPassShort'); return;
+  }
+  if(password !== confirmPw) {
+    errEl.style.display = 'block'; errEl.textContent = t('regErrPassMatch'); return;
+  }
+
+  const users = getRegisteredUsers();
+  if(users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+    errEl.style.display = 'block'; errEl.textContent = t('regErrUserExists'); return;
+  }
+
+  const newUser = {
+    id: Date.now(),
+    firstname, lastname, username, email, phone, role, company, password,
+    registeredAt: new Date().toISOString()
+  };
+  users.push(newUser);
+  saveRegisteredUsers(users);
+
+  sucEl.style.display = 'block';
+  sucEl.textContent = t('regSuccess');
+
+  setTimeout(() => {
+    hideRegister();
+    // Pre-fill login
+    document.getElementById('login-username').value = username;
+    document.getElementById('login-role').value = role;
+    document.getElementById('login-password').focus();
+  }, 1500);
+}
+
+// Enter key in register form
+document.getElementById('reg-confirm-password').addEventListener('keydown', e => { if(e.key==='Enter') doRegister(); });
+
+// ===== USER MANAGEMENT =====
+function renderUsersTable() {
+  const users = getRegisteredUsers();
+  const tbody = document.getElementById('usersTable');
+  if(!tbody) return;
+
+  // Stats
+  const el = id => document.getElementById(id);
+  if(el('users-total-count')) el('users-total-count').textContent = users.length;
+  if(el('users-safety-count')) el('users-safety-count').textContent = users.filter(u => u.role === 'safety').length;
+  if(el('users-contractor-count')) el('users-contractor-count').textContent = users.filter(u => u.role === 'contractor').length;
+  if(el('users-manager-count')) el('users-manager-count').textContent = users.filter(u => u.role === 'manager').length;
+
+  if(users.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--slate-400);">' +
+      t('userNoData') + '</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = users.map((u, i) => {
+    const rc = roleConfig[u.role] || {};
+    const roleLabel = currentLang === 'en' ? (rc.labelEn || u.role) : (rc.label || u.role);
+    const regDate = new Date(u.registeredAt);
+    const dd = String(regDate.getDate()).padStart(2,'0');
+    const mm = String(regDate.getMonth()+1).padStart(2,'0');
+    const yyyy = regDate.getFullYear();
+    const hh = String(regDate.getHours()).padStart(2,'0');
+    const mi = String(regDate.getMinutes()).padStart(2,'0');
+    return `<tr>
+      <td>${i+1}</td>
+      <td><strong>${u.firstname} ${u.lastname}</strong></td>
+      <td>${u.username}</td>
+      <td>${u.email}</td>
+      <td>${u.phone || '-'}</td>
+      <td><span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--primary-50);color:var(--primary-600);">${roleLabel}</span></td>
+      <td>${u.company || '-'}</td>
+      <td>${dd}/${mm}/${yyyy} ${hh}:${mi}</td>
+      <td><button class="btn btn-ghost btn-sm" style="color:var(--red-500);font-size:12px;" onclick="deleteUser(${u.id})">🗑️</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function deleteUser(id) {
+  if(!confirm(t('userDeleteConfirm'))) return;
+  let users = getRegisteredUsers();
+  users = users.filter(u => u.id !== id);
+  saveRegisteredUsers(users);
+  renderUsersTable();
+}
+
+renderUsersTable();
+
 // ===== LIVE CLOCK =====
 function updateClock() {
   const now = new Date();
@@ -2206,6 +3050,23 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
+// ===== SAFE DAYS TIMER (HH:MM:SS) =====
+const SAFE_DAYS_START = 247; // days since last accident
+const safeDaysOrigin = new Date(Date.now() - SAFE_DAYS_START * 86400000);
+function updateSafeTimer() {
+  const diff = Math.floor((Date.now() - safeDaysOrigin.getTime()) / 1000);
+  const hrs = Math.floor(diff / 3600);
+  const mins = Math.floor((diff % 3600) / 60);
+  const secs = diff % 60;
+  const hh = String(hrs).padStart(2,'0');
+  const mm = String(mins).padStart(2,'0');
+  const ss = String(secs).padStart(2,'0');
+  document.getElementById('safeDaysTimer').innerHTML =
+    `${hh}<span style="opacity:.6">ชม.</span> ${mm}<span style="opacity:.6">น.</span> ${ss}<span style="opacity:.6">วิ.</span>`;
+}
+updateSafeTimer();
+setInterval(updateSafeTimer, 1000);
+
 // ===== NAV =====
 const titleKeys = {
   dashboard:'titleDashboard', incidents:'titleIncidents', risk:'titleRisk',
@@ -2213,7 +3074,9 @@ const titleKeys = {
   training:'titleTraining', documents:'titleDocuments', ppe:'titlePPE',
   audit:'titleAudit', corrective:'titleCAPA',
   workpermit:'titleWorkPermit',
-  investigation:'titleInvestigation'
+  investigation:'titleInvestigation',
+  activitylog:'titleActivityLog',
+  users:'titleUsers'
 };
 
 function navTo(page) {
@@ -2223,6 +3086,8 @@ function navTo(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
   document.getElementById('pageTitle').textContent = t(titleKeys[page] || page);
+  if(page === 'users') renderUsersTable();
+  if(page === 'activitylog') renderActivityLog();
   if(window.innerWidth < 768) toggleSidebar();
 }
 
