@@ -948,6 +948,14 @@ tr:last-child td { border-bottom: none; }
     <div class="nav-item" data-page="risk"><span class="icon">⚠️</span> <span data-i18n="navRisk">ประเมินความเสี่ยง</span></div>
     <div class="nav-item" data-page="inspection"><span class="icon">📋</span> <span data-i18n="navInspection">ตรวจสอบความปลอดภัย</span></div>
 
+    <div class="nav-section">NFPA Compliance</div>
+    <div class="nav-item" data-page="nfpa"><span class="icon">🔥</span> <span data-i18n="navNFPA">ระบบป้องกันอัคคีภัย</span></div>
+    <div class="nav-item" data-page="nfpa704"><span class="icon">♦️</span> <span data-i18n="navNFPA704">NFPA 704 สารเคมี</span></div>
+
+    <div class="nav-section" data-i18n="navChemical">สารเคมีและ MSDS</div>
+    <div class="nav-item" data-page="msds"><span class="icon">📄</span> <span data-i18n="navMSDS">MSDS/SDS สารเคมี</span></div>
+    <div class="nav-item" data-page="msds-compliance"><span class="icon">✅</span> <span data-i18n="navMSDSCompliance">ตรวจสอบ MSDS Compliance</span></div>
+
     <div class="nav-section" data-i18n="navEnvironment">สิ่งแวดล้อม</div>
     <div class="nav-item" data-page="environment"><span class="icon">🌿</span> <span data-i18n="navEnvMgmt">การจัดการสิ่งแวดล้อม</span></div>
     <div class="nav-item" data-page="waste"><span class="icon">♻️</span> <span data-i18n="navWaste">การจัดการของเสีย</span></div>
@@ -1510,12 +1518,34 @@ tr:last-child td { border-bottom: none; }
         <div class="card">
           <div class="card-header">
             <h3><span class="h-icon" style="background:var(--primary-50)">📝</span> <span data-i18n="wpTitle">ขอใบอนุญาตทำงาน (Work Permit)</span></h3>
-            <button class="btn btn-primary btn-sm" onclick="openModal('wpModal')" data-i18n="newWP">+ ขอใบอนุญาตใหม่</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('wpModal');updateWPTypes();" data-i18n="newWP">+ ขอใบอนุญาตใหม่</button>
+          </div>
+          <div class="card-body" style="padding-bottom:0;">
+            <div style="margin-bottom:6px;">
+              <div style="font-size:11px;font-weight:600;color:var(--slate-400);margin-bottom:4px;text-transform:uppercase;">ลักษณะงาน</div>
+              <div class="tabs" id="wp-phase-tabs-contractor">
+                <div class="tab active" onclick="filterWPPhase('all',this)">ทั้งหมด</div>
+                <div class="tab" onclick="filterWPPhase('construction',this)">🔨 ก่อสร้าง</div>
+                <div class="tab" onclick="filterWPPhase('maintenance',this)">🔧 ซ่อมบำรุง</div>
+                <div class="tab" onclick="filterWPPhase('operation',this)">⚡ เดินเครื่อง</div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:var(--slate-400);margin-bottom:4px;text-transform:uppercase;">ระบบงาน</div>
+              <div class="tabs" id="wp-dept-tabs-contractor">
+                <div class="tab active" onclick="filterWPDept('all',this,'contractor')">ทั้งหมด</div>
+                <div class="tab" onclick="filterWPDept('civil',this,'contractor')">🏗️ โยธา</div>
+                <div class="tab" onclick="filterWPDept('mechanical',this,'contractor')">⚙️ เครื่องกล</div>
+                <div class="tab" onclick="filterWPDept('electrical',this,'contractor')">⚡ ไฟฟ้า</div>
+                <div class="tab" onclick="filterWPDept('chemical',this,'contractor')">🧪 เคมี</div>
+                <div class="tab" onclick="filterWPDept('process',this,'contractor')">🔄 Process</div>
+              </div>
+            </div>
           </div>
           <div class="card-body-flush">
             <div class="table-wrap">
               <table>
-                <thead><tr><th>เลขที่</th><th>ประเภทงาน</th><th>บริษัท</th><th>สถานที่</th><th>วันที่ทำงาน</th><th>ผู้ขอ</th><th>สถานะ</th><th></th></tr></thead>
+                <thead><tr><th>เลขที่</th><th>ลักษณะงาน</th><th>ระบบงาน</th><th>ประเภทงาน</th><th>บริษัท</th><th>สถานที่</th><th>วันที่ทำงาน</th><th>ผู้ขอ</th><th>สถานะ</th><th></th></tr></thead>
                 <tbody id="wpContractorTable"></tbody>
               </table>
             </div>
@@ -1537,21 +1567,239 @@ tr:last-child td { border-bottom: none; }
             <h3><span class="h-icon" style="background:var(--emerald-50)">🛡️</span> <span data-i18n="wpApproveBy">รายการใบอนุญาต — อนุมัติโดย จป.</span></h3>
           </div>
           <div class="card-body" style="padding-bottom:0;">
-            <div class="tabs">
-              <div class="tab active" onclick="filterWP('all',this)" data-i18n="all">ทั้งหมด</div>
-              <div class="tab" onclick="filterWP('pending',this)" data-i18n="pending">รออนุมัติ</div>
-              <div class="tab" onclick="filterWP('approved',this)" data-i18n="approved">อนุมัติแล้ว</div>
-              <div class="tab" onclick="filterWP('rejected',this)" data-i18n="rejected">ไม่อนุมัติ</div>
-              <div class="tab" onclick="filterWP('expired',this)" data-i18n="expired">หมดอายุ</div>
+            <div style="margin-bottom:6px;">
+              <div style="font-size:11px;font-weight:600;color:var(--slate-400);margin-bottom:4px;text-transform:uppercase;">กรองตามลักษณะงาน</div>
+              <div class="tabs" id="wp-phase-tabs-safety">
+                <div class="tab active" onclick="filterWPPhase('all',this)">ทั้งหมด</div>
+                <div class="tab" onclick="filterWPPhase('construction',this)">🔨 ก่อสร้าง</div>
+                <div class="tab" onclick="filterWPPhase('maintenance',this)">🔧 ซ่อมบำรุง</div>
+                <div class="tab" onclick="filterWPPhase('operation',this)">⚡ เดินเครื่อง</div>
+              </div>
+            </div>
+            <div style="margin-bottom:6px;">
+              <div style="font-size:11px;font-weight:600;color:var(--slate-400);margin-bottom:4px;text-transform:uppercase;">กรองตามระบบงาน</div>
+              <div class="tabs" id="wp-dept-tabs-safety">
+                <div class="tab active" onclick="filterWPDept('all',this,'safety')">ทั้งหมด</div>
+                <div class="tab" onclick="filterWPDept('civil',this,'safety')">🏗️ โยธา</div>
+                <div class="tab" onclick="filterWPDept('mechanical',this,'safety')">⚙️ เครื่องกล</div>
+                <div class="tab" onclick="filterWPDept('electrical',this,'safety')">⚡ ไฟฟ้า</div>
+                <div class="tab" onclick="filterWPDept('chemical',this,'safety')">🧪 เคมี</div>
+                <div class="tab" onclick="filterWPDept('process',this,'safety')">🔄 Process</div>
+              </div>
+            </div>
+            <div style="margin-bottom:0;">
+              <div style="font-size:11px;font-weight:600;color:var(--slate-400);margin-bottom:4px;text-transform:uppercase;">กรองตามสถานะ</div>
+              <div class="tabs" id="wp-status-tabs">
+                <div class="tab active" onclick="filterWP('all',this)" data-i18n="all">ทั้งหมด</div>
+                <div class="tab" onclick="filterWP('pending',this)" data-i18n="pending">รออนุมัติ</div>
+                <div class="tab" onclick="filterWP('approved',this)" data-i18n="approved">อนุมัติแล้ว</div>
+                <div class="tab" onclick="filterWP('rejected',this)" data-i18n="rejected">ไม่อนุมัติ</div>
+                <div class="tab" onclick="filterWP('expired',this)" data-i18n="expired">หมดอายุ</div>
+              </div>
             </div>
           </div>
           <div class="card-body-flush">
             <div class="table-wrap">
               <table>
-                <thead><tr><th>เลขที่</th><th>ประเภทงาน</th><th>บริษัท</th><th>สถานที่</th><th>วันที่</th><th>ผู้ขอ</th><th>สถานะ</th><th>การดำเนินการ</th></tr></thead>
+                <thead><tr><th>เลขที่</th><th>ลักษณะงาน</th><th>ระบบงาน</th><th>ประเภทงาน</th><th>บริษัท</th><th>สถานที่</th><th>วันที่</th><th>ผู้ขอ</th><th>สถานะ</th><th>การดำเนินการ</th></tr></thead>
                 <tbody id="wpSafetyTable"></tbody>
               </table>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== NFPA FIRE PROTECTION ===== -->
+    <div class="page" id="page-nfpa">
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));">
+        <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-label">ผ่านการตรวจ</div><div class="stat-value" style="color:var(--emerald-600)" id="nfpa-pass-count">0</div></div>
+        <div class="stat-card"><div class="stat-icon red">❌</div><div class="stat-label">ไม่ผ่าน</div><div class="stat-value" style="color:var(--red-500)" id="nfpa-fail-count">0</div></div>
+        <div class="stat-card"><div class="stat-icon amber">⏳</div><div class="stat-label">รอตรวจ</div><div class="stat-value" style="color:var(--amber-600)" id="nfpa-pending-count">0</div></div>
+        <div class="stat-card"><div class="stat-icon blue">📋</div><div class="stat-label">รายการทั้งหมด</div><div class="stat-value" style="color:var(--primary-600)" id="nfpa-total-count">0</div></div>
+      </div>
+
+      <!-- NFPA 850 Fire Protection Inspection -->
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--red-50)">🔥</span> NFPA 850 — ระบบป้องกันอัคคีภัยโรงไฟฟ้า</h3>
+        </div>
+        <div class="card-body" style="padding-bottom:0;">
+          <div class="tabs">
+            <div class="tab active" onclick="filterNFPA('all',this)">ทั้งหมด</div>
+            <div class="tab" onclick="filterNFPA('fire-suppression',this)">ระบบดับเพลิง</div>
+            <div class="tab" onclick="filterNFPA('fire-alarm',this)">ระบบแจ้งเตือน</div>
+            <div class="tab" onclick="filterNFPA('fuel-storage',this)">เชื้อเพลิง/สารเคมี</div>
+            <div class="tab" onclick="filterNFPA('electrical',this)">ระบบไฟฟ้า</div>
+            <div class="tab" onclick="filterNFPA('emergency',this)">ฉุกเฉิน</div>
+            <div class="tab" onclick="filterNFPA('biomass',this)">ชีวมวล/ขยะ</div>
+          </div>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>#</th><th>หมวด NFPA</th><th>รายการตรวจสอบ</th><th>มาตรฐาน</th><th>ความถี่</th><th>ตรวจล่าสุด</th><th>สถานะ</th><th>ดำเนินการ</th>
+              </tr></thead>
+              <tbody id="nfpaTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- NFPA 25 Water-Based Fire Protection Maintenance Schedule -->
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--primary-50)">💧</span> NFPA 25 — ตารางตรวจสอบระบบดับเพลิงน้ำ</h3>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ระบบ/อุปกรณ์</th><th>ประเภท</th><th>ความถี่</th><th>ตรวจล่าสุด</th><th>ครั้งถัดไป</th><th>สถานะ</th></tr></thead>
+              <tbody id="nfpa25Table"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- NFPA 72 Fire Alarm Inspection Schedule -->
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--amber-50)">🔔</span> NFPA 72 — ตารางตรวจสอบระบบแจ้งเตือนอัคคีภัย</h3>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>อุปกรณ์</th><th>จุดติดตั้ง</th><th>ความถี่</th><th>ตรวจล่าสุด</th><th>ครั้งถัดไป</th><th>สถานะ</th></tr></thead>
+              <tbody id="nfpa72Table"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== NFPA 704 HAZARD DIAMOND ===== -->
+    <div class="page" id="page-nfpa704">
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--amber-50)">♦️</span> NFPA 704 — ระบบระบุอันตรายสารเคมี (Hazard Diamond)</h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('nfpa704Modal')">+ เพิ่มรายการ</button>
+        </div>
+        <div class="card-body" style="padding:16px 24px 8px;">
+          <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--slate-500);">
+            <span><span style="color:var(--primary-500);font-weight:700;">🔵 Health</span> — อันตรายต่อสุขภาพ (0-4)</span>
+            <span><span style="color:var(--red-500);font-weight:700;">🔴 Fire</span> — ความไวไฟ (0-4)</span>
+            <span><span style="color:#f59e0b;font-weight:700;">🟡 Reactivity</span> — ความไม่เสถียร (0-4)</span>
+            <span><span style="font-weight:700;">⚪ Special</span> — อันตรายพิเศษ (W, OX, SA)</span>
+          </div>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>#</th><th>สารเคมี/วัสดุ</th><th>สถานที่จัดเก็บ</th>
+                <th style="text-align:center;color:var(--primary-600);">Health</th>
+                <th style="text-align:center;color:var(--red-500);">Fire</th>
+                <th style="text-align:center;color:#d97706;">React.</th>
+                <th style="text-align:center;">Special</th>
+                <th>ระดับความเสี่ยง</th><th>หมายเหตุ</th>
+              </tr></thead>
+              <tbody id="nfpa704Table"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MSDS/SDS CHEMICAL MANAGEMENT ===== -->
+    <div class="page" id="page-msds">
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+        <div class="stat-card"><div class="stat-icon blue">📄</div><div class="stat-label" data-i18n="msdsTotal">SDS ทั้งหมด</div><div class="stat-value" style="color:var(--primary-600)" id="msds-total">0</div></div>
+        <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-label" data-i18n="msdsCurrent">SDS เป็นปัจจุบัน</div><div class="stat-value" style="color:var(--emerald-600)" id="msds-current">0</div></div>
+        <div class="stat-card"><div class="stat-icon amber">⚠️</div><div class="stat-label" data-i18n="msdsExpiring">ใกล้หมดอายุ</div><div class="stat-value" style="color:var(--amber-600)" id="msds-expiring">0</div></div>
+        <div class="stat-card"><div class="stat-icon red">❌</div><div class="stat-label" data-i18n="msdsExpired">หมดอายุ</div><div class="stat-value" style="color:var(--red-600)" id="msds-expired">0</div></div>
+        <div class="stat-card"><div class="stat-icon violet">🧪</div><div class="stat-label" data-i18n="msdsHighRisk">สารเคมีความเสี่ยงสูง</div><div class="stat-value" style="color:var(--violet-600)" id="msds-highrisk">0</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--primary-50)">📄</span> <span data-i18n="msdsRegistryTitle">ทะเบียน SDS สารเคมี (GHS 16 Sections)</span></h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('msdsModal')">+ เพิ่ม SDS</button>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>#</th>
+                <th data-i18n="msdsColName">ชื่อสารเคมี</th>
+                <th data-i18n="msdsColCAS">CAS No.</th>
+                <th data-i18n="msdsColLocation">สถานที่จัดเก็บ</th>
+                <th data-i18n="msdsColQty">ปริมาณ</th>
+                <th data-i18n="msdsColGHS">GHS Hazard</th>
+                <th data-i18n="msdsColPPE">PPE ที่กำหนด</th>
+                <th data-i18n="msdsColPEL">PEL/TLV</th>
+                <th data-i18n="msdsColSdsDate">วันที่ SDS</th>
+                <th data-i18n="msdsColStatus">สถานะ</th>
+              </tr></thead>
+              <tbody id="msdsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MSDS COMPLIANCE & MONITORING ===== -->
+    <div class="page" id="page-msds-compliance">
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+        <div class="stat-card"><div class="stat-icon green">✅</div><div class="stat-label" data-i18n="msdsCompPass">ผ่านการตรวจ</div><div class="stat-value" style="color:var(--emerald-600)" id="msds-comp-pass">0</div></div>
+        <div class="stat-card"><div class="stat-icon red">❌</div><div class="stat-label" data-i18n="msdsCompFail">ไม่ผ่าน</div><div class="stat-value" style="color:var(--red-600)" id="msds-comp-fail">0</div></div>
+        <div class="stat-card"><div class="stat-icon amber">🔄</div><div class="stat-label" data-i18n="msdsCompPending">รอตรวจ</div><div class="stat-value" style="color:var(--amber-600)" id="msds-comp-pending">0</div></div>
+        <div class="stat-card"><div class="stat-icon blue">📊</div><div class="stat-label" data-i18n="msdsCompRate">อัตราผ่าน (%)</div><div class="stat-value" style="color:var(--primary-600)" id="msds-comp-rate">0%</div></div>
+      </div>
+
+      <!-- Compliance Checklist -->
+      <div class="card">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--emerald-50)">✅</span> <span data-i18n="msdsChecklistTitle">รายการตรวจสอบ MSDS Compliance</span></h3>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>#</th>
+                <th data-i18n="msdsChkCategory">หมวด</th>
+                <th data-i18n="msdsChkItem">รายการตรวจ</th>
+                <th data-i18n="msdsChkFreq">ความถี่</th>
+                <th data-i18n="msdsChkLastCheck">ตรวจล่าสุด</th>
+                <th data-i18n="msdsChkStatus">สถานะ</th>
+                <th data-i18n="msdsChkAction">แก้ไข</th>
+              </tr></thead>
+              <tbody id="msdsChecklistTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exposure Monitoring -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-header">
+          <h3><span class="h-icon" style="background:var(--amber-50)">🌡️</span> <span data-i18n="msdsExposureTitle">การเฝ้าระวังการสัมผัสสารเคมี (Exposure Monitoring)</span></h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('exposureModal')">+ บันทึกผล</button>
+        </div>
+        <div class="card-body-flush">
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>#</th>
+                <th data-i18n="expColDate">วันที่</th>
+                <th data-i18n="expColChemical">สารเคมี</th>
+                <th data-i18n="expColArea">พื้นที่</th>
+                <th data-i18n="expColMeasured">ค่าที่วัด</th>
+                <th data-i18n="expColPEL">PEL/TLV</th>
+                <th data-i18n="expColResult">ผลประเมิน</th>
+                <th data-i18n="expColAction">มาตรการ</th>
+              </tr></thead>
+              <tbody id="exposureTable"></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -1657,6 +1905,104 @@ tr:last-child td { border-bottom: none; }
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ===== NFPA 704 Modal ===== -->
+<div class="modal-overlay" id="nfpa704Modal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--amber-50)">♦️</span> เพิ่มรายการสารเคมี NFPA 704</div>
+    <div class="form-group"><label>ชื่อสารเคมี/วัสดุ</label><input type="text" id="nfpa704-name" placeholder="เช่น ดีเซล, กรดซัลฟิวริก"></div>
+    <div class="form-group"><label>สถานที่จัดเก็บ</label><input type="text" id="nfpa704-location" placeholder="เช่น ถังเก็บเชื้อเพลิง โซน A"></div>
+    <div class="form-row">
+      <div class="form-group"><label style="color:var(--primary-600)">Health (0-4)</label><select id="nfpa704-h"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
+      <div class="form-group"><label style="color:var(--red-500)">Fire (0-4)</label><select id="nfpa704-f"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label style="color:#d97706">Reactivity (0-4)</label><select id="nfpa704-r"><option selected>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+      <div class="form-group"><label>Special Hazard</label><select id="nfpa704-s"><option value="">ไม่มี</option><option value="W">W — ห้ามใช้น้ำ</option><option value="OX">OX — สารออกซิไดซ์</option><option value="SA">SA — ก๊าซทำให้ขาดอากาศ</option></select></div>
+    </div>
+    <div class="form-group"><label>หมายเหตุ</label><textarea id="nfpa704-note" rows="2" placeholder="ข้อควรระวังเพิ่มเติม..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('nfpa704Modal')">ยกเลิก</button>
+      <button class="btn btn-warning" onclick="addNFPA704()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MSDS MODAL ===== -->
+<div class="modal-overlay" id="msdsModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--primary-50)">📄</span> เพิ่ม SDS สารเคมี (GHS Format)</div>
+    <div class="form-row">
+      <div class="form-group"><label>ชื่อสารเคมี *</label><input type="text" id="msds-name" placeholder="เช่น กรดซัลฟิวริก"></div>
+      <div class="form-group"><label>CAS Number</label><input type="text" id="msds-cas" placeholder="เช่น 7664-93-9"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>สถานที่จัดเก็บ</label><input type="text" id="msds-location" placeholder="เช่น ห้องเคมีบำบัดน้ำ"></div>
+      <div class="form-group"><label>ปริมาณ (ลิตร/กก.)</label><input type="text" id="msds-qty" placeholder="เช่น 500 ลิตร"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>GHS Hazard Class</label>
+        <select id="msds-ghs">
+          <option value="corrosive">กัดกร่อน (Corrosive)</option>
+          <option value="flammable">ไวไฟ (Flammable)</option>
+          <option value="toxic">เป็นพิษ (Toxic)</option>
+          <option value="oxidizer">ออกซิไดเซอร์ (Oxidizer)</option>
+          <option value="gas-pressure">ก๊าซภายใต้แรงดัน (Gas Under Pressure)</option>
+          <option value="irritant">ระคายเคือง (Irritant)</option>
+          <option value="health-hazard">อันตรายต่อสุขภาพ (Health Hazard)</option>
+          <option value="env-hazard">อันตรายต่อสิ่งแวดล้อม (Environmental)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>ระดับความเสี่ยง</label>
+        <select id="msds-risk">
+          <option value="high">สูง (High)</option>
+          <option value="medium">ปานกลาง (Medium)</option>
+          <option value="low">ต่ำ (Low)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>PPE ที่กำหนด (SDS Section 8)</label><input type="text" id="msds-ppe" placeholder="เช่น ถุงมือยาง, แว่นตานิรภัย, หน้ากากกันสารเคมี"></div>
+    <div class="form-row">
+      <div class="form-group"><label>PEL/TLV</label><input type="text" id="msds-pel" placeholder="เช่น 1 mg/m³"></div>
+      <div class="form-group"><label>วันที่ SDS</label><input type="date" id="msds-date"></div>
+    </div>
+    <div class="form-group"><label>การปฐมพยาบาล (SDS Section 4)</label><textarea id="msds-firstaid" rows="2" placeholder="ข้อมูลการปฐมพยาบาลเบื้องต้น..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('msdsModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="addMSDS()">บันทึก SDS</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EXPOSURE MONITORING MODAL ===== -->
+<div class="modal-overlay" id="exposureModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--amber-50)">🌡️</span> บันทึกผลเฝ้าระวังการสัมผัสสารเคมี</div>
+    <div class="form-row">
+      <div class="form-group"><label>วันที่ตรวจวัด</label><input type="date" id="exp-date"></div>
+      <div class="form-group"><label>สารเคมี</label><input type="text" id="exp-chemical" placeholder="เช่น H₂SO₄"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>พื้นที่</label><input type="text" id="exp-area" placeholder="เช่น ห้องเคมีบำบัดน้ำ"></div>
+      <div class="form-group"><label>ค่าที่วัดได้</label><input type="text" id="exp-measured" placeholder="เช่น 0.5 mg/m³"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>ค่ามาตรฐาน PEL/TLV</label><input type="text" id="exp-pel" placeholder="เช่น 1 mg/m³"></div>
+      <div class="form-group"><label>ผลประเมิน</label>
+        <select id="exp-result">
+          <option value="pass">ผ่าน (ต่ำกว่ามาตรฐาน)</option>
+          <option value="warning">เตือน (ใกล้มาตรฐาน)</option>
+          <option value="exceed">เกินมาตรฐาน</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>มาตรการ/ข้อเสนอแนะ</label><textarea id="exp-action" rows="2" placeholder="มาตรการแก้ไข..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('exposureModal')">ยกเลิก</button>
+      <button class="btn btn-warning" onclick="addExposure()">บันทึก</button>
+    </div>
   </div>
 </div>
 
@@ -1939,18 +2285,26 @@ tr:last-child td { border-bottom: none; }
   <div class="modal">
     <div class="modal-title"><span class="modal-icon" style="background:var(--primary-50)">📝</span> ขอใบอนุญาตทำงาน</div>
     <div class="form-row">
-      <div class="form-group"><label>ประเภทงาน</label>
-        <select id="wp-type">
-          <option value="งานบนที่สูง">งานบนที่สูง (Working at Height)</option>
-          <option value="งานเชื่อม/ตัด (Hot Work)">งานเชื่อม/ตัด (Hot Work)</option>
-          <option value="งานในที่อับอากาศ">งานในที่อับอากาศ (Confined Space)</option>
-          <option value="งานไฟฟ้า">งานไฟฟ้า (Electrical Work)</option>
-          <option value="งานขุดดิน">งานขุดดิน (Excavation)</option>
-          <option value="งานยกเคลื่อนย้าย">งานยกเคลื่อนย้าย (Lifting/Crane)</option>
-          <option value="งานรื้อถอน">งานรื้อถอน (Demolition)</option>
-          <option value="งานสารเคมี">งานสารเคมี (Chemical Handling)</option>
-          <option value="อื่นๆ">อื่นๆ</option>
+      <div class="form-group"><label>ลักษณะงาน (Work Phase)</label>
+        <select id="wp-phase">
+          <option value="construction">🔨 งานก่อสร้าง (Construction)</option>
+          <option value="maintenance">🔧 งานซ่อมบำรุง (Maintenance)</option>
+          <option value="operation">⚡ งานเดินเครื่อง (Operation)</option>
         </select>
+      </div>
+      <div class="form-group"><label>ระบบงาน (Department)</label>
+        <select id="wp-dept" onchange="updateWPTypes()">
+          <option value="civil">🏗️ งานโยธา (Civil)</option>
+          <option value="mechanical">⚙️ งานเครื่องกล (Mechanical)</option>
+          <option value="electrical">⚡ งานไฟฟ้า (Electrical)</option>
+          <option value="chemical">🧪 งานเคมี (Chemical)</option>
+          <option value="process">🔄 งาน Process</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>ประเภทงาน</label>
+        <select id="wp-type"></select>
       </div>
       <div class="form-group"><label>ระดับความเสี่ยง</label>
         <select id="wp-risk">
@@ -2078,6 +2432,21 @@ const LANG = {
     projErrRequired:'กรุณากรอกรหัสและชื่อโครงการ', projErrExists:'รหัสโครงการนี้มีอยู่แล้ว',
     projDeleteConfirm:'ยืนยันลบโครงการนี้? ข้อมูลทั้งหมดในโครงการจะถูกลบ',
     projWelcome:'สวัสดี',
+    // NFPA
+    navNFPA:'ระบบป้องกันอัคคีภัย', navNFPA704:'NFPA 704 สารเคมี',
+    titleNFPA:'NFPA — ระบบป้องกันอัคคีภัยโรงไฟฟ้า', titleNFPA704:'NFPA 704 — ระบุอันตรายสารเคมี',
+    // MSDS
+    navChemical:'สารเคมีและ MSDS', navMSDS:'MSDS/SDS สารเคมี', navMSDSCompliance:'ตรวจสอบ MSDS Compliance',
+    titleMSDS:'MSDS/SDS — ทะเบียนเอกสารข้อมูลความปลอดภัยสารเคมี', titleMSDSCompliance:'MSDS Compliance — ตรวจสอบการปฏิบัติตาม',
+    msdsTotal:'SDS ทั้งหมด', msdsCurrent:'SDS เป็นปัจจุบัน', msdsExpiring:'ใกล้หมดอายุ', msdsExpired:'หมดอายุ', msdsHighRisk:'ความเสี่ยงสูง',
+    msdsRegistryTitle:'ทะเบียน SDS สารเคมี (GHS 16 Sections)',
+    msdsColName:'ชื่อสารเคมี', msdsColCAS:'CAS No.', msdsColLocation:'สถานที่จัดเก็บ', msdsColQty:'ปริมาณ',
+    msdsColGHS:'GHS Hazard', msdsColPPE:'PPE ที่กำหนด', msdsColPEL:'PEL/TLV', msdsColSdsDate:'วันที่ SDS', msdsColStatus:'สถานะ',
+    msdsCompPass:'ผ่านการตรวจ', msdsCompFail:'ไม่ผ่าน', msdsCompPending:'รอตรวจ', msdsCompRate:'อัตราผ่าน (%)',
+    msdsChecklistTitle:'รายการตรวจสอบ MSDS Compliance',
+    msdsChkCategory:'หมวด', msdsChkItem:'รายการตรวจ', msdsChkFreq:'ความถี่', msdsChkLastCheck:'ตรวจล่าสุด', msdsChkStatus:'สถานะ', msdsChkAction:'แก้ไข',
+    msdsExposureTitle:'การเฝ้าระวังการสัมผัสสารเคมี (Exposure Monitoring)',
+    expColDate:'วันที่', expColChemical:'สารเคมี', expColArea:'พื้นที่', expColMeasured:'ค่าที่วัด', expColPEL:'PEL/TLV', expColResult:'ผลประเมิน', expColAction:'มาตรการ',
     // Dashboard
     safeDays:'ชั่วโมงปลอดภัย (Safe Hours)', safeDaysSub:'นับตั้งแต่อุบัติเหตุครั้งล่าสุด',
     monthIncidents:'อุบัติเหตุเดือนนี้', monthIncidentsSub:'จากเดือนก่อน',
@@ -2206,6 +2575,21 @@ const LANG = {
     projErrRequired:'Please enter project code and name', projErrExists:'This project code already exists',
     projDeleteConfirm:'Confirm delete this project? All project data will be deleted.',
     projWelcome:'Hello',
+    // NFPA
+    navNFPA:'Fire Protection', navNFPA704:'NFPA 704 Chemicals',
+    titleNFPA:'NFPA — Power Plant Fire Protection', titleNFPA704:'NFPA 704 — Hazardous Materials Identification',
+    // MSDS
+    navChemical:'Chemicals & MSDS', navMSDS:'MSDS/SDS Registry', navMSDSCompliance:'MSDS Compliance',
+    titleMSDS:'MSDS/SDS — Safety Data Sheet Registry', titleMSDSCompliance:'MSDS Compliance — Inspection & Monitoring',
+    msdsTotal:'Total SDS', msdsCurrent:'Current SDS', msdsExpiring:'Expiring Soon', msdsExpired:'Expired', msdsHighRisk:'High Risk',
+    msdsRegistryTitle:'Chemical SDS Registry (GHS 16 Sections)',
+    msdsColName:'Chemical Name', msdsColCAS:'CAS No.', msdsColLocation:'Storage Location', msdsColQty:'Quantity',
+    msdsColGHS:'GHS Hazard', msdsColPPE:'Required PPE', msdsColPEL:'PEL/TLV', msdsColSdsDate:'SDS Date', msdsColStatus:'Status',
+    msdsCompPass:'Passed', msdsCompFail:'Failed', msdsCompPending:'Pending', msdsCompRate:'Pass Rate (%)',
+    msdsChecklistTitle:'MSDS Compliance Checklist',
+    msdsChkCategory:'Category', msdsChkItem:'Inspection Item', msdsChkFreq:'Frequency', msdsChkLastCheck:'Last Check', msdsChkStatus:'Status', msdsChkAction:'Action',
+    msdsExposureTitle:'Chemical Exposure Monitoring',
+    expColDate:'Date', expColChemical:'Chemical', expColArea:'Area', expColMeasured:'Measured', expColPEL:'PEL/TLV', expColResult:'Result', expColAction:'Action',
     safeDays:'Safe Hours', safeDaysSub:'Time since last accident',
     monthIncidents:'Incidents This Month', monthIncidentsSub:'from previous month',
     nearMiss:'Near Miss This Month', nearMissSub:'Total Near Miss reports',
@@ -2317,6 +2701,11 @@ const defaultStoreData = {
     { id:'RSK-003', activity:'ทำงานบนที่สูง > 2m', hazard:'ตกจากที่สูง', l:3, s:5, control:'สายรัดนิรภัย, ตาข่ายกันตก, Guardrail', owner:'จป.วิชาชีพ' },
     { id:'RSK-004', activity:'ยกของด้วยเครน', hazard:'ของตก/เครนล้ม', l:2, s:5, control:'ตรวจเครนก่อนใช้, ผู้ควบคุมมีใบอนุญาต', owner:'ผู้ควบคุมเครน' },
     { id:'RSK-005', activity:'ใช้สารเคมี/สี', hazard:'สูดดมสารพิษ', l:3, s:3, control:'หน้ากาก, ระบายอากาศ, MSDS', owner:'จป.วิชาชีพ' },
+    { id:'RSK-006', activity:'การจัดเก็บเชื้อเพลิงชีวมวล', hazard:'เพลิงไหม้/ลุกไหม้เอง (NFPA 850 Ch.11)', l:3, s:4, control:'ตรวจอุณหภูมิกองเชื้อเพลิงรายวัน, ระบบ Sprinkler, พลิกกอง', owner:'หน.เชื้อเพลิง' },
+    { id:'RSK-007', activity:'ฝุ่นชีวมวลในระบบลำเลียง', hazard:'ระเบิดฝุ่น (NFPA 652/654)', l:2, s:5, control:'ระบบดูดฝุ่น, ทำความสะอาดสม่ำเสมอ, Explosion Venting', owner:'วิศวกรเครื่องกล' },
+    { id:'RSK-008', activity:'น้ำมัน Turbine/Transformer', hazard:'เพลิงไหม้จากน้ำมัน (NFPA 850 Ch.9)', l:2, s:4, control:'Water Spray System, คันกั้นน้ำมัน, ตรวจรั่วรายเดือน', owner:'วิศวกรไฟฟ้า' },
+    { id:'RSK-009', activity:'งานบำรุงรักษา Boiler', hazard:'ระเบิด/ไฟย้อนกลับ (NFPA 85)', l:2, s:5, control:'LOTO, Purge ก่อนเปิด, ใบอนุญาตทำงาน', owner:'วิศวกร Boiler' },
+    { id:'RSK-010', activity:'จัดเก็บสารเคมี (กรด/ด่าง)', hazard:'รั่วไหล/สัมผัสสารเคมี (NFPA 30/704)', l:3, s:3, control:'Containment, PPE เต็มรูปแบบ, MSDS, ป้าย NFPA 704', owner:'จป.วิชาชีพ' },
   ],
   envRecords: [
     { date:'2569-03-25', param:'PM2.5', value:35, unit:'µg/m³', std:'< 50', point:'ริมรั้วทิศเหนือ' },
@@ -2337,6 +2726,11 @@ const defaultStoreData = {
     { id:'TRN-003', name:'การดับเพลิงและอพยพหนีไฟ', date:'2569-03-10', count:45, pass:45, trainer:'สำนักดับเพลิง', status:'completed' },
     { id:'TRN-004', name:'การใช้เครนและปั้นจั่น', date:'2569-04-05', count:15, pass:0, trainer:'กรมสวัสดิการฯ', status:'planned' },
     { id:'TRN-005', name:'การปฐมพยาบาลเบื้องต้น', date:'2569-04-12', count:20, pass:0, trainer:'สภากาชาดไทย', status:'planned' },
+    { id:'TRN-006', name:'NFPA 850 — การป้องกันอัคคีภัยในโรงไฟฟ้า', date:'2569-04-20', count:30, pass:0, trainer:'จป.วิชาชีพ / วิศวกร', status:'planned' },
+    { id:'TRN-007', name:'NFPA 70E — ความปลอดภัยไฟฟ้า & LOTO', date:'2569-04-25', count:15, pass:0, trainer:'วิศวกรไฟฟ้า', status:'planned' },
+    { id:'TRN-008', name:'NFPA 652/654 — อันตรายฝุ่นระเบิด (Combustible Dust)', date:'2569-05-05', count:20, pass:0, trainer:'ผู้เชี่ยวชาญภายนอก', status:'planned' },
+    { id:'TRN-009', name:'NFPA 704 — การอ่าน Hazard Diamond & จัดเก็บสารเคมี', date:'2569-05-10', count:25, pass:0, trainer:'จป.วิชาชีพ', status:'planned' },
+    { id:'TRN-010', name:'การใช้ SCBA & อุปกรณ์ดับเพลิง (NFPA 1981)', date:'2569-05-15', count:15, pass:0, trainer:'สำนักดับเพลิง', status:'planned' },
   ],
   documents: [
     { id:'POL-001', name:'นโยบายความปลอดภัยและสิ่งแวดล้อม', type:'นโยบาย', ver:'3.0', date:'2569-01-15', approver:'ผู้อำนวยการโครงการ', status:'active' },
@@ -2469,11 +2863,121 @@ const defaultStoreData = {
     },
   ],
   workPermits: [
-    { id:'WP-001', type:'งานบนที่สูง', company:'บจก. ก่อสร้างเอ็กเซล', requester:'สมศักดิ์ แก้วมณี', workers:8, location:'โซน A ชั้น 5', startDate:'2569-03-25', endDate:'2569-03-27', timeStart:'08:00', timeEnd:'17:00', desc:'ติดตั้งโครงเหล็กหลังคาชั้น 5', safety:'สวม Full Body Harness ตลอดเวลา, ติดตั้ง Guardrail, มี Safety net', ppe:['หมวกนิรภัย','รองเท้านิรภัย','เสื้อสะท้อนแสง','สายรัดนิรภัย'], risk:'high', status:'pending', submitDate:'2569-03-24', approver:'', approveDate:'', rejectReason:'' },
-    { id:'WP-002', type:'งานเชื่อม/ตัด (Hot Work)', company:'บจก. เมทัลเวิร์ค', requester:'วิชัย ทองดี', workers:4, location:'โซน B ชั้น 2', startDate:'2569-03-26', endDate:'2569-03-26', timeStart:'09:00', timeEnd:'16:00', desc:'เชื่อมเหล็กโครงสร้างคาน B2-B5', safety:'Fire Watch standby, ถังดับเพลิงพร้อมใช้, ปิดกั้นพื้นที่ประกายไฟ', ppe:['หมวกนิรภัย','รองเท้านิรภัย','แว่นตานิรภัย','ถุงมือนิรภัย'], risk:'high', status:'pending', submitDate:'2569-03-24', approver:'', approveDate:'', rejectReason:'' },
-    { id:'WP-003', type:'งานขุดดิน', company:'บจก. ดินทองก่อสร้าง', requester:'ประเสริฐ มั่นคง', workers:12, location:'โซน D พื้นที่ฐานราก', startDate:'2569-03-22', endDate:'2569-03-24', timeStart:'07:00', timeEnd:'17:00', desc:'ขุดดินวางฐานรากลึก 3 เมตร', safety:'Shoring ค้ำยัน, ตรวจดินทุกเช้า, ห้ามเข้าขณะฝนตก', ppe:['หมวกนิรภัย','รองเท้านิรภัย','เสื้อสะท้อนแสง'], risk:'medium', status:'approved', submitDate:'2569-03-21', approver:'จป.สมชาย', approveDate:'2569-03-21', rejectReason:'' },
-    { id:'WP-004', type:'งานในที่อับอากาศ', company:'บจก. ก่อสร้างเอ็กเซล', requester:'สมศักดิ์ แก้วมณี', workers:3, location:'โซน C ถังเก็บน้ำใต้ดิน', startDate:'2569-03-20', endDate:'2569-03-20', timeStart:'08:00', timeEnd:'12:00', desc:'ทำความสะอาดภายในถังเก็บน้ำ', safety:'ตรวจวัดก๊าซก่อนเข้า, มี Buddy standby, เชือกช่วยชีวิตพร้อม', ppe:['หมวกนิรภัย','รองเท้านิรภัย','หน้ากากกันสารเคมี'], risk:'critical', status:'rejected', submitDate:'2569-03-19', approver:'จป.สมชาย', approveDate:'2569-03-19', rejectReason:'ต้องเพิ่มแผนฉุกเฉินกู้ภัย และต้องมีทีมกู้ภัย standby อย่างน้อย 2 คน' },
-    { id:'WP-005', type:'งานไฟฟ้า', company:'บจก. อิเล็คทริคโปร', requester:'ธนากร ไฟฟ้า', workers:5, location:'โซน A-B ห้อง MDB', startDate:'2569-03-18', endDate:'2569-03-19', timeStart:'08:00', timeEnd:'17:00', desc:'เดินสายไฟฟ้าหลักจากห้อง MDB ไปยัง DB แต่ละชั้น', safety:'LOTO ก่อนทำงาน, ตรวจไฟฟ้าด้วย Voltage Detector, มี Electrician ใบอนุญาต', ppe:['หมวกนิรภัย','รองเท้านิรภัย','ถุงมือนิรภัย'], risk:'high', status:'expired', submitDate:'2569-03-17', approver:'จป.สมชาย', approveDate:'2569-03-17', rejectReason:'' },
+    { id:'WP-001', phase:'construction', dept:'civil', type:'งานบนที่สูง', company:'บจก. ก่อสร้างเอ็กเซล', requester:'สมศักดิ์ แก้วมณี', workers:8, location:'โซน A ชั้น 5', startDate:'2569-03-25', endDate:'2569-03-27', timeStart:'08:00', timeEnd:'17:00', desc:'ติดตั้งโครงเหล็กหลังคาชั้น 5', safety:'สวม Full Body Harness ตลอดเวลา, ติดตั้ง Guardrail, มี Safety net', ppe:['หมวกนิรภัย','รองเท้านิรภัย','เสื้อสะท้อนแสง','สายรัดนิรภัย'], risk:'high', status:'pending', submitDate:'2569-03-24', approver:'', approveDate:'', rejectReason:'' },
+    { id:'WP-002', phase:'construction', dept:'mechanical', type:'งานเชื่อม/ตัด (Hot Work)', company:'บจก. เมทัลเวิร์ค', requester:'วิชัย ทองดี', workers:4, location:'โซน B ชั้น 2', startDate:'2569-03-26', endDate:'2569-03-26', timeStart:'09:00', timeEnd:'16:00', desc:'เชื่อมเหล็กโครงสร้างคาน B2-B5', safety:'Fire Watch standby, ถังดับเพลิงพร้อมใช้, ปิดกั้นพื้นที่ประกายไฟ', ppe:['หมวกนิรภัย','รองเท้านิรภัย','แว่นตานิรภัย','ถุงมือนิรภัย'], risk:'high', status:'pending', submitDate:'2569-03-24', approver:'', approveDate:'', rejectReason:'' },
+    { id:'WP-003', phase:'construction', dept:'civil', type:'งานขุดดิน', company:'บจก. ดินทองก่อสร้าง', requester:'ประเสริฐ มั่นคง', workers:12, location:'โซน D พื้นที่ฐานราก', startDate:'2569-03-22', endDate:'2569-03-24', timeStart:'07:00', timeEnd:'17:00', desc:'ขุดดินวางฐานรากลึก 3 เมตร', safety:'Shoring ค้ำยัน, ตรวจดินทุกเช้า, ห้ามเข้าขณะฝนตก', ppe:['หมวกนิรภัย','รองเท้านิรภัย','เสื้อสะท้อนแสง'], risk:'medium', status:'approved', submitDate:'2569-03-21', approver:'จป.สมชาย', approveDate:'2569-03-21', rejectReason:'' },
+    { id:'WP-004', phase:'maintenance', dept:'mechanical', type:'งานในที่อับอากาศ', company:'บจก. ก่อสร้างเอ็กเซล', requester:'สมศักดิ์ แก้วมณี', workers:3, location:'โซน C ถังเก็บน้ำใต้ดิน', startDate:'2569-03-20', endDate:'2569-03-20', timeStart:'08:00', timeEnd:'12:00', desc:'ทำความสะอาดภายในถังเก็บน้ำ', safety:'ตรวจวัดก๊าซก่อนเข้า, มี Buddy standby, เชือกช่วยชีวิตพร้อม', ppe:['หมวกนิรภัย','รองเท้านิรภัย','หน้ากากกันสารเคมี'], risk:'critical', status:'rejected', submitDate:'2569-03-19', approver:'จป.สมชาย', approveDate:'2569-03-19', rejectReason:'ต้องเพิ่มแผนฉุกเฉินกู้ภัย และต้องมีทีมกู้ภัย standby อย่างน้อย 2 คน' },
+    { id:'WP-005', phase:'construction', dept:'electrical', type:'เดินสายไฟฟ้า/Cable Pulling', company:'บจก. อิเล็คทริคโปร', requester:'ธนากร ไฟฟ้า', workers:5, location:'โซน A-B ห้อง MDB', startDate:'2569-03-18', endDate:'2569-03-19', timeStart:'08:00', timeEnd:'17:00', desc:'เดินสายไฟฟ้าหลักจากห้อง MDB ไปยัง DB แต่ละชั้น', safety:'LOTO ก่อนทำงาน, ตรวจไฟฟ้าด้วย Voltage Detector, มี Electrician ใบอนุญาต', ppe:['หมวกนิรภัย','รองเท้านิรภัย','ถุงมือนิรภัย'], risk:'high', status:'expired', submitDate:'2569-03-17', approver:'จป.สมชาย', approveDate:'2569-03-17', rejectReason:'' },
+    { id:'WP-006', phase:'operation', dept:'chemical', type:'ผสม/เติมสารเคมี', company:'บจก. เคมีบำบัด', requester:'วิทยา เคมีดี', workers:3, location:'ห้องเคมีบำบัดน้ำ', startDate:'2569-03-28', endDate:'2569-03-28', timeStart:'08:00', timeEnd:'12:00', desc:'เติมกรดซัลฟิวริกและโซดาไฟในระบบบำบัดน้ำ Boiler', safety:'PPE กันสารเคมีเต็มรูปแบบ, Eye Wash/Shower พร้อม, Spill Kit', ppe:['หมวกนิรภัย','รองเท้าบูท','ถุงมือยางกันกรด','แว่นตานิรภัย','Face shield','ชุดกันสารเคมี'], risk:'high', status:'pending', submitDate:'2569-03-27', approver:'', approveDate:'', rejectReason:'' },
+    { id:'WP-007', phase:'operation', dept:'process', type:'ทดสอบ Boiler/Pressure Test', company:'บจก. เพาเวอร์เทค', requester:'สุรศักดิ์ วิศวกร', workers:6, location:'อาคาร Boiler', startDate:'2569-03-29', endDate:'2569-03-30', timeStart:'07:00', timeEnd:'18:00', desc:'Hydrostatic Test ระบบท่อไอน้ำ Boiler #1', safety:'ปิดกั้นพื้นที่, LOTO ระบบ, ตรวจวัดก๊าซ, ตรวจแรงดันทุก 30 นาที', ppe:['หมวกนิรภัย','รองเท้านิรภัย','แว่นตานิรภัย','ที่อุดหู'], risk:'critical', status:'pending', submitDate:'2569-03-27', approver:'', approveDate:'', rejectReason:'' },
+    { id:'WP-008', phase:'maintenance', dept:'process', type:'งานระบบลำเลียงเชื้อเพลิง', company:'บจก. เพาเวอร์เทค', requester:'อนุชา เครื่องกล', workers:4, location:'ระบบ Conveyor เชื้อเพลิง', startDate:'2569-03-28', endDate:'2569-03-29', timeStart:'08:00', timeEnd:'17:00', desc:'ซ่อมบำรุง Belt Conveyor ลำเลียงเชื้อเพลิงชีวมวล', safety:'LOTO ระบบ Conveyor, ทำความสะอาดฝุ่นก่อนทำงาน, หน้ากาก N95', ppe:['หมวกนิรภัย','รองเท้านิรภัย','แว่นตานิรภัย','หน้ากาก N95','ถุงมือนิรภัย'], risk:'high', status:'pending', submitDate:'2569-03-27', approver:'', approveDate:'', rejectReason:'' },
+  ],
+  // NFPA 850 Fire Protection Inspection Checklist
+  nfpaChecklist: [
+    { id:'NFPA-001', cat:'fire-suppression', item:'ระบบสปริงเกอร์อัตโนมัติ (Automatic Sprinkler)', std:'NFPA 13/25', freq:'รายเดือน', lastCheck:'2569-03-01', status:'pass' },
+    { id:'NFPA-002', cat:'fire-suppression', item:'ถังดับเพลิงมือถือ — ตรวจสภาพ/แรงดัน', std:'NFPA 10', freq:'รายเดือน', lastCheck:'2569-03-15', status:'pass' },
+    { id:'NFPA-003', cat:'fire-suppression', item:'ระบบ Water Spray สำหรับ Transformer', std:'NFPA 15/850', freq:'รายไตรมาส', lastCheck:'2569-01-20', status:'pass' },
+    { id:'NFPA-004', cat:'fire-suppression', item:'ปั๊มดับเพลิง (Fire Pump) — ทดสอบการทำงาน', std:'NFPA 20/25', freq:'รายสัปดาห์', lastCheck:'2569-03-25', status:'pass' },
+    { id:'NFPA-005', cat:'fire-suppression', item:'ระบบ Foam System สำหรับถังเชื้อเพลิง', std:'NFPA 11/850', freq:'รายปี', lastCheck:'2568-12-15', status:'pass' },
+    { id:'NFPA-006', cat:'fire-suppression', item:'ท่อดับเพลิงหลัก & Hydrant — ตรวจแรงดันน้ำ', std:'NFPA 24/25', freq:'รายไตรมาส', lastCheck:'2569-03-10', status:'pass' },
+    { id:'NFPA-007', cat:'fire-alarm', item:'แผงควบคุมระบบแจ้งเตือนอัคคีภัย (FACP)', std:'NFPA 72', freq:'รายเดือน', lastCheck:'2569-03-20', status:'pass' },
+    { id:'NFPA-008', cat:'fire-alarm', item:'Smoke Detector — ทดสอบการตรวจจับ', std:'NFPA 72', freq:'6 เดือน', lastCheck:'2569-01-15', status:'pass' },
+    { id:'NFPA-009', cat:'fire-alarm', item:'Heat Detector — ทดสอบการทำงาน', std:'NFPA 72', freq:'รายปี', lastCheck:'2569-01-15', status:'pass' },
+    { id:'NFPA-010', cat:'fire-alarm', item:'Manual Pull Station — ทดสอบทุกจุด', std:'NFPA 72', freq:'รายปี', lastCheck:'2568-12-01', status:'pass' },
+    { id:'NFPA-011', cat:'fire-alarm', item:'Notification Appliances (Horns/Strobes)', std:'NFPA 72', freq:'รายปี', lastCheck:'2568-12-01', status:'pass' },
+    { id:'NFPA-012', cat:'fuel-storage', item:'ถังเก็บเชื้อเพลิงเหลว — ตรวจรั่วไหล/คันกั้น', std:'NFPA 30/850', freq:'รายเดือน', lastCheck:'2569-03-10', status:'pass' },
+    { id:'NFPA-013', cat:'fuel-storage', item:'ระบบระบายอากาศคลังสารเคมี', std:'NFPA 30/850', freq:'รายไตรมาส', lastCheck:'2569-02-15', status:'fail' },
+    { id:'NFPA-014', cat:'fuel-storage', item:'ป้าย NFPA 704 Hazard Diamond — ครบทุกจุด', std:'NFPA 704', freq:'รายเดือน', lastCheck:'2569-03-01', status:'pass' },
+    { id:'NFPA-015', cat:'fuel-storage', item:'ระบบ Containment/Drainage สารเคมีรั่วไหล', std:'NFPA 30/850 Ch.9', freq:'รายไตรมาส', lastCheck:'2569-01-20', status:'pass' },
+    { id:'NFPA-016', cat:'electrical', item:'ห้อง MDB/Switchgear — ระบบดับเพลิงอัตโนมัติ', std:'NFPA 850 Ch.9', freq:'รายไตรมาส', lastCheck:'2569-02-01', status:'pass' },
+    { id:'NFPA-017', cat:'electrical', item:'Cable Tray/Tunnel — ตรวจ Firewall & Fire Stop', std:'NFPA 850 Ch.6', freq:'รายปี', lastCheck:'2568-12-10', status:'pass' },
+    { id:'NFPA-018', cat:'electrical', item:'Transformer — ตรวจน้ำมัน/ระบบป้องกันไฟ', std:'NFPA 850 Ch.9', freq:'รายไตรมาส', lastCheck:'2569-03-05', status:'pass' },
+    { id:'NFPA-019', cat:'electrical', item:'ระบบ LOTO (Lockout/Tagout)', std:'NFPA 70E', freq:'รายเดือน', lastCheck:'2569-03-15', status:'pass' },
+    { id:'NFPA-020', cat:'emergency', item:'แผนอพยพฉุกเฉิน & จุดรวมพล', std:'NFPA 101', freq:'6 เดือน', lastCheck:'2569-01-20', status:'pass' },
+    { id:'NFPA-021', cat:'emergency', item:'ไฟฉุกเฉิน/ป้ายทางหนีไฟ — ทดสอบการทำงาน', std:'NFPA 101/110', freq:'รายเดือน', lastCheck:'2569-03-01', status:'pass' },
+    { id:'NFPA-022', cat:'emergency', item:'เครื่องกำเนิดไฟฟ้าฉุกเฉิน — ทดสอบเดินเครื่อง', std:'NFPA 110', freq:'รายเดือน', lastCheck:'2569-03-20', status:'pass' },
+    { id:'NFPA-023', cat:'emergency', item:'ชุดดับเพลิง SCBA — ตรวจถังอากาศ/สภาพ', std:'NFPA 1981', freq:'รายเดือน', lastCheck:'2569-03-10', status:'pass' },
+    { id:'NFPA-024', cat:'emergency', item:'ซ้อมอพยพ/ดับเพลิง (Fire Drill)', std:'NFPA 850 Ch.5', freq:'6 เดือน', lastCheck:'2569-01-25', status:'pass' },
+    { id:'NFPA-025', cat:'biomass', item:'ระบบตรวจจับประกายไฟ Conveyor เชื้อเพลิง', std:'NFPA 850 Ch.11', freq:'รายสัปดาห์', lastCheck:'2569-03-22', status:'pass' },
+    { id:'NFPA-026', cat:'biomass', item:'ลานกองเชื้อเพลิงชีวมวล — ตรวจอุณหภูมิ/ลุกไหม้เอง', std:'NFPA 850 Ch.11', freq:'รายวัน', lastCheck:'2569-03-28', status:'pass' },
+    { id:'NFPA-027', cat:'biomass', item:'ระบบดูดฝุ่น Dust Collection — ตรวจสะสม', std:'NFPA 652/654', freq:'รายสัปดาห์', lastCheck:'2569-03-20', status:'fail' },
+    { id:'NFPA-028', cat:'biomass', item:'พื้นที่รับขยะ/เชื้อเพลิง — ระบบสปริงเกอร์', std:'NFPA 850 Ch.11', freq:'รายเดือน', lastCheck:'2569-03-05', status:'pass' },
+    { id:'NFPA-029', cat:'biomass', item:'Electrostatic Precipitator — ตรวจการสะสมเถ้า', std:'NFPA 850 Ch.12', freq:'รายสัปดาห์', lastCheck:'2569-03-25', status:'pass' },
+    { id:'NFPA-030', cat:'biomass', item:'ระบบระบายแรงดัน Explosion Venting', std:'NFPA 68/850', freq:'รายปี', lastCheck:'2569-01-10', status:'pending' },
+  ],
+  // NFPA 25 Water-Based Fire Protection Maintenance
+  nfpa25Schedule: [
+    { sys:'ปั๊มดับเพลิง (Fire Pump)', type:'ทดสอบเดินเครื่อง', freq:'รายสัปดาห์', lastCheck:'2569-03-25', nextCheck:'2569-04-01', status:'ok' },
+    { sys:'Control Valves', type:'ตรวจตำแหน่งเปิด', freq:'รายเดือน', lastCheck:'2569-03-01', nextCheck:'2569-04-01', status:'ok' },
+    { sys:'Sprinkler Heads', type:'ตรวจสภาพ/สิ่งกีดขวาง', freq:'รายปี', lastCheck:'2569-01-15', nextCheck:'2570-01-15', status:'ok' },
+    { sys:'Alarm Valves', type:'ทดสอบการทำงาน', freq:'รายไตรมาส', lastCheck:'2569-01-20', nextCheck:'2569-04-20', status:'due-soon' },
+    { sys:'Main Drain Test', type:'ทดสอบแรงดันน้ำ', freq:'รายปี', lastCheck:'2569-01-15', nextCheck:'2570-01-15', status:'ok' },
+    { sys:'Fire Hose Connections', type:'ตรวจสภาพ/ทดสอบ', freq:'รายปี', lastCheck:'2568-12-01', nextCheck:'2569-12-01', status:'ok' },
+    { sys:'Dry Pipe Valves', type:'Trip Test', freq:'รายปี', lastCheck:'2569-01-15', nextCheck:'2570-01-15', status:'ok' },
+    { sys:'ท่อภายใน (Internal Pipe)', type:'ตรวจสภาพภายใน', freq:'5 ปี', lastCheck:'2567-06-01', nextCheck:'2572-06-01', status:'ok' },
+    { sys:'Backflow Preventer', type:'ทดสอบ', freq:'5 ปี', lastCheck:'2567-06-01', nextCheck:'2572-06-01', status:'ok' },
+  ],
+  // NFPA 72 Fire Alarm Inspection
+  nfpa72Schedule: [
+    { device:'Fire Alarm Control Panel (FACP)', location:'ห้องควบคุม', freq:'รายเดือน', lastCheck:'2569-03-20', nextCheck:'2569-04-20', status:'ok' },
+    { device:'Smoke Detector (Addressable)', location:'อาคาร Turbine ทุกชั้น', freq:'6 เดือน', lastCheck:'2569-01-15', nextCheck:'2569-07-15', status:'ok' },
+    { device:'Duct Smoke Detector', location:'ระบบ HVAC ห้องควบคุม', freq:'6 เดือน', lastCheck:'2569-01-15', nextCheck:'2569-07-15', status:'ok' },
+    { device:'Heat Detector', location:'ห้อง Boiler, คลังเชื้อเพลิง', freq:'รายปี', lastCheck:'2569-01-15', nextCheck:'2570-01-15', status:'ok' },
+    { device:'Manual Pull Station', location:'ทุกทางออก (12 จุด)', freq:'รายปี', lastCheck:'2568-12-01', nextCheck:'2569-12-01', status:'ok' },
+    { device:'Horn/Strobe', location:'ทั่วทั้งโรงไฟฟ้า', freq:'รายปี', lastCheck:'2568-12-01', nextCheck:'2569-12-01', status:'ok' },
+    { device:'Battery Backup (FACP)', location:'ห้องควบคุม', freq:'รายปี (Load Test)', lastCheck:'2569-01-15', nextCheck:'2570-01-15', status:'ok' },
+    { device:'Detector Sensitivity Test', location:'ทั้งระบบ', freq:'2 ปี', lastCheck:'2568-06-01', nextCheck:'2570-06-01', status:'ok' },
+  ],
+  // NFPA 704 Hazardous Materials
+  nfpa704Items: [
+    { id:'HAZ-001', name:'น้ำมันดีเซล (Diesel)', location:'ถังเก็บเชื้อเพลิง โซน A', h:1, f:2, r:0, s:'', note:'เชื้อเพลิงสำรอง Generator' },
+    { id:'HAZ-002', name:'น้ำมันหล่อลื่น Turbine (Lube Oil)', location:'ห้อง Turbine', h:0, f:1, r:0, s:'', note:'น้ำมันหล่อลื่นระบบเทอร์ไบน์' },
+    { id:'HAZ-003', name:'น้ำมันหม้อแปลง (Transformer Oil)', location:'ลาน Transformer', h:0, f:1, r:0, s:'', note:'Mineral oil ในหม้อแปลงไฟฟ้า' },
+    { id:'HAZ-004', name:'กรดซัลฟิวริก (H₂SO₄)', location:'ห้องเคมีบำบัดน้ำ', h:3, f:0, r:2, s:'', note:'ใช้ในระบบบำบัดน้ำ Boiler' },
+    { id:'HAZ-005', name:'โซเดียมไฮดรอกไซด์ (NaOH)', location:'ห้องเคมีบำบัดน้ำ', h:3, f:0, r:1, s:'', note:'ใช้ปรับ pH ในระบบบำบัดน้ำ' },
+    { id:'HAZ-006', name:'ไฮโดรเจน (H₂)', location:'ระบบ Generator Cooling', h:0, f:4, r:0, s:'SA', note:'ก๊าซหล่อเย็น Generator — ไวไฟสูงมาก' },
+    { id:'HAZ-007', name:'โพรเพน/LPG', location:'ถัง LPG สำรอง', h:1, f:4, r:0, s:'', note:'เชื้อเพลิง Igniter' },
+    { id:'HAZ-008', name:'สารดับเพลิง CO₂', location:'ห้อง MDB/Switchgear', h:1, f:0, r:0, s:'SA', note:'ระบบดับเพลิงอัตโนมัติ' },
+    { id:'HAZ-009', name:'แอมโมเนีย (NH₃)', location:'ระบบ SCR/SNCR', h:3, f:1, r:0, s:'', note:'ใช้ลด NOx ในไอเสีย' },
+    { id:'HAZ-010', name:'ite Lime Ca(OH)₂', location:'ระบบบำบัดก๊าซ', h:2, f:0, r:0, s:'', note:'ปูนขาว — ใช้ดูดซับก๊าซกรด' },
+  ],
+  // MSDS/SDS Chemical Registry (GHS 16-Section Format)
+  msdsItems: [
+    { id:'SDS-001', name:'กรดซัลฟิวริก (Sulfuric Acid, H₂SO₄)', cas:'7664-93-9', location:'ห้องเคมีบำบัดน้ำ', qty:'500 ลิตร', ghs:'corrosive', risk:'high', ppe:'ถุงมือยางกันกรด, แว่นตานิรภัย, Face shield, ชุดกันสารเคมี, รองเท้าบูท', pel:'1 mg/m³ (TWA)', sdsDate:'2569-01-15', firstaid:'สัมผัสผิวหนัง: ล้างน้ำปริมาณมาก 15 นาที / สูดดม: พาออกจากพื้นที่ / เข้าตา: ล้างน้ำ 15 นาที พบแพทย์', status:'current' },
+    { id:'SDS-002', name:'โซเดียมไฮดรอกไซด์ (NaOH)', cas:'1310-73-2', location:'ห้องเคมีบำบัดน้ำ', qty:'300 ลิตร', ghs:'corrosive', risk:'high', ppe:'ถุงมือยาง, แว่นตานิรภัย, Face shield, ชุดกันสารเคมี', pel:'2 mg/m³ (Ceiling)', sdsDate:'2569-01-15', firstaid:'สัมผัสผิวหนัง: ล้างน้ำปริมาณมาก / สูดดม: พาออกจากพื้นที่ / เข้าตา: ล้างน้ำ 15 นาที', status:'current' },
+    { id:'SDS-003', name:'น้ำมันดีเซล (Diesel Fuel)', cas:'68476-34-6', location:'ถังเก็บเชื้อเพลิง โซน A', qty:'10,000 ลิตร', ghs:'flammable', risk:'medium', ppe:'ถุงมือไนไตรล์, แว่นตานิรภัย, รองเท้านิรภัย', pel:'100 mg/m³ (TWA)', sdsDate:'2569-02-01', firstaid:'สัมผัสผิวหนัง: ล้างด้วยสบู่และน้ำ / กลืน: ห้ามทำให้อาเจียน พบแพทย์', status:'current' },
+    { id:'SDS-004', name:'แอมโมเนีย (Ammonia, NH₃)', cas:'7664-41-7', location:'ระบบ SCR/SNCR', qty:'200 กก.', ghs:'toxic', risk:'high', ppe:'หน้ากาก Full-face + ตลับกรอง NH₃, ถุงมือยาง, ชุดกันสารเคมี, SCBA (กรณีรั่วไหล)', pel:'25 ppm (TWA) / 35 ppm (STEL)', sdsDate:'2569-01-20', firstaid:'สูดดม: พาออกที่อากาศบริสุทธิ์ ให้ O₂ / สัมผัสผิวหนัง: ล้างน้ำ 20 นาที / เข้าตา: ล้างน้ำ 15 นาที', status:'current' },
+    { id:'SDS-005', name:'ไฮโดรเจน (Hydrogen, H₂)', cas:'1333-74-0', location:'ระบบ Generator Cooling', qty:'ถัง 50 ลิตร x 10', ghs:'flammable', risk:'high', ppe:'รองเท้านิรภัย ESD, ไม่ใช้เครื่องมือสร้างประกายไฟ, แว่นตานิรภัย', pel:'ไม่กำหนด (Simple Asphyxiant)', sdsDate:'2569-03-01', firstaid:'สูดดม: พาออกที่อากาศบริสุทธิ์ ให้ O₂ / ไฟไหม้: หยุดแหล่งก๊าซ ห้ามดับเปลวที่รั่ว', status:'current' },
+    { id:'SDS-006', name:'น้ำมันหม้อแปลง (Transformer Oil)', cas:'8012-95-1', location:'ลาน Transformer', qty:'5,000 ลิตร', ghs:'irritant', risk:'low', ppe:'ถุงมือไนไตรล์, แว่นตานิรภัย', pel:'5 mg/m³ (TWA)', sdsDate:'2568-06-01', firstaid:'สัมผัสผิวหนัง: ล้างสบู่น้ำ / เข้าตา: ล้างน้ำ', status:'expiring' },
+    { id:'SDS-007', name:'ไฮดราซีน (Hydrazine, N₂H₄)', cas:'302-01-2', location:'ระบบบำบัดน้ำ Boiler', qty:'50 ลิตร', ghs:'health-hazard', risk:'high', ppe:'หน้ากาก Full-face + ตลับกรอง, ถุงมือยาง, ชุดกันสารเคมี Level B', pel:'0.01 ppm (TWA) — สารก่อมะเร็ง', sdsDate:'2569-02-15', firstaid:'สัมผัส: ถอดเสื้อผ้าปนเปื้อน ล้างน้ำ 20 นาที / สูดดม: พาออก ให้ O₂ พบแพทย์ทันที', status:'current' },
+    { id:'SDS-008', name:'ปูนขาว Ca(OH)₂ (Hydrated Lime)', cas:'1305-62-0', location:'ระบบบำบัดก๊าซ', qty:'2,000 กก.', ghs:'irritant', risk:'low', ppe:'หน้ากาก N95, แว่นตานิรภัย, ถุงมือ', pel:'5 mg/m³ (TWA)', sdsDate:'2569-01-10', firstaid:'สูดดม: พาออกที่อากาศบริสุทธิ์ / เข้าตา: ล้างน้ำ 15 นาที', status:'current' },
+  ],
+  // MSDS Compliance Checklist
+  msdsChecklist: [
+    { id:'MC-001', cat:'storage', item:'SDS เป็นปัจจุบัน (ไม่เกิน 3 ปี) สำหรับสารเคมีทุกตัว', freq:'รายไตรมาส', lastCheck:'2569-03-15', status:'pass' },
+    { id:'MC-002', cat:'storage', item:'SDS มีให้เข้าถึงได้ ณ จุดใช้งาน/จัดเก็บทุกจุด', freq:'รายเดือน', lastCheck:'2569-03-20', status:'pass' },
+    { id:'MC-003', cat:'storage', item:'ป้าย GHS / NFPA 704 ติดครบทุกภาชนะ', freq:'รายเดือน', lastCheck:'2569-03-20', status:'pass' },
+    { id:'MC-004', cat:'storage', item:'สารเคมีจัดเก็บตามกลุ่มความเข้ากันได้ (Compatibility)', freq:'รายเดือน', lastCheck:'2569-03-10', status:'fail' },
+    { id:'MC-005', cat:'storage', item:'Containment/ถาดรองรับ สารเคมีรั่วไหล', freq:'รายเดือน', lastCheck:'2569-03-10', status:'pass' },
+    { id:'MC-006', cat:'storage', item:'ระบบระบายอากาศในคลังสารเคมี', freq:'รายไตรมาส', lastCheck:'2569-02-15', status:'fail' },
+    { id:'MC-007', cat:'handling', item:'พนักงานได้รับการอบรม MSDS/GHS ครบถ้วน', freq:'รายปี', lastCheck:'2569-01-20', status:'pass' },
+    { id:'MC-008', cat:'handling', item:'PPE ตาม SDS Section 8 มีพร้อมใช้ ณ จุดงาน', freq:'รายสัปดาห์', lastCheck:'2569-03-25', status:'pass' },
+    { id:'MC-009', cat:'handling', item:'Eye Wash / Safety Shower ใช้งานได้ดี', freq:'รายสัปดาห์', lastCheck:'2569-03-25', status:'pass' },
+    { id:'MC-010', cat:'handling', item:'ขั้นตอนปฏิบัติงานกับสารเคมี (SOP) เป็นปัจจุบัน', freq:'รายปี', lastCheck:'2569-01-15', status:'pass' },
+    { id:'MC-011', cat:'emergency', item:'Spill Kit พร้อมใช้งาน ณ ทุกจุดจัดเก็บ', freq:'รายเดือน', lastCheck:'2569-03-15', status:'pass' },
+    { id:'MC-012', cat:'emergency', item:'แผนฉุกเฉินสารเคมีรั่วไหลเป็นปัจจุบัน', freq:'รายปี', lastCheck:'2569-02-01', status:'pass' },
+    { id:'MC-013', cat:'emergency', item:'ซ้อมอพยพกรณีสารเคมีรั่วไหล', freq:'รายปี', lastCheck:'2568-12-15', status:'pending' },
+    { id:'MC-014', cat:'monitoring', item:'ตรวจวัดสารเคมีในบรรยากาศการทำงาน', freq:'6 เดือน', lastCheck:'2569-01-20', status:'pass' },
+    { id:'MC-015', cat:'monitoring', item:'ติดตามสุขภาพพนักงานสัมผัสสารเคมี', freq:'รายปี', lastCheck:'2569-01-10', status:'pass' },
+  ],
+  // Exposure Monitoring Records
+  exposureRecords: [
+    { id:'EXP-001', date:'2569-03-15', chemical:'H₂SO₄ (กรดซัลฟิวริก)', area:'ห้องเคมีบำบัดน้ำ', measured:'0.3 mg/m³', pel:'1 mg/m³', result:'pass', action:'ค่าปกติ — ตรวจซ้ำตามกำหนด' },
+    { id:'EXP-002', date:'2569-03-15', chemical:'NaOH (โซเดียมไฮดรอกไซด์)', area:'ห้องเคมีบำบัดน้ำ', measured:'0.8 mg/m³', pel:'2 mg/m³', result:'pass', action:'ค่าปกติ' },
+    { id:'EXP-003', date:'2569-03-10', chemical:'NH₃ (แอมโมเนีย)', area:'ระบบ SCR/SNCR', measured:'18 ppm', pel:'25 ppm (TWA)', result:'warning', action:'ใกล้ค่ามาตรฐาน — ตรวจสอบระบบระบายอากาศ เพิ่มความถี่ตรวจวัด' },
+    { id:'EXP-004', date:'2569-02-20', chemical:'ฝุ่นชีวมวล (Biomass Dust)', area:'ระบบลำเลียงเชื้อเพลิง', measured:'8 mg/m³', pel:'10 mg/m³ (Total)', result:'warning', action:'เพิ่มประสิทธิภาพระบบดูดฝุ่น ทำความสะอาดบ่อยขึ้น' },
+    { id:'EXP-005', date:'2569-02-15', chemical:'N₂H₄ (ไฮดราซีน)', area:'ห้อง Boiler Feed Water', measured:'0.005 ppm', pel:'0.01 ppm', result:'pass', action:'ค่าปกติ — สารก่อมะเร็ง ต้องตรวจสม่ำเสมอ' },
+    { id:'EXP-006', date:'2569-01-20', chemical:'CO (คาร์บอนมอนอกไซด์)', area:'พื้นที่เผาไหม้/Boiler', measured:'35 ppm', pel:'25 ppm (TWA)', result:'exceed', action:'เกินมาตรฐาน! สั่งหยุดงาน ตรวจสอบระบบ Ventilation ปรับปรุงก่อนเปิดทำงานใหม่' },
   ]
 };
 
@@ -2504,7 +3008,30 @@ function saveProjects(projects) {
 function getProjectStore(projectId) {
   try {
     const saved = JSON.parse(localStorage.getItem('projectStore_' + projectId) || 'null');
-    if(saved) return saved;
+    if(saved) {
+      // Merge any new keys from defaultStoreData that don't exist in saved
+      const defaults = JSON.parse(JSON.stringify(defaultStoreData));
+      for(const key in defaults) {
+        if(!(key in saved)) saved[key] = defaults[key];
+      }
+      // Migrate: add dept and phase to existing workPermits that don't have them
+      if(saved.workPermits) {
+        saved.workPermits.forEach(wp => {
+          if(!wp.dept) {
+            const t = (wp.type||'').toLowerCase();
+            if(t.includes('ไฟฟ้า') || t.includes('electrical') || t.includes('cable')) wp.dept = 'electrical';
+            else if(t.includes('สารเคมี') || t.includes('chemical') || t.includes('เคมี') || t.includes('สี')) wp.dept = 'chemical';
+            else if(t.includes('เชื่อม') || t.includes('hot work') || t.includes('อับอากาศ') || t.includes('confined') || t.includes('เครื่อง') || t.includes('ท่อ') || t.includes('boiler')) wp.dept = 'mechanical';
+            else if(t.includes('process') || t.includes('conveyor') || t.includes('ลำเลียง') || t.includes('ไอน้ำ') || t.includes('steam')) wp.dept = 'process';
+            else wp.dept = 'civil';
+          }
+          if(!wp.phase) {
+            wp.phase = 'construction';
+          }
+        });
+      }
+      return saved;
+    }
     return JSON.parse(JSON.stringify(defaultStoreData));
   } catch(e) { return JSON.parse(JSON.stringify(defaultStoreData)); }
 }
@@ -2649,6 +3176,10 @@ function refreshAllTables() {
   if(typeof renderInvestigations === 'function') renderInvestigations();
   if(typeof renderActivityLog === 'function') renderActivityLog();
   if(typeof renderUsersTable === 'function') renderUsersTable();
+  if(typeof renderNFPA === 'function') renderNFPA();
+  if(typeof renderNFPA704 === 'function') renderNFPA704();
+  if(typeof renderMSDS === 'function') renderMSDS();
+  if(typeof renderMSDSCompliance === 'function') renderMSDSCompliance();
 }
 
 // Auto-save project store periodically
@@ -3039,6 +3570,301 @@ function deleteUser(id) {
 
 renderUsersTable();
 
+// ===== NFPA SYSTEM =====
+let currentNFPAFilter = 'all';
+
+function filterNFPA(cat, el) {
+  currentNFPAFilter = cat;
+  if(el) {
+    el.closest('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+  renderNFPA();
+}
+
+function renderNFPA() {
+  const items = store.nfpaChecklist || [];
+  const filtered = currentNFPAFilter === 'all' ? items : items.filter(i => i.cat === currentNFPAFilter);
+  const tbody = document.getElementById('nfpaTable');
+  if(!tbody) return;
+
+  const pass = items.filter(i => i.status === 'pass').length;
+  const fail = items.filter(i => i.status === 'fail').length;
+  const pending = items.filter(i => i.status === 'pending').length;
+  const el = id => document.getElementById(id);
+  if(el('nfpa-pass-count')) el('nfpa-pass-count').textContent = pass;
+  if(el('nfpa-fail-count')) el('nfpa-fail-count').textContent = fail;
+  if(el('nfpa-pending-count')) el('nfpa-pending-count').textContent = pending;
+  if(el('nfpa-total-count')) el('nfpa-total-count').textContent = items.length;
+
+  const catLabels = {'fire-suppression':'ระบบดับเพลิง','fire-alarm':'ระบบแจ้งเตือน','fuel-storage':'เชื้อเพลิง/สารเคมี','electrical':'ระบบไฟฟ้า','emergency':'ฉุกเฉิน','biomass':'ชีวมวล/ขยะ'};
+  const catColors = {'fire-suppression':'var(--red-500)','fire-alarm':'var(--amber-500)','fuel-storage':'var(--violet-500)','electrical':'var(--primary-500)','emergency':'var(--emerald-500)','biomass':'#8b5cf6'};
+  const statusBadge = (s) => {
+    if(s==='pass') return '<span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--emerald-50);color:var(--emerald-600);">✅ ผ่าน</span>';
+    if(s==='fail') return '<span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--red-50);color:var(--red-600);">❌ ไม่ผ่าน</span>';
+    return '<span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--amber-50);color:var(--amber-600);">⏳ รอตรวจ</span>';
+  };
+
+  tbody.innerHTML = filtered.map((item, i) => `<tr>
+    <td>${i+1}</td>
+    <td><span style="display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:600;color:white;background:${catColors[item.cat]||'var(--slate-400)'};">${catLabels[item.cat]||item.cat}</span></td>
+    <td style="max-width:280px;">${item.item}</td>
+    <td><span style="font-size:11px;font-weight:600;color:var(--primary-600);">${item.std}</span></td>
+    <td>${item.freq}</td>
+    <td>${item.lastCheck}</td>
+    <td>${statusBadge(item.status)}</td>
+    <td><select style="font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid var(--slate-200);" onchange="updateNFPAStatus('${item.id}',this.value)">
+      <option value="pass" ${item.status==='pass'?'selected':''}>ผ่าน</option>
+      <option value="fail" ${item.status==='fail'?'selected':''}>ไม่ผ่าน</option>
+      <option value="pending" ${item.status==='pending'?'selected':''}>รอตรวจ</option>
+    </select></td>
+  </tr>`).join('');
+
+  renderNFPA25();
+  renderNFPA72();
+}
+
+function updateNFPAStatus(id, status) {
+  const item = store.nfpaChecklist.find(i => i.id === id);
+  if(item) {
+    item.status = status;
+    const now = new Date();
+    item.lastCheck = `${now.getFullYear()+543}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    if(currentProjectId) saveProjectStore(currentProjectId);
+    renderNFPA();
+  }
+}
+
+function renderNFPA25() {
+  const items = store.nfpa25Schedule || [];
+  const tbody = document.getElementById('nfpa25Table');
+  if(!tbody) return;
+  const sb = (s) => s==='ok'?'<span style="padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;background:var(--emerald-50);color:var(--emerald-600);">✅ ปกติ</span>':s==='due-soon'?'<span style="padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;background:var(--amber-50);color:var(--amber-600);">⚠️ ใกล้กำหนด</span>':'<span style="padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;background:var(--red-50);color:var(--red-600);">❌ เลยกำหนด</span>';
+  tbody.innerHTML = items.map(s => `<tr><td><strong>${s.sys}</strong></td><td>${s.type}</td><td>${s.freq}</td><td>${s.lastCheck}</td><td>${s.nextCheck}</td><td>${sb(s.status)}</td></tr>`).join('');
+}
+
+function renderNFPA72() {
+  const items = store.nfpa72Schedule || [];
+  const tbody = document.getElementById('nfpa72Table');
+  if(!tbody) return;
+  const sb = (s) => s==='ok'?'<span style="padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;background:var(--emerald-50);color:var(--emerald-600);">✅ ปกติ</span>':'<span style="padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;background:var(--red-50);color:var(--red-600);">❌ เลยกำหนด</span>';
+  tbody.innerHTML = items.map(d => `<tr><td><strong>${d.device}</strong></td><td>${d.location}</td><td>${d.freq}</td><td>${d.lastCheck}</td><td>${d.nextCheck}</td><td>${sb(d.status)}</td></tr>`).join('');
+}
+
+function renderNFPA704() {
+  const items = store.nfpa704Items || [];
+  const tbody = document.getElementById('nfpa704Table');
+  if(!tbody) return;
+  const riskLevel = (h,f,r) => {
+    const max = Math.max(h,f,r);
+    if(max>=4) return '<span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:var(--red-100);color:var(--red-600);">อันตรายร้ายแรง</span>';
+    if(max>=3) return '<span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:var(--amber-100);color:var(--amber-600);">อันตรายสูง</span>';
+    if(max>=2) return '<span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:var(--amber-50);color:#b45309;">ปานกลาง</span>';
+    return '<span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:var(--emerald-50);color:var(--emerald-600);">ต่ำ</span>';
+  };
+  const dc = (val,color) => `<td style="text-align:center;"><span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;font-size:14px;font-weight:800;color:white;background:${color};">${val}</span></td>`;
+  tbody.innerHTML = items.map((item,i) => `<tr>
+    <td>${i+1}</td><td><strong>${item.name}</strong></td><td style="font-size:12px;">${item.location}</td>
+    ${dc(item.h,'var(--primary-500)')}${dc(item.f,'var(--red-500)')}${dc(item.r,'#d97706')}
+    <td style="text-align:center;font-weight:700;">${item.s||'-'}</td>
+    <td>${riskLevel(item.h,item.f,item.r)}</td>
+    <td style="font-size:11px;color:var(--slate-500);">${item.note}</td>
+  </tr>`).join('');
+}
+
+function addNFPA704() {
+  const name = document.getElementById('nfpa704-name').value.trim();
+  const location = document.getElementById('nfpa704-location').value.trim();
+  if(!name) return;
+  if(!store.nfpa704Items) store.nfpa704Items = [];
+  store.nfpa704Items.push({
+    id:'HAZ-'+String(store.nfpa704Items.length+1).padStart(3,'0'),
+    name, location,
+    h:+document.getElementById('nfpa704-h').value,
+    f:+document.getElementById('nfpa704-f').value,
+    r:+document.getElementById('nfpa704-r').value,
+    s:document.getElementById('nfpa704-s').value,
+    note:document.getElementById('nfpa704-note').value.trim()
+  });
+  if(currentProjectId) saveProjectStore(currentProjectId);
+  closeModal('nfpa704Modal');
+  document.getElementById('nfpa704-name').value='';
+  document.getElementById('nfpa704-location').value='';
+  document.getElementById('nfpa704-note').value='';
+  renderNFPA704();
+}
+
+renderNFPA();
+renderNFPA704();
+
+// ===== MSDS/SDS SYSTEM =====
+function renderMSDS() {
+  const items = store.msdsItems || [];
+  const tbody = document.getElementById('msdsTable');
+  if(!tbody) return;
+
+  // Stats
+  const total = items.length;
+  const current = items.filter(i => i.status === 'current').length;
+  const expiring = items.filter(i => i.status === 'expiring').length;
+  const expired = items.filter(i => i.status === 'expired').length;
+  const highRisk = items.filter(i => i.risk === 'high').length;
+  const el = id => document.getElementById(id);
+  if(el('msds-total')) el('msds-total').textContent = total;
+  if(el('msds-current')) el('msds-current').textContent = current;
+  if(el('msds-expiring')) el('msds-expiring').textContent = expiring;
+  if(el('msds-expired')) el('msds-expired').textContent = expired;
+  if(el('msds-highrisk')) el('msds-highrisk').textContent = highRisk;
+
+  const ghsLabels = {
+    'corrosive':'🧪 กัดกร่อน','flammable':'🔥 ไวไฟ','toxic':'☠️ เป็นพิษ','oxidizer':'⚡ ออกซิไดเซอร์',
+    'gas-pressure':'💨 ก๊าซแรงดัน','irritant':'⚠️ ระคายเคือง','health-hazard':'🏥 อันตรายสุขภาพ','env-hazard':'🌿 อันตรายสิ่งแวดล้อม'
+  };
+  const statusBadge = s => {
+    if(s==='current') return '<span class="badge badge-success"><span class="badge-dot"></span> เป็นปัจจุบัน</span>';
+    if(s==='expiring') return '<span class="badge badge-warning"><span class="badge-dot"></span> ใกล้หมดอายุ</span>';
+    return '<span class="badge badge-danger"><span class="badge-dot"></span> หมดอายุ</span>';
+  };
+  const riskBadge = r => {
+    if(r==='high') return '<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--red-100);color:var(--red-600);">สูง</span>';
+    if(r==='medium') return '<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--amber-100);color:var(--amber-600);">กลาง</span>';
+    return '<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--emerald-100);color:var(--emerald-600);">ต่ำ</span>';
+  };
+
+  tbody.innerHTML = items.map((item,i) => `<tr>
+    <td>${i+1}</td>
+    <td><strong>${item.name}</strong> ${riskBadge(item.risk)}</td>
+    <td style="font-size:12px;font-family:monospace;">${item.cas||'-'}</td>
+    <td style="font-size:12px;">${item.location}</td>
+    <td style="font-size:12px;">${item.qty}</td>
+    <td style="font-size:11px;">${ghsLabels[item.ghs]||item.ghs}</td>
+    <td style="font-size:11px;max-width:160px;">${item.ppe}</td>
+    <td style="font-size:11px;font-family:monospace;">${item.pel}</td>
+    <td style="font-size:12px;">${item.sdsDate}</td>
+    <td>${statusBadge(item.status)}</td>
+  </tr>`).join('');
+}
+
+function addMSDS() {
+  const name = document.getElementById('msds-name').value.trim();
+  if(!name) return;
+  if(!store.msdsItems) store.msdsItems = [];
+  store.msdsItems.push({
+    id:'SDS-'+String(store.msdsItems.length+1).padStart(3,'0'),
+    name,
+    cas: document.getElementById('msds-cas').value.trim(),
+    location: document.getElementById('msds-location').value.trim(),
+    qty: document.getElementById('msds-qty').value.trim(),
+    ghs: document.getElementById('msds-ghs').value,
+    risk: document.getElementById('msds-risk').value,
+    ppe: document.getElementById('msds-ppe').value.trim(),
+    pel: document.getElementById('msds-pel').value.trim(),
+    sdsDate: document.getElementById('msds-date').value,
+    firstaid: document.getElementById('msds-firstaid').value.trim(),
+    status:'current'
+  });
+  if(currentProjectId) saveProjectStore(currentProjectId);
+  closeModal('msdsModal');
+  ['msds-name','msds-cas','msds-location','msds-qty','msds-ppe','msds-pel','msds-date','msds-firstaid'].forEach(id => document.getElementById(id).value='');
+  renderMSDS();
+}
+
+// MSDS Compliance
+function renderMSDSCompliance() {
+  const checklist = store.msdsChecklist || [];
+  const exposure = store.exposureRecords || [];
+
+  // Checklist stats
+  const pass = checklist.filter(c => c.status === 'pass').length;
+  const fail = checklist.filter(c => c.status === 'fail').length;
+  const pending = checklist.filter(c => c.status === 'pending').length;
+  const rate = checklist.length ? Math.round(pass / checklist.length * 100) : 0;
+  const el = id => document.getElementById(id);
+  if(el('msds-comp-pass')) el('msds-comp-pass').textContent = pass;
+  if(el('msds-comp-fail')) el('msds-comp-fail').textContent = fail;
+  if(el('msds-comp-pending')) el('msds-comp-pending').textContent = pending;
+  if(el('msds-comp-rate')) el('msds-comp-rate').textContent = rate + '%';
+
+  // Checklist table
+  const catLabels = { storage:'📦 จัดเก็บ', handling:'🧤 การใช้งาน', emergency:'🚨 ฉุกเฉิน', monitoring:'🌡️ เฝ้าระวัง' };
+  const statusBadge = s => {
+    if(s==='pass') return '<span class="badge badge-success"><span class="badge-dot"></span> ผ่าน</span>';
+    if(s==='fail') return '<span class="badge badge-danger"><span class="badge-dot"></span> ไม่ผ่าน</span>';
+    return '<span class="badge badge-warning"><span class="badge-dot"></span> รอตรวจ</span>';
+  };
+  const tbody1 = document.getElementById('msdsChecklistTable');
+  if(tbody1) {
+    tbody1.innerHTML = checklist.map((c,i) => `<tr>
+      <td>${i+1}</td>
+      <td style="font-size:12px;">${catLabels[c.cat]||c.cat}</td>
+      <td>${c.item}</td>
+      <td style="font-size:12px;">${c.freq}</td>
+      <td style="font-size:12px;">${c.lastCheck}</td>
+      <td>${statusBadge(c.status)}</td>
+      <td><select style="font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid var(--slate-200);" onchange="updateMSDSCheckStatus(${i},this.value)">
+        <option value="pass" ${c.status==='pass'?'selected':''}>ผ่าน</option>
+        <option value="fail" ${c.status==='fail'?'selected':''}>ไม่ผ่าน</option>
+        <option value="pending" ${c.status==='pending'?'selected':''}>รอตรวจ</option>
+      </select></td>
+    </tr>`).join('');
+  }
+
+  // Exposure table
+  const expBadge = r => {
+    if(r==='pass') return '<span class="badge badge-success"><span class="badge-dot"></span> ผ่าน</span>';
+    if(r==='warning') return '<span class="badge badge-warning"><span class="badge-dot"></span> เตือน</span>';
+    return '<span class="badge badge-danger"><span class="badge-dot"></span> เกินมาตรฐาน!</span>';
+  };
+  const tbody2 = document.getElementById('exposureTable');
+  if(tbody2) {
+    tbody2.innerHTML = exposure.map((e,i) => `<tr>
+      <td>${i+1}</td>
+      <td style="font-size:12px;">${e.date}</td>
+      <td><strong>${e.chemical}</strong></td>
+      <td style="font-size:12px;">${e.area}</td>
+      <td style="font-family:monospace;font-weight:700;">${e.measured}</td>
+      <td style="font-size:12px;font-family:monospace;">${e.pel}</td>
+      <td>${expBadge(e.result)}</td>
+      <td style="font-size:11px;max-width:200px;">${e.action}</td>
+    </tr>`).join('');
+  }
+}
+
+function updateMSDSCheckStatus(idx, val) {
+  if(!store.msdsChecklist) return;
+  store.msdsChecklist[idx].status = val;
+  const today = new Date();
+  const y = today.getFullYear() + 543;
+  const m = String(today.getMonth()+1).padStart(2,'0');
+  const d = String(today.getDate()).padStart(2,'0');
+  store.msdsChecklist[idx].lastCheck = y+'-'+m+'-'+d;
+  if(currentProjectId) saveProjectStore(currentProjectId);
+  renderMSDSCompliance();
+}
+
+function addExposure() {
+  const chemical = document.getElementById('exp-chemical').value.trim();
+  if(!chemical) return;
+  if(!store.exposureRecords) store.exposureRecords = [];
+  store.exposureRecords.unshift({
+    id:'EXP-'+String(store.exposureRecords.length+1).padStart(3,'0'),
+    date: document.getElementById('exp-date').value,
+    chemical,
+    area: document.getElementById('exp-area').value.trim(),
+    measured: document.getElementById('exp-measured').value.trim(),
+    pel: document.getElementById('exp-pel').value.trim(),
+    result: document.getElementById('exp-result').value,
+    action: document.getElementById('exp-action').value.trim()
+  });
+  if(currentProjectId) saveProjectStore(currentProjectId);
+  closeModal('exposureModal');
+  ['exp-date','exp-chemical','exp-area','exp-measured','exp-pel','exp-action'].forEach(id => document.getElementById(id).value='');
+  renderMSDSCompliance();
+}
+
+renderMSDS();
+renderMSDSCompliance();
+
 // ===== LIVE CLOCK =====
 function updateClock() {
   const now = new Date();
@@ -3076,7 +3902,11 @@ const titleKeys = {
   workpermit:'titleWorkPermit',
   investigation:'titleInvestigation',
   activitylog:'titleActivityLog',
-  users:'titleUsers'
+  users:'titleUsers',
+  nfpa:'titleNFPA',
+  nfpa704:'titleNFPA704',
+  msds:'titleMSDS',
+  'msds-compliance':'titleMSDSCompliance'
 };
 
 function navTo(page) {
@@ -3088,6 +3918,10 @@ function navTo(page) {
   document.getElementById('pageTitle').textContent = t(titleKeys[page] || page);
   if(page === 'users') renderUsersTable();
   if(page === 'activitylog') renderActivityLog();
+  if(page === 'nfpa') renderNFPA();
+  if(page === 'nfpa704') renderNFPA704();
+  if(page === 'msds') renderMSDS();
+  if(page === 'msds-compliance') renderMSDSCompliance();
   if(window.innerWidth < 768) toggleSidebar();
 }
 
@@ -3760,6 +4594,62 @@ function addInvestigation() {
 // ===== WORK PERMIT =====
 let currentRole = 'contractor';
 let wpFilter = 'all';
+let wpDeptFilter = 'all';
+let wpPhaseFilter = 'all';
+
+const wpPhaseLabels = {
+  construction: { icon:'🔨', label:'ก่อสร้าง', labelEn:'Construction', color:'var(--primary-500)' },
+  maintenance: { icon:'🔧', label:'ซ่อมบำรุง', labelEn:'Maintenance', color:'var(--amber-600)' },
+  operation: { icon:'⚡', label:'เดินเครื่อง', labelEn:'Operation', color:'var(--emerald-600)' }
+};
+
+function wpPhaseBadge(phase) {
+  const p = wpPhaseLabels[phase];
+  if(!p) return '<span style="padding:3px 10px;border-radius:10px;font-size:10px;font-weight:700;background:var(--slate-100);color:var(--slate-500);">-</span>';
+  return `<span style="padding:3px 10px;border-radius:10px;font-size:10px;font-weight:700;background:${p.color}15;color:${p.color};">${p.icon} ${p.label}</span>`;
+}
+
+function filterWPPhase(phase, el) {
+  wpPhaseFilter = phase;
+  // Sync both phase tab groups
+  document.querySelectorAll('#wp-phase-tabs-contractor .tab, #wp-phase-tabs-safety .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#wp-phase-tabs-contractor .tab, #wp-phase-tabs-safety .tab').forEach(t => {
+    const phases = ['all','construction','maintenance','operation'];
+    const idx = phases.indexOf(phase);
+    const tabIdx = [...t.parentElement.children].indexOf(t);
+    if(tabIdx === idx) t.classList.add('active');
+  });
+  renderWorkPermits();
+}
+
+const wpDeptLabels = {
+  civil: { icon:'🏗️', label:'งานโยธา', labelEn:'Civil', color:'var(--primary-500)' },
+  mechanical: { icon:'⚙️', label:'งานเครื่องกล', labelEn:'Mechanical', color:'var(--amber-600)' },
+  electrical: { icon:'⚡', label:'งานไฟฟ้า', labelEn:'Electrical', color:'var(--red-500)' },
+  chemical: { icon:'🧪', label:'งานเคมี', labelEn:'Chemical', color:'var(--violet-600)' },
+  process: { icon:'🔄', label:'งาน Process', labelEn:'Process', color:'var(--emerald-600)' }
+};
+
+const wpTypesByDept = {
+  civil: ['งานบนที่สูง (Working at Height)','งานขุดดิน (Excavation)','งานยกเคลื่อนย้าย (Lifting/Crane)','งานรื้อถอน (Demolition)','งานฐานราก/เสาเข็ม','งานคอนกรีต/เหล็กเสริม','งานนั่งร้าน (Scaffolding)','งานโยธาอื่นๆ'],
+  mechanical: ['งานเชื่อม/ตัด (Hot Work)','งานในที่อับอากาศ (Confined Space)','งานติดตั้งเครื่องจักร','งานท่อ/Piping','งาน Boiler/Pressure Vessel','งานระบบทำความเย็น/HVAC','งานเครื่องกลอื่นๆ'],
+  electrical: ['เดินสายไฟฟ้า/Cable Pulling','งานติดตั้ง Switchgear/MDB','งานระบบไฟฟ้าแรงสูง (HV)','งาน Transformer','งานระบบ Grounding','งานระบบ Control & Instrument','งานไฟฟ้าอื่นๆ'],
+  chemical: ['ผสม/เติมสารเคมี','ขนย้ายสารเคมี','จัดเก็บสารเคมี','ทำความสะอาดระบบสารเคมี','งานพ่นสี/ทินเนอร์','งานบำบัดน้ำเสีย','งานเคมีอื่นๆ'],
+  process: ['ทดสอบ Boiler/Pressure Test','งานระบบลำเลียงเชื้อเพลิง','งานระบบไอน้ำ (Steam System)','งานระบบบำบัดก๊าซ/ไอเสีย','งาน Commissioning/Start-up','งาน Shutdown/Turnaround','งาน Process อื่นๆ']
+};
+
+function wpDeptBadge(dept) {
+  const d = wpDeptLabels[dept];
+  if(!d) return '<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--slate-100);color:var(--slate-600);">-</span>';
+  return `<span style="padding:3px 10px;border-radius:10px;font-size:10px;font-weight:700;background:${d.color}15;color:${d.color};">${d.icon} ${d.label}</span>`;
+}
+
+function updateWPTypes() {
+  const dept = document.getElementById('wp-dept').value;
+  const sel = document.getElementById('wp-type');
+  const types = wpTypesByDept[dept] || [];
+  sel.innerHTML = types.map(t => `<option value="${t}">${t}</option>`).join('');
+}
 
 function switchRole(role) {
   currentRole = role;
@@ -3800,10 +4690,16 @@ function wpRiskBadge(r) {
 }
 
 function renderWorkPermits() {
-  // Contractor table
-  document.getElementById('wpContractorTable').innerHTML = store.workPermits.map(wp => `
+  // Apply phase + dept filters
+  let contractorList = store.workPermits;
+  if(wpPhaseFilter !== 'all') contractorList = contractorList.filter(wp => (wp.phase||'') === wpPhaseFilter);
+  if(wpDeptFilter !== 'all') contractorList = contractorList.filter(wp => (wp.dept||'') === wpDeptFilter);
+
+  document.getElementById('wpContractorTable').innerHTML = contractorList.map(wp => `
     <tr>
       <td><strong style="color:var(--slate-900)">${wp.id}</strong></td>
+      <td>${wpPhaseBadge(wp.phase)}</td>
+      <td>${wpDeptBadge(wp.dept)}</td>
       <td>${wp.type}</td>
       <td>${wp.company}</td>
       <td>${wp.location}</td>
@@ -3814,9 +4710,12 @@ function renderWorkPermits() {
     </tr>
   `).join('');
 
-  // Safety officer table
-  const filtered = wpFilter==='all' ? store.workPermits : store.workPermits.filter(wp=>wp.status===wpFilter);
-  document.getElementById('wpSafetyTable').innerHTML = filtered.map(wp => {
+  // Safety officer table — filter by phase + dept + status
+  let safetyList = store.workPermits;
+  if(wpPhaseFilter !== 'all') safetyList = safetyList.filter(wp => (wp.phase||'') === wpPhaseFilter);
+  if(wpDeptFilter !== 'all') safetyList = safetyList.filter(wp => (wp.dept||'') === wpDeptFilter);
+  if(wpFilter !== 'all') safetyList = safetyList.filter(wp => wp.status === wpFilter);
+  document.getElementById('wpSafetyTable').innerHTML = safetyList.map(wp => {
     let actionBtns = '';
     if(wp.status==='pending') {
       actionBtns = `
@@ -3827,7 +4726,9 @@ function renderWorkPermits() {
     }
     return `<tr>
       <td><strong style="color:var(--slate-900)">${wp.id}</strong></td>
-      <td>${wp.type} ${wpRiskBadge(wp.risk)}</td>
+      <td>${wpPhaseBadge(wp.phase)}</td>
+      <td>${wpDeptBadge(wp.dept)}</td>
+      <td>${wp.type} ${wpRiskBadge(wp.risk)}<br>${wpWarningBadge(wp)}</td>
       <td>${wp.company}</td>
       <td>${wp.location}</td>
       <td>${wp.startDate}${wp.startDate!==wp.endDate?' ~ '+wp.endDate:''}</td>
@@ -3849,8 +4750,22 @@ function renderWorkPermits() {
 
 function filterWP(status, el) {
   wpFilter = status;
-  document.querySelectorAll('#wp-safety-section .tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('#wp-status-tabs .tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
+  renderWorkPermits();
+}
+
+function filterWPDept(dept, el, section) {
+  wpDeptFilter = dept;
+  const tabsId = section === 'contractor' ? '#wp-dept-tabs-contractor' : '#wp-dept-tabs-safety';
+  document.querySelectorAll(tabsId + ' .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  // Sync dept filter between sections
+  const otherId = section === 'contractor' ? '#wp-dept-tabs-safety' : '#wp-dept-tabs-contractor';
+  document.querySelectorAll(otherId + ' .tab').forEach((t,i) => {
+    const tabs = document.querySelectorAll(tabsId + ' .tab');
+    t.classList.toggle('active', i === [...tabs].indexOf(el));
+  });
   renderWorkPermits();
 }
 
@@ -3863,10 +4778,12 @@ function showWPDetail(id) {
     <div style="font-size:13px;color:var(--slate-800)">${val}</div></div>`;
 
   document.getElementById('wpDetailContent').innerHTML = `
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
       <span style="font-size:22px;font-weight:800;color:var(--slate-900)">${wp.id}</span>
-      ${wpStatusBadge(wp.status)} ${wpRiskBadge(wp.risk)}
+      ${wpPhaseBadge(wp.phase)} ${wpDeptBadge(wp.dept)} ${wpStatusBadge(wp.status)} ${wpRiskBadge(wp.risk)}
     </div>
+    ${infoRow('ลักษณะงาน', wpPhaseBadge(wp.phase))}
+    ${infoRow('ระบบงาน', wpDeptBadge(wp.dept))}
     ${infoRow('ประเภทงาน', wp.type)}
     ${infoRow('บริษัท', wp.company)}
     ${infoRow('ผู้ขอ', wp.requester)}
@@ -3883,6 +4800,7 @@ function showWPDetail(id) {
     ${wp.rejectReason ? `<div style="margin-top:12px;padding:14px 18px;border-radius:12px;background:var(--red-50);border:1px solid var(--red-100);">
       <div style="font-size:12px;font-weight:700;color:var(--red-600);margin-bottom:4px;">เหตุผลที่ไม่อนุมัติ:</div>
       <div style="font-size:13px;color:var(--red-600)">${wp.rejectReason}</div></div>` : ''}
+    ${renderWPWarnings(checkWPCompliance(wp))}
   `;
 
   let actions = `<button class="btn btn-ghost" onclick="closeModal('wpDetailModal')">ปิด</button>`;
@@ -3898,10 +4816,25 @@ function showWPDetail(id) {
 function approveWP(id) {
   const wp = store.workPermits.find(w=>w.id===id);
   if(!wp) return;
-  if(confirm(`อนุมัติใบอนุญาตทำงาน ${wp.id}\n${wp.type} - ${wp.company}\nสถานที่: ${wp.location}\n\nยืนยันการอนุมัติ?`)) {
+  const warnings = checkWPCompliance(wp);
+  const critical = warnings.filter(w => w.level === 'critical');
+  let confirmMsg = `อนุมัติใบอนุญาตทำงาน ${wp.id}\n${wp.type} - ${wp.company}\nสถานที่: ${wp.location}\n`;
+  if(critical.length > 0) {
+    confirmMsg += `\n🚫 พบข้อขัดข้องร้ายแรง ${critical.length} รายการ:\n`;
+    critical.forEach(w => { confirmMsg += `• [${w.source}/${w.std}] ${w.msg}\n`; });
+    confirmMsg += `\n⚠️ ไม่แนะนำให้อนุมัติจนกว่าจะแก้ไข\nยังต้องการอนุมัติหรือไม่?`;
+  } else if(warnings.length > 0) {
+    confirmMsg += `\n⚠️ มีคำเตือน ${warnings.length} รายการ (ดูรายละเอียดในหน้า Detail)\nยืนยันการอนุมัติ?`;
+  } else {
+    confirmMsg += `\n✅ ผ่านการตรวจสอบ NFPA & MSDS\nยืนยันการอนุมัติ?`;
+  }
+  if(confirm(confirmMsg)) {
     wp.status = 'approved';
     wp.approver = 'จป.สมชาย';
     wp.approveDate = new Date().toLocaleDateString('th-TH').replace(/\//g,'-');
+    wp.complianceWarnings = warnings.length;
+    wp.complianceCritical = critical.length;
+    if(currentProjectId) saveProjectStore(currentProjectId);
     renderWorkPermits();
   }
 }
@@ -3915,8 +4848,225 @@ function rejectWP(id) {
     wp.approver = 'จป.สมชาย';
     wp.approveDate = new Date().toLocaleDateString('th-TH').replace(/\//g,'-');
     wp.rejectReason = reason.trim();
+    if(currentProjectId) saveProjectStore(currentProjectId);
     renderWorkPermits();
   }
+}
+
+// ===== WORK PERMIT — NFPA & MSDS AUTO-CHECK =====
+function checkWPCompliance(wp) {
+  const warnings = [];
+  const dept = wp.dept || '';
+  const type = (wp.type || '').toLowerCase();
+  const loc = (wp.location || '').toLowerCase();
+  const desc = (wp.desc || '').toLowerCase();
+  const allText = type + ' ' + loc + ' ' + desc + ' ' + (wp.safety||'').toLowerCase();
+
+  // === NFPA Compliance Checks ===
+  const nfpa = store.nfpaChecklist || [];
+  const nfpaFail = nfpa.filter(n => n.status === 'fail');
+  const nfpaPending = nfpa.filter(n => n.status === 'pending');
+
+  // Hot Work → check fire suppression systems
+  if(type.includes('เชื่อม') || type.includes('hot work') || type.includes('ตัด')) {
+    const fireSys = nfpa.filter(n => n.cat === 'fire-suppression');
+    const fireFail = fireSys.filter(n => n.status === 'fail');
+    if(fireFail.length > 0) {
+      warnings.push({ level:'critical', source:'NFPA', icon:'🔥', msg:`ระบบดับเพลิง ${fireFail.length} รายการไม่ผ่านการตรวจ: ${fireFail.map(f=>f.item).join(', ')}`, std:'NFPA 51B/850' });
+    }
+    const alarmFail = nfpa.filter(n => n.cat === 'fire-alarm' && n.status !== 'pass');
+    if(alarmFail.length > 0) {
+      warnings.push({ level:'warning', source:'NFPA', icon:'🚨', msg:`ระบบแจ้งเตือนอัคคีภัย ${alarmFail.length} รายการยังไม่ผ่าน/รอตรวจ`, std:'NFPA 72' });
+    }
+    if(!(wp.safety||'').includes('Fire Watch') && !(wp.safety||'').includes('fire watch')) {
+      warnings.push({ level:'warning', source:'NFPA', icon:'👁️', msg:'ไม่ได้ระบุ Fire Watch standby ในมาตรการความปลอดภัย — Hot Work ต้องมี Fire Watch ตาม NFPA 51B', std:'NFPA 51B' });
+    }
+  }
+
+  // Electrical Work → check LOTO, electrical systems
+  if(dept === 'electrical' || type.includes('ไฟฟ้า') || type.includes('electrical')) {
+    const loto = nfpa.find(n => n.id === 'NFPA-019');
+    if(loto && loto.status !== 'pass') {
+      warnings.push({ level:'critical', source:'NFPA', icon:'🔒', msg:`ระบบ LOTO ไม่ผ่านการตรวจ — ต้องแก้ไขก่อนอนุญาตงานไฟฟ้า`, std:'NFPA 70E' });
+    }
+    const elecFail = nfpa.filter(n => n.cat === 'electrical' && n.status === 'fail');
+    if(elecFail.length > 0) {
+      warnings.push({ level:'warning', source:'NFPA', icon:'⚡', msg:`ระบบไฟฟ้า ${elecFail.length} รายการไม่ผ่าน: ${elecFail.map(f=>f.item).join(', ')}`, std:'NFPA 850' });
+    }
+  }
+
+  // Confined Space → check emergency systems
+  if(type.includes('อับอากาศ') || type.includes('confined')) {
+    const scba = nfpa.find(n => n.id === 'NFPA-023');
+    if(scba && scba.status !== 'pass') {
+      warnings.push({ level:'critical', source:'NFPA', icon:'🫁', msg:`ชุด SCBA ไม่ผ่านการตรวจ — จำเป็นสำหรับงานในที่อับอากาศ`, std:'NFPA 1981' });
+    }
+    const evacPlan = nfpa.find(n => n.id === 'NFPA-020');
+    if(evacPlan && evacPlan.status !== 'pass') {
+      warnings.push({ level:'warning', source:'NFPA', icon:'🚪', msg:`แผนอพยพฉุกเฉินยังไม่ผ่าน — ต้องมีแผนฉุกเฉินสำหรับที่อับอากาศ`, std:'NFPA 101' });
+    }
+  }
+
+  // Process dept → check boiler, biomass, fuel systems
+  if(dept === 'process') {
+    const bioFail = nfpa.filter(n => n.cat === 'biomass' && n.status !== 'pass');
+    if(bioFail.length > 0) {
+      warnings.push({ level:'warning', source:'NFPA', icon:'🌾', msg:`ระบบป้องกันพื้นที่เชื้อเพลิง/ชีวมวล ${bioFail.length} รายการไม่ผ่าน: ${bioFail.map(f=>f.item).join(', ')}`, std:'NFPA 850 Ch.11' });
+    }
+    const boiler = nfpa.filter(n => (n.item||'').includes('Boiler') && n.status !== 'pass');
+    if(boiler.length > 0) {
+      warnings.push({ level:'warning', source:'NFPA', icon:'🔥', msg:`ระบบป้องกันอัคคีภัย Boiler ไม่ผ่าน`, std:'NFPA 85/850' });
+    }
+    // Process work near chemicals
+    const ventCheck = msdsCheck.find(c => c.id === 'MC-006');
+    if(ventCheck && ventCheck.status === 'fail') {
+      warnings.push({ level:'warning', source:'MSDS', icon:'💨', msg:`ระบบระบายอากาศไม่ผ่าน — ระวังการสะสมของไอสารเคมี/ก๊าซ`, std:'NFPA 30/MSDS' });
+    }
+    const recentExceed = exposure.filter(e => e.result === 'exceed');
+    if(recentExceed.length > 0) {
+      warnings.push({ level:'critical', source:'MSDS', icon:'🌡️', msg:`พบค่าสัมผัสสารเคมีเกินมาตรฐาน: ${recentExceed.map(e=>e.chemical).join(', ')}`, std:'PEL/TLV' });
+    }
+  }
+
+  // Work near fuel/biomass storage
+  if(allText.includes('เชื้อเพลิง') || allText.includes('ชีวมวล') || allText.includes('biomass') || allText.includes('fuel')) {
+    const bioFail = nfpa.filter(n => n.cat === 'biomass' && n.status !== 'pass');
+    if(bioFail.length > 0) {
+      warnings.push({ level:'warning', source:'NFPA', icon:'🌾', msg:`ระบบป้องกันพื้นที่เชื้อเพลิง/ชีวมวล ${bioFail.length} รายการไม่ผ่าน: ${bioFail.map(f=>f.item).join(', ')}`, std:'NFPA 850 Ch.11' });
+    }
+  }
+
+  // General: any NFPA emergency system failures
+  const emergFail = nfpa.filter(n => n.cat === 'emergency' && n.status === 'fail');
+  if(emergFail.length > 0) {
+    warnings.push({ level:'warning', source:'NFPA', icon:'🚨', msg:`ระบบฉุกเฉิน ${emergFail.length} รายการไม่ผ่าน: ${emergFail.map(f=>f.item).join(', ')}`, std:'NFPA 101/110' });
+  }
+
+  // === MSDS/SDS Compliance Checks ===
+  const msdsItems = store.msdsItems || [];
+  const msdsCheck = store.msdsChecklist || [];
+  const exposure = store.exposureRecords || [];
+
+  // Chemical work → full MSDS check
+  if(dept === 'chemical' || type.includes('สารเคมี') || type.includes('chemical') || allText.includes('กรด') || allText.includes('ด่าง') || allText.includes('เคมี')) {
+    // Check expired SDS
+    const expiredSDS = msdsItems.filter(s => s.status === 'expired');
+    const expiringSDS = msdsItems.filter(s => s.status === 'expiring');
+    if(expiredSDS.length > 0) {
+      warnings.push({ level:'critical', source:'MSDS', icon:'📄', msg:`SDS หมดอายุ ${expiredSDS.length} รายการ: ${expiredSDS.map(s=>s.name).join(', ')} — ต้องอัปเดตก่อนทำงาน`, std:'GHS/MSDS' });
+    }
+    if(expiringSDS.length > 0) {
+      warnings.push({ level:'info', source:'MSDS', icon:'📄', msg:`SDS ใกล้หมดอายุ ${expiringSDS.length} รายการ: ${expiringSDS.map(s=>s.name).join(', ')}`, std:'GHS/MSDS' });
+    }
+
+    // Check MSDS compliance failures
+    const msdsFailures = msdsCheck.filter(c => c.status === 'fail');
+    if(msdsFailures.length > 0) {
+      warnings.push({ level:'critical', source:'MSDS', icon:'❌', msg:`MSDS Compliance ไม่ผ่าน ${msdsFailures.length} รายการ: ${msdsFailures.map(f=>f.item).join(', ')}`, std:'MSDS Compliance' });
+    }
+
+    // Check PPE availability (MC-008)
+    const ppeCheck = msdsCheck.find(c => c.id === 'MC-008');
+    if(ppeCheck && ppeCheck.status !== 'pass') {
+      warnings.push({ level:'critical', source:'MSDS', icon:'🧤', msg:`PPE ตาม SDS Section 8 ไม่พร้อมใช้งาน ณ จุดงาน`, std:'SDS Section 8' });
+    }
+
+    // Check Eye Wash/Safety Shower (MC-009)
+    const eyeWash = msdsCheck.find(c => c.id === 'MC-009');
+    if(eyeWash && eyeWash.status !== 'pass') {
+      warnings.push({ level:'warning', source:'MSDS', icon:'🚿', msg:`Eye Wash / Safety Shower ยังไม่ผ่านตรวจ`, std:'OSHA 29 CFR 1910.151' });
+    }
+
+    // Check Spill Kit (MC-011)
+    const spillKit = msdsCheck.find(c => c.id === 'MC-011');
+    if(spillKit && spillKit.status !== 'pass') {
+      warnings.push({ level:'warning', source:'MSDS', icon:'🧹', msg:`Spill Kit ไม่พร้อมใช้งาน`, std:'MSDS Emergency' });
+    }
+
+    // Check recent exposure exceedances
+    const recentExceed = exposure.filter(e => e.result === 'exceed');
+    if(recentExceed.length > 0) {
+      warnings.push({ level:'critical', source:'MSDS', icon:'🌡️', msg:`พบค่าสัมผัสสารเคมีเกินมาตรฐาน ${recentExceed.length} รายการ: ${recentExceed.map(e=>e.chemical+' ('+e.measured+' > '+e.pel+')').join(', ')}`, std:'PEL/TLV' });
+    }
+    const recentWarn = exposure.filter(e => e.result === 'warning');
+    if(recentWarn.length > 0) {
+      warnings.push({ level:'warning', source:'MSDS', icon:'🌡️', msg:`ค่าสัมผัสสารเคมีใกล้มาตรฐาน ${recentWarn.length} รายการ: ${recentWarn.map(e=>e.chemical).join(', ')}`, std:'PEL/TLV' });
+    }
+
+    // Check high-risk chemicals in location
+    const highRiskInLoc = msdsItems.filter(s => s.risk === 'high');
+    if(highRiskInLoc.length > 0) {
+      const ppeRequired = [...new Set(highRiskInLoc.flatMap(s => s.ppe.split(',').map(p=>p.trim())))].slice(0,5);
+      warnings.push({ level:'info', source:'MSDS', icon:'🧪', msg:`สารเคมีความเสี่ยงสูง ${highRiskInLoc.length} ชนิด — PPE ที่ต้องมี: ${ppeRequired.join(', ')}`, std:'SDS Section 8' });
+    }
+  }
+
+  // Any work near chemical storage areas
+  if(allText.includes('เคมี') || allText.includes('บำบัดน้ำ') || allText.includes('transformer') || allText.includes('scr') || allText.includes('boiler')) {
+    const ventCheck = msdsCheck.find(c => c.id === 'MC-006');
+    if(ventCheck && ventCheck.status === 'fail') {
+      warnings.push({ level:'warning', source:'MSDS', icon:'💨', msg:`ระบบระบายอากาศในคลังสารเคมีไม่ผ่าน — ระวังการสะสมของไอสารเคมี`, std:'NFPA 30/MSDS' });
+    }
+    const compatCheck = msdsCheck.find(c => c.id === 'MC-004');
+    if(compatCheck && compatCheck.status === 'fail') {
+      warnings.push({ level:'warning', source:'MSDS', icon:'⚗️', msg:`สารเคมีจัดเก็บไม่ตาม Compatibility — เสี่ยงต่อปฏิกิริยาอันตราย`, std:'MSDS Compatibility' });
+    }
+  }
+
+  // Check fuel storage NFPA for any work near fuel areas
+  if(allText.includes('ถังเชื้อเพลิง') || allText.includes('น้ำมัน') || allText.includes('diesel') || allText.includes('lpg')) {
+    const fuelFail = nfpa.filter(n => n.cat === 'fuel-storage' && n.status !== 'pass');
+    if(fuelFail.length > 0) {
+      warnings.push({ level:'warning', source:'NFPA', icon:'⛽', msg:`ระบบป้องกันคลังเชื้อเพลิง ${fuelFail.length} รายการไม่ผ่าน`, std:'NFPA 30/850' });
+    }
+  }
+
+  // Deduplicate warnings by message
+  const seen = new Set();
+  return warnings.filter(w => { if(seen.has(w.msg)) return false; seen.add(w.msg); return true; });
+}
+
+function renderWPWarnings(warnings) {
+  if(!warnings || warnings.length === 0) return '<div style="padding:14px 18px;border-radius:12px;background:var(--emerald-50);border:1px solid var(--emerald-100);margin-top:12px;"><div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--emerald-600);">✅ ผ่านการตรวจสอบ NFPA & MSDS — ไม่พบข้อขัดข้อง</div></div>';
+
+  const critical = warnings.filter(w => w.level === 'critical');
+  const warn = warnings.filter(w => w.level === 'warning');
+  const info = warnings.filter(w => w.level === 'info');
+
+  let html = '<div style="margin-top:12px;">';
+  html += `<div style="font-size:13px;font-weight:700;color:var(--slate-700);margin-bottom:8px;">🔍 ผลตรวจสอบอัตโนมัติ NFPA & MSDS (${warnings.length} รายการ)</div>`;
+
+  if(critical.length > 0) {
+    html += `<div style="padding:14px 18px;border-radius:12px;background:var(--red-50);border:1px solid var(--red-100);margin-bottom:8px;">
+      <div style="font-size:12px;font-weight:800;color:var(--red-600);margin-bottom:6px;">🚫 ข้อขัดข้องร้ายแรง (${critical.length}) — ต้องแก้ไขก่อนอนุมัติ</div>
+      ${critical.map(w => `<div style="font-size:12px;color:var(--red-600);padding:4px 0;display:flex;align-items:flex-start;gap:6px;">
+        <span>${w.icon}</span><span><strong>[${w.source}/${w.std}]</strong> ${w.msg}</span></div>`).join('')}
+    </div>`;
+  }
+  if(warn.length > 0) {
+    html += `<div style="padding:14px 18px;border-radius:12px;background:var(--amber-50);border:1px solid var(--amber-100);margin-bottom:8px;">
+      <div style="font-size:12px;font-weight:800;color:var(--amber-600);margin-bottom:6px;">⚠️ คำเตือน (${warn.length}) — ควรตรวจสอบก่อนอนุมัติ</div>
+      ${warn.map(w => `<div style="font-size:12px;color:#92400e;padding:4px 0;display:flex;align-items:flex-start;gap:6px;">
+        <span>${w.icon}</span><span><strong>[${w.source}/${w.std}]</strong> ${w.msg}</span></div>`).join('')}
+    </div>`;
+  }
+  if(info.length > 0) {
+    html += `<div style="padding:14px 18px;border-radius:12px;background:var(--primary-50);border:1px solid var(--primary-100);margin-bottom:8px;">
+      <div style="font-size:12px;font-weight:800;color:var(--primary-600);margin-bottom:6px;">ℹ️ ข้อมูลเพิ่มเติม (${info.length})</div>
+      ${info.map(w => `<div style="font-size:12px;color:var(--primary-600);padding:4px 0;display:flex;align-items:flex-start;gap:6px;">
+        <span>${w.icon}</span><span><strong>[${w.source}/${w.std}]</strong> ${w.msg}</span></div>`).join('')}
+    </div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function wpWarningBadge(wp) {
+  const warnings = checkWPCompliance(wp);
+  if(warnings.length === 0) return '<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--emerald-100);color:var(--emerald-600);">✅ OK</span>';
+  const critical = warnings.filter(w => w.level === 'critical').length;
+  if(critical > 0) return `<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--red-100);color:var(--red-600);">🚫 ${critical} ข้อขัดข้อง</span>`;
+  return `<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:var(--amber-100);color:var(--amber-600);">⚠️ ${warnings.length} เตือน</span>`;
 }
 
 let wpCount = store.workPermits.length;
@@ -3928,6 +5078,8 @@ function addWorkPermit() {
 
   store.workPermits.unshift({
     id: 'WP-'+String(wpCount).padStart(3,'0'),
+    phase: document.getElementById('wp-phase').value,
+    dept: document.getElementById('wp-dept').value,
     type: document.getElementById('wp-type').value,
     company: document.getElementById('wp-company').value || '-',
     requester: document.getElementById('wp-requester').value || '-',
@@ -3945,9 +5097,25 @@ function addWorkPermit() {
     submitDate: new Date().toLocaleDateString('th-TH').replace(/\//g,'-'),
     approver: '', approveDate: '', rejectReason: ''
   });
+  if(currentProjectId) saveProjectStore(currentProjectId);
   renderWorkPermits();
   closeModal('wpModal');
-  alert('ส่งคำขอใบอนุญาตทำงานสำเร็จ!\nรอ จป. พิจารณาอนุมัติ');
+
+  // Auto-check compliance warnings
+  const newWP = store.workPermits[0];
+  const warnings = checkWPCompliance(newWP);
+  const critical = warnings.filter(w => w.level === 'critical');
+  let msg = 'ส่งคำขอใบอนุญาตทำงานสำเร็จ!\nรอ จป. พิจารณาอนุมัติ';
+  if(critical.length > 0) {
+    msg += `\n\n🚫 ระบบตรวจพบข้อขัดข้องร้ายแรง ${critical.length} รายการ:`;
+    critical.forEach(w => { msg += `\n• [${w.source}/${w.std}] ${w.msg}`; });
+    msg += '\n\nกรุณาแจ้ง จป. เพื่อแก้ไขก่อนเริ่มงาน';
+  } else if(warnings.length > 0) {
+    msg += `\n\n⚠️ มีคำเตือน ${warnings.length} รายการจากระบบ NFPA/MSDS`;
+  } else {
+    msg += '\n\n✅ ผ่านการตรวจสอบ NFPA & MSDS เบื้องต้น';
+  }
+  alert(msg);
 }
 
 // ===== RENDER ALL (for language switch) =====
