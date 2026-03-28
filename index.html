@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LAWI MY SafeConstruct | ระบบความปลอดภัยและสิ่งแวดล้อม ISO 45001 & ISO 14001</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <style>
 :root {
   --primary: #0f172a;
@@ -751,6 +752,9 @@ tr:last-child td { border-bottom: none; }
 .user-dropdown .ud-item.danger { color: var(--red-500); }
 .user-dropdown .ud-item.danger:hover { background: var(--red-50); }
 .user-dropdown .ud-divider { height: 1px; background: var(--slate-100); margin: 4px 0; }
+.btn-export { background: linear-gradient(135deg, #059669, #10b981); color: #fff; border: none; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all .2s; }
+.btn-export:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(5,150,105,0.3); }
+.card-header-actions { display: flex; align-items: center; gap: 8px; }
 </style>
 </head>
 <body>
@@ -1103,7 +1107,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--red-50)">🚨</span> <span data-i18n="incidentList">รายการอุบัติเหตุ/เหตุการณ์</span></h3>
-          <button class="btn btn-danger btn-sm" onclick="openModal('incidentModal')" data-i18n="newReport">+ รายงานใหม่</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportIncidents()">📥 Export Excel</button>
+            <button class="btn btn-danger btn-sm" onclick="openModal('incidentModal')" data-i18n="newReport">+ รายงานใหม่</button>
+          </div>
         </div>
         <div class="card-body" style="padding-bottom:0;">
           <div class="tabs">
@@ -1138,7 +1145,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--red-50)">🔬</span> <span data-i18n="invList">รายการสอบสวนอุบัติเหตุ</span></h3>
-          <button class="btn btn-danger btn-sm" onclick="openModal('invModal')" data-i18n="newInv">+ สร้างการสอบสวนใหม่</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportInvestigations()">📥 Export Excel</button>
+            <button class="btn btn-danger btn-sm" onclick="openModal('invModal')" data-i18n="newInv">+ สร้างการสอบสวนใหม่</button>
+          </div>
         </div>
         <div class="card-body" style="padding-bottom:0;">
           <div class="tabs">
@@ -1259,6 +1269,7 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--amber-50)">📋</span> <span data-i18n="riskRegister">ทะเบียนความเสี่ยง (Risk Register)</span></h3>
+          <button class="btn-export" onclick="exportRisks()">📥 Export Excel</button>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1277,6 +1288,7 @@ tr:last-child td { border-bottom: none; }
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--emerald-50)">📋</span> <span data-i18n="dailyInspection">แบบตรวจสอบความปลอดภัยประจำวัน</span></h3>
           <div style="display:flex;gap:8px;">
+            <button class="btn-export" onclick="exportInspection()">📥 Export Excel</button>
             <button class="btn btn-ghost btn-sm" onclick="printChecklist()">🖨️ พิมพ์</button>
             <button class="btn btn-success btn-sm" onclick="saveChecklist()">💾 บันทึก</button>
           </div>
@@ -1322,7 +1334,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--emerald-50)">📊</span> <span data-i18n="envMonitoring">บันทึกการตรวจวัดสิ่งแวดล้อม</span></h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('envModal')">+ เพิ่มบันทึก</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportEnvironment()">📥 Export Excel</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('envModal')">+ เพิ่มบันทึก</button>
+          </div>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1364,7 +1379,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--emerald-50)">♻️</span> <span data-i18n="wasteLog">บันทึกการจัดการของเสีย</span></h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('wasteModal')">+ เพิ่มบันทึก</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportWaste()">📥 Export Excel</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('wasteModal')">+ เพิ่มบันทึก</button>
+          </div>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1382,7 +1400,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--violet-100)">🎓</span> <span data-i18n="trainingPlan">แผนการฝึกอบรมความปลอดภัย</span></h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('trainingModal')" data-i18n="addCourse">+ เพิ่มหลักสูตร</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportTraining()">📥 Export Excel</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('trainingModal')" data-i18n="addCourse">+ เพิ่มหลักสูตร</button>
+          </div>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1419,15 +1440,18 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--primary-50)">📁</span> <span data-i18n="docControl">ระบบเอกสาร (Document Control - ISO 7.5)</span></h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('docModal')" data-i18n="addDoc">+ เพิ่มเอกสาร</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportDocuments()">📥 Export Excel</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('docModal')" data-i18n="addDoc">+ เพิ่มเอกสาร</button>
+          </div>
         </div>
         <div class="card-body" style="padding-bottom:0;">
           <div class="tabs">
-            <div class="tab active">ทั้งหมด</div>
-            <div class="tab">นโยบาย</div>
-            <div class="tab">SOP</div>
-            <div class="tab">แบบฟอร์ม</div>
-            <div class="tab">ใบอนุญาต</div>
+            <div class="tab active" onclick="filterDocuments('all',this)">ทั้งหมด</div>
+            <div class="tab" onclick="filterDocuments('นโยบาย',this)">นโยบาย</div>
+            <div class="tab" onclick="filterDocuments('SOP',this)">SOP</div>
+            <div class="tab" onclick="filterDocuments('แบบฟอร์ม',this)">แบบฟอร์ม</div>
+            <div class="tab" onclick="filterDocuments('ใบอนุญาต',this)">ใบอนุญาต</div>
           </div>
         </div>
         <div class="card-body-flush">
@@ -1446,7 +1470,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--amber-50)">🦺</span> <span data-i18n="ppeMgmt">ระบบจัดการอุปกรณ์ PPE</span></h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('ppeModal')" data-i18n="addPPE">+ เบิก/เพิ่ม PPE</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportPPE()">📥 Export Excel</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('ppeModal')" data-i18n="addPPE">+ เบิก/เพิ่ม PPE</button>
+          </div>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1464,7 +1491,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--violet-100)">🔍</span> <span data-i18n="auditPlan">แผนการตรวจประเมิน (Audit Plan)</span></h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('auditModal')" data-i18n="addAudit">+ สร้างแผน</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportAudits()">📥 Export Excel</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('auditModal')" data-i18n="addAudit">+ สร้างแผน</button>
+          </div>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1482,7 +1512,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--amber-50)">🔧</span> <span data-i18n="capaTitle">การแก้ไข/ป้องกัน (CAPA)</span></h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('capaModal')" data-i18n="addCAPA">+ สร้าง CAPA</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportCAPA()">📥 Export Excel</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('capaModal')" data-i18n="addCAPA">+ สร้าง CAPA</button>
+          </div>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1518,7 +1551,10 @@ tr:last-child td { border-bottom: none; }
         <div class="card">
           <div class="card-header">
             <h3><span class="h-icon" style="background:var(--primary-50)">📝</span> <span data-i18n="wpTitle">ขอใบอนุญาตทำงาน (Work Permit)</span></h3>
-            <button class="btn btn-primary btn-sm" onclick="openModal('wpModal');updateWPTypes();" data-i18n="newWP">+ ขอใบอนุญาตใหม่</button>
+            <div class="card-header-actions">
+              <button class="btn-export" onclick="exportWorkPermits()">📥 Export Excel</button>
+              <button class="btn btn-primary btn-sm" onclick="openModal('wpModal');updateWPTypes();" data-i18n="newWP">+ ขอใบอนุญาตใหม่</button>
+            </div>
           </div>
           <div class="card-body" style="padding-bottom:0;">
             <div style="margin-bottom:6px;">
@@ -1623,6 +1659,7 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--red-50)">🔥</span> NFPA 850 — ระบบป้องกันอัคคีภัยโรงไฟฟ้า</h3>
+          <button class="btn-export" onclick="exportNFPA()">📥 Export Excel</button>
         </div>
         <div class="card-body" style="padding-bottom:0;">
           <div class="tabs">
@@ -1683,7 +1720,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--amber-50)">♦️</span> NFPA 704 — ระบบระบุอันตรายสารเคมี (Hazard Diamond)</h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('nfpa704Modal')">+ เพิ่มรายการ</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportNFPA704()">📥 Export Excel</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('nfpa704Modal')">+ เพิ่มรายการ</button>
+          </div>
         </div>
         <div class="card-body" style="padding:16px 24px 8px;">
           <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--slate-500);">
@@ -1723,7 +1763,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--primary-50)">📄</span> <span data-i18n="msdsRegistryTitle">ทะเบียน SDS สารเคมี (GHS 16 Sections)</span></h3>
-          <button class="btn btn-primary btn-sm" onclick="openModal('msdsModal')">+ เพิ่ม SDS</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportMSDS()">📥 Export Excel</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('msdsModal')">+ เพิ่ม SDS</button>
+          </div>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1760,6 +1803,7 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--emerald-50)">✅</span> <span data-i18n="msdsChecklistTitle">รายการตรวจสอบ MSDS Compliance</span></h3>
+          <button class="btn-export" onclick="exportMSDSCompliance()">📥 Export Excel</button>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -1883,7 +1927,10 @@ tr:last-child td { border-bottom: none; }
       <div class="card">
         <div class="card-header">
           <h3><span class="h-icon" style="background:var(--primary-50)">📒</span> <span data-i18n="activityLogTitle">บันทึกการเข้า-ออกระบบ</span></h3>
-          <button class="btn btn-ghost btn-sm" onclick="clearActivityLog()" data-i18n="clearLog">ล้างบันทึก</button>
+          <div class="card-header-actions">
+            <button class="btn-export" onclick="exportActivityLog()">📥 Export Excel</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearActivityLog()" data-i18n="clearLog">ล้างบันทึก</button>
+          </div>
         </div>
         <div class="card-body-flush">
           <div class="table-wrap">
@@ -2006,6 +2053,69 @@ tr:last-child td { border-bottom: none; }
   </div>
 </div>
 
+<!-- Document Modal -->
+<div class="modal-overlay" id="docModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--primary-50)">📁</span> เพิ่มเอกสาร</div>
+    <div class="form-row">
+      <div class="form-group"><label>ชื่อเอกสาร</label><input type="text" id="doc-name" placeholder="ชื่อเอกสาร"></div>
+      <div class="form-group"><label>ประเภท</label>
+        <select id="doc-type"><option value="นโยบาย">นโยบาย</option><option value="SOP">SOP</option><option value="แบบฟอร์ม">แบบฟอร์ม</option><option value="ใบอนุญาต">ใบอนุญาต</option><option value="คู่มือ">คู่มือ</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>ฉบับที่</label><input type="text" id="doc-ver" placeholder="1.0" value="1.0"></div>
+      <div class="form-group"><label>วันที่</label><input type="date" id="doc-date"></div>
+    </div>
+    <div class="form-group"><label>ผู้อนุมัติ</label><input type="text" id="doc-approver" placeholder="ชื่อผู้อนุมัติ"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('docModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="addDocument()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- PPE Modal -->
+<div class="modal-overlay" id="ppeModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--amber-50)">🦺</span> เพิ่ม/เบิก PPE</div>
+    <div class="form-row">
+      <div class="form-group"><label>ชื่ออุปกรณ์</label><input type="text" id="ppe-name" placeholder="ชื่อ PPE"></div>
+      <div class="form-group"><label>รายการ</label>
+        <select id="ppe-action-type"><option value="add">เพิ่มสต๊อก</option><option value="withdraw">เบิก</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>จำนวน</label><input type="number" id="ppe-qty" placeholder="จำนวน" min="1"></div>
+      <div class="form-group"><label>ขั้นต่ำ</label><input type="number" id="ppe-min" placeholder="จำนวนขั้นต่ำ" min="0"></div>
+    </div>
+    <div class="form-group"><label>วันหมดอายุ</label><input type="date" id="ppe-expiry"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('ppeModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="addPPE()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Audit Modal -->
+<div class="modal-overlay" id="auditModal">
+  <div class="modal">
+    <div class="modal-title"><span class="modal-icon" style="background:var(--violet-100)">🔍</span> สร้างแผน Audit</div>
+    <div class="form-row">
+      <div class="form-group"><label>ประเภท</label>
+        <select id="audit-type"><option value="Internal Audit">Internal Audit</option><option value="Site Inspection">Site Inspection</option><option value="ISO 14001 Audit">ISO 14001 Audit</option><option value="ISO 45001 Audit">ISO 45001 Audit</option><option value="Management Review">Management Review</option></select>
+      </div>
+      <div class="form-group"><label>วันที่</label><input type="date" id="audit-date"></div>
+    </div>
+    <div class="form-group"><label>ขอบเขต</label><input type="text" id="audit-scope" placeholder="ขอบเขตการตรวจ"></div>
+    <div class="form-group"><label>ผู้ตรวจ</label><input type="text" id="audit-auditor" placeholder="ชื่อผู้ตรวจ"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('auditModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="addAudit()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== MODALS ===== -->
 <div class="modal-overlay" id="incidentModal">
   <div class="modal">
@@ -2062,6 +2172,12 @@ tr:last-child td { border-bottom: none; }
     </div>
     <div class="form-row">
       <div class="form-group"><label>ค่าที่วัดได้</label><input type="number" id="env-value" step="0.01"></div>
+      <div class="form-group"><label>หน่วย</label>
+        <select id="env-unit"><option value="µg/m³">µg/m³</option><option value="mg/m³">mg/m³</option><option value="mg/L">mg/L</option><option value="dB(A)">dB(A)</option><option value="ppm">ppm</option><option value="-">-</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>ค่ามาตรฐาน</label><input type="text" id="env-std" placeholder="เช่น < 50"></div>
       <div class="form-group"><label>จุดตรวจวัด</label><input type="text" id="env-point" placeholder="เช่น ริมรั้วด้านทิศเหนือ"></div>
     </div>
     <div class="modal-actions">
@@ -4059,7 +4175,7 @@ function renderPPE() {
     <td style="font-weight:700;color:${low?'var(--red-500)':'var(--slate-800)'}">${p.stock}</td>
     <td>${p.min}</td><td>${low?'<span class="badge badge-danger"><span class="badge-dot"></span> '+t('belowMin')+'</span>':'<span class="badge badge-success"><span class="badge-dot"></span> '+t('sufficient')+'</span>'}</td>
     <td>${p.expiry}</td>
-    <td>${low?'<button class="btn btn-danger btn-sm">'+t('orderNow')+'</button>':'<button class="btn btn-ghost btn-sm">'+t('withdraw')+'</button>'}</td></tr>`;
+    <td>${low?'<button class="btn btn-danger btn-sm" onclick="orderPPE(\''+p.id+'\')">'+t('orderNow')+'</button>':'<button class="btn btn-ghost btn-sm" onclick="withdrawPPE(\''+p.id+'\')">'+t('withdraw')+'</button>'}</td></tr>`;
   }).join('');
 }
 function renderAudits() {
@@ -4155,9 +4271,109 @@ function renderChecklists() {
 function saveChecklist() {
   const checked = document.querySelectorAll('.check-box.checked').length;
   const total = document.querySelectorAll('.check-box').length;
+  const inspDate = document.getElementById('inspDate')?.value || new Date().toISOString().split('T')[0];
+  const results = [];
+  document.querySelectorAll('.checklist-item').forEach((item, i) => {
+    const isChecked = item.querySelector('.check-box.checked') !== null;
+    const title = item.querySelector('.title')?.textContent || '';
+    results.push({ item: title, checked: isChecked });
+  });
+  if(!store.inspectionHistory) store.inspectionHistory = [];
+  store.inspectionHistory.unshift({
+    date: inspDate,
+    inspector: currentUser?.username || '-',
+    checked: checked,
+    total: total,
+    pct: Math.round(checked/total*100),
+    results: results
+  });
+  saveProjectStore();
   alert(`บันทึกสำเร็จ!\n\nผลการตรวจ: ${checked}/${total} รายการ (${Math.round(checked/total*100)}%)`);
 }
 function printChecklist() { window.print(); }
+
+// ===== DOCUMENT, PPE, AUDIT ADD FUNCTIONS =====
+let docCount = store.documents.length;
+function addDocument() {
+  docCount++;
+  const name = document.getElementById('doc-name').value;
+  if(!name) { alert('กรุณากรอกชื่อเอกสาร'); return; }
+  store.documents.push({
+    id: 'DOC-'+String(docCount).padStart(3,'0'),
+    name: name,
+    type: document.getElementById('doc-type').value,
+    ver: document.getElementById('doc-ver').value || '1.0',
+    date: document.getElementById('doc-date').value || new Date().toISOString().split('T')[0],
+    approver: document.getElementById('doc-approver').value || '-',
+    status: 'active'
+  });
+  saveProjectStore(); renderDocuments(); closeModal('docModal');
+}
+function filterDocuments(type, el) {
+  document.querySelectorAll('#page-documents .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const filtered = type==='all' ? store.documents : store.documents.filter(d=>d.type===type);
+  document.getElementById('docTable').innerHTML = filtered.map(d => `
+    <tr><td><strong style="color:var(--slate-900)">${d.id}</strong></td><td>${d.name}</td><td><span class="badge badge-gray">${d.type}</span></td><td>v${d.ver}</td>
+    <td>${d.date}</td><td>${d.approver}</td><td>${statusBadge(d.status)}</td></tr>
+  `).join('');
+}
+
+function addPPE() {
+  const name = document.getElementById('ppe-name').value;
+  const qty = parseInt(document.getElementById('ppe-qty').value);
+  if(!name) { alert('กรุณากรอกชื่ออุปกรณ์'); return; }
+  if(!qty || qty < 1) { alert('กรุณากรอกจำนวน'); return; }
+  const actionType = document.getElementById('ppe-action-type').value;
+  const existing = store.ppe.find(p => p.name === name);
+  if(existing) {
+    if(actionType === 'add') { existing.stock += qty; }
+    else { existing.stock = Math.max(0, existing.stock - qty); }
+  } else {
+    store.ppe.push({
+      id: 'PPE-'+String(store.ppe.length+1).padStart(3,'0'),
+      name: name,
+      stock: qty,
+      min: parseInt(document.getElementById('ppe-min').value) || 10,
+      expiry: document.getElementById('ppe-expiry').value || '-'
+    });
+  }
+  saveProjectStore(); renderPPE(); closeModal('ppeModal');
+}
+function withdrawPPE(id) {
+  const item = store.ppe.find(p => p.id === id);
+  if(!item) return;
+  const qty = prompt('จำนวนที่ต้องการเบิก ' + item.name + ' (คงเหลือ: ' + item.stock + ')');
+  if(!qty || isNaN(qty) || parseInt(qty) < 1) return;
+  item.stock = Math.max(0, item.stock - parseInt(qty));
+  saveProjectStore(); renderPPE();
+}
+function orderPPE(id) {
+  const item = store.ppe.find(p => p.id === id);
+  if(!item) return;
+  const qty = prompt('จำนวนที่ต้องการสั่งเติม ' + item.name + ' (คงเหลือ: ' + item.stock + ')');
+  if(!qty || isNaN(qty) || parseInt(qty) < 1) return;
+  item.stock += parseInt(qty);
+  saveProjectStore(); renderPPE();
+  alert('สั่งเติม ' + item.name + ' จำนวน ' + qty + ' ชิ้น สำเร็จ');
+}
+
+let auditCount = store.audits.length;
+function addAudit() {
+  auditCount++;
+  const scope = document.getElementById('audit-scope').value;
+  if(!scope) { alert('กรุณากรอกขอบเขตการตรวจ'); return; }
+  store.audits.push({
+    id: 'AUD-'+String(auditCount).padStart(3,'0'),
+    type: document.getElementById('audit-type').value,
+    scope: scope,
+    date: document.getElementById('audit-date').value || new Date().toISOString().split('T')[0],
+    auditor: document.getElementById('audit-auditor').value || '-',
+    findings: 0,
+    status: 'planned'
+  });
+  saveProjectStore(); renderAudits(); closeModal('auditModal');
+}
 
 // ===== ADD FUNCTIONS =====
 let incCount = store.incidents.length;
@@ -4172,7 +4388,7 @@ function addIncident() {
     severity: document.getElementById('inc-severity').value,
     status:'investigating'
   });
-  renderIncidents(); closeModal('incidentModal');
+  saveProjectStore(); renderIncidents(); closeModal('incidentModal');
 }
 let riskCount = store.risks.length;
 function addRisk() {
@@ -4186,16 +4402,18 @@ function addRisk() {
     control: document.getElementById('risk-control').value,
     owner: document.getElementById('risk-owner').value
   });
-  renderRiskRegister(); closeModal('riskModal');
+  saveProjectStore(); renderRiskRegister(); closeModal('riskModal');
 }
 function addEnvRecord() {
   store.envRecords.unshift({
     date: document.getElementById('env-date').value,
     param: document.getElementById('env-param').value,
     value: parseFloat(document.getElementById('env-value').value),
-    unit:'-', std:'-', point: document.getElementById('env-point').value
+    unit: document.getElementById('env-unit')?.value || '-',
+    std: document.getElementById('env-std')?.value || '-',
+    point: document.getElementById('env-point').value
   });
-  renderEnvTable(); closeModal('envModal');
+  saveProjectStore(); renderEnvTable(); closeModal('envModal');
 }
 function addWaste() {
   store.waste.unshift({
@@ -4206,7 +4424,7 @@ function addWaste() {
     method: document.getElementById('waste-method').value,
     company: document.getElementById('waste-company').value
   });
-  renderWaste(); closeModal('wasteModal');
+  saveProjectStore(); renderWaste(); closeModal('wasteModal');
 }
 let trainCount = store.training.length;
 function addTraining() {
@@ -4219,7 +4437,7 @@ function addTraining() {
     pass:0, trainer: document.getElementById('train-trainer').value,
     status:'planned'
   });
-  renderTraining(); closeModal('trainingModal');
+  saveProjectStore(); renderTraining(); closeModal('trainingModal');
 }
 let capaCount = store.capa.length;
 function addCAPA() {
@@ -4234,7 +4452,7 @@ function addCAPA() {
     due: document.getElementById('capa-due').value,
     status:'in-progress'
   });
-  renderCAPA(); closeModal('capaModal');
+  saveProjectStore(); renderCAPA(); closeModal('capaModal');
 }
 
 // ===== INVESTIGATION =====
@@ -4512,7 +4730,7 @@ function saveRCA() {
       document.getElementById('rca-why5').value,
     ].filter(w=>w.trim())
   };
-  closeModal('invRCAModal');
+  saveProjectStore(); closeModal('invRCAModal');
   showInvDetail(id);
 }
 
@@ -4528,7 +4746,7 @@ function saveAction() {
     due: document.getElementById('act-due').value,
     status: 'in-progress'
   });
-  closeModal('invActionModal');
+  saveProjectStore(); closeModal('invActionModal');
   showInvDetail(id);
 }
 
@@ -4537,7 +4755,7 @@ function submitForReview(id) {
   if(!inv) return;
   if(confirm('ส่งรายงานสอบสวนเพื่อทบทวน/อนุมัติ?')) {
     inv.status = 'review';
-    renderInvestigations();
+    saveProjectStore(); renderInvestigations();
     showInvDetail(id);
   }
 }
@@ -4548,7 +4766,7 @@ function closeInvestigation(id) {
   if(confirm('อนุมัติและปิดการสอบสวน ' + id + '?')) {
     inv.status = 'closed';
     inv.signoff.forEach(s => { s.signed = true; if(!s.date) s.date = new Date().toLocaleDateString('th-TH').replace(/\//g,'-'); });
-    renderInvestigations();
+    saveProjectStore(); renderInvestigations();
     showInvDetail(id);
   }
 }
@@ -4586,7 +4804,7 @@ function addInvestigation() {
     status: 'investigating',
     submitDate: new Date().toLocaleDateString('th-TH').replace(/\//g,'-')
   });
-  renderInvestigations();
+  saveProjectStore(); renderInvestigations();
   closeModal('invModal');
   alert('สร้างการสอบสวนสำเร็จ!');
 }
@@ -5151,6 +5369,192 @@ function renderAll() {
   } else {
     document.getElementById('currentRoleInfo').textContent = t('wpUsing') + ' ' + t('wpSafety');
   }
+}
+
+// ===== EXCEL EXPORT =====
+function exportToExcel(data, headers, filename, sheetName) {
+  const ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+  // Auto column widths
+  ws['!cols'] = headers.map((h, i) => {
+    let maxLen = h.length;
+    data.forEach(row => { if(row[i] && String(row[i]).length > maxLen) maxLen = String(row[i]).length; });
+    return { wch: Math.min(Math.max(maxLen + 2, 10), 60) };
+  });
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, sheetName || 'Sheet1');
+  XLSX.writeFile(wb, filename);
+}
+
+function getProjectPrefix() {
+  const p = getProjects().find(p => p.id === currentProjectId);
+  return p ? p.code + '_' : '';
+}
+
+function exportIncidents() {
+  const headers = ['รหัส','วันที่','ประเภท','สถานที่','รายละเอียด','ความรุนแรง','สถานะ'];
+  const typeMap = {'accident':'อุบัติเหตุ','near-miss':'Near Miss','unsafe':'สภาพไม่ปลอดภัย'};
+  const sevMap = {'critical':'วิกฤต','high':'สูง','medium':'ปานกลาง','low':'ต่ำ'};
+  const statMap = {'investigating':'กำลังสอบสวน','corrective':'แก้ไข','closed':'ปิดแล้ว','open':'เปิด'};
+  const data = store.incidents.map(i => [i.id, i.date, typeMap[i.type]||i.type, i.location, i.desc, sevMap[i.severity]||i.severity, statMap[i.status]||i.status]);
+  exportToExcel(data, headers, getProjectPrefix()+'Incidents.xlsx', 'อุบัติเหตุ');
+}
+
+function exportInvestigations() {
+  const headers = ['รหัส','อ้างอิง','ประเภท','วันที่','เวลา','สถานที่','ความรุนแรง','รายละเอียด','ผู้บาดเจ็บ','ตำแหน่ง','ประเภทบาดเจ็บ','การรักษา','สาเหตุ (Unsafe Act)','สาเหตุ (Unsafe Condition)','Root Cause','สถานะ'];
+  const data = store.investigations.map(inv => [
+    inv.id, inv.ref, inv.type, inv.date, inv.time, inv.location, inv.severity, inv.desc,
+    inv.injured?.name||'', inv.injured?.position||'', inv.injured?.injuryType||'', inv.injured?.treatment||'',
+    inv.rca?.unsafeAct||'', inv.rca?.unsafeCond||'', inv.rca?.root||'', inv.status
+  ]);
+  exportToExcel(data, headers, getProjectPrefix()+'Investigations.xlsx', 'สอบสวนอุบัติเหตุ');
+}
+
+function exportRisks() {
+  const headers = ['รหัส','กิจกรรม','อันตราย','โอกาส (L)','ความรุนแรง (S)','ระดับความเสี่ยง (LxS)','มาตรการควบคุม','ผู้รับผิดชอบ'];
+  const data = store.risks.map(r => [r.id, r.activity, r.hazard, r.l, r.s, r.l*r.s, r.control, r.owner]);
+  exportToExcel(data, headers, getProjectPrefix()+'Risk_Register.xlsx', 'ทะเบียนความเสี่ยง');
+}
+
+function exportInspection() {
+  const sections = [
+    { name:'สภาพพื้นที่ทำงาน', items:['ทางเดิน/ทางวิ่งเครื่องจักรเรียบร้อย ไม่มีสิ่งกีดขวาง','แสงสว่างเพียงพอทุกจุดทำงาน','ป้ายเตือนอันตรายติดครบทุกจุด','ราวกั้น/แผงกั้นพื้นที่อันตรายครบ','นั่งร้านมั่นคง ตรวจสอบก่อนใช้งาน'] },
+    { name:'อุปกรณ์ PPE', items:['คนงานสวมหมวกนิรภัยครบ 100%','รองเท้านิรภัยครบ 100%','เสื้อสะท้อนแสงครบถ้วน','PPE เฉพาะงาน (สายรัด, แว่น, ถุงมือ) ครบถ้วน','PPE สภาพดี ไม่ชำรุด'] },
+    { name:'เครื่องจักรและอุปกรณ์', items:['เครื่องจักรตรวจสอบก่อนใช้งาน (Pre-use inspection)','อุปกรณ์ยก (เครน, รอก) มีใบรับรอง','เครื่องมือไฟฟ้ามีสายดิน / GFCI','ถังแก๊สยึดตรึงถูกต้อง','ระบบ LOTO พร้อมใช้งาน'] },
+    { name:'ระบบป้องกันอัคคีภัย', items:['ถังดับเพลิงพร้อมใช้ ไม่หมดอายุ','ทางหนีไฟไม่มีสิ่งกีดขวาง','จุดรวมพลมีป้ายชัดเจน','Hot Work Area มี Fire Watch','สัญญาณเตือนไฟไหม้ทำงานปกติ'] },
+    { name:'สิ่งแวดล้อม (ISO 14001)', items:['ไม่มีน้ำเสียไหลลงทางระบายน้ำ','ฝุ่น/เสียงอยู่ในเกณฑ์มาตรฐาน','ของเสียแยกประเภทถูกต้อง','สารเคมีจัดเก็บมี Containment','ไม่มีการเผาขยะ/วัสดุในพื้นที่'] }
+  ];
+  const headers = ['หมวด','รายการตรวจ'];
+  const data = [];
+  sections.forEach(s => { s.items.forEach(item => data.push([s.name, item])); });
+  exportToExcel(data, headers, getProjectPrefix()+'Daily_Inspection.xlsx', 'ตรวจสอบประจำวัน');
+}
+
+function exportEnvironment() {
+  const headers = ['วันที่','พารามิเตอร์','ค่าที่วัด','หน่วย','มาตรฐาน','สถานะ','จุดตรวจวัด'];
+  const data = store.envRecords.map(e => [e.date, e.param, e.value, e.unit, e.std, 'ผ่าน', e.point]);
+  exportToExcel(data, headers, getProjectPrefix()+'Environment.xlsx', 'สิ่งแวดล้อม');
+}
+
+function exportWaste() {
+  const headers = ['วันที่','ประเภท','รายละเอียด','ปริมาณ (กก.)','วิธีกำจัด','บริษัท'];
+  const data = store.waste.map(w => [w.date, w.type, w.desc, w.qty, w.method, w.company]);
+  exportToExcel(data, headers, getProjectPrefix()+'Waste_Management.xlsx', 'การจัดการของเสีย');
+}
+
+function exportTraining() {
+  const headers = ['รหัส','หลักสูตร','วันที่','จำนวนผู้เข้าอบรม','ผ่าน','วิทยากร','สถานะ'];
+  const statMap = {'completed':'เสร็จสิ้น','planned':'วางแผน','in-progress':'กำลังดำเนินการ'};
+  const data = store.training.map(t => [t.id, t.name, t.date, t.count, t.status==='completed'?t.pass+'/'+t.count:'-', t.trainer, statMap[t.status]||t.status]);
+  exportToExcel(data, headers, getProjectPrefix()+'Training.xlsx', 'การฝึกอบรม');
+}
+
+function exportDocuments() {
+  const headers = ['รหัส','ชื่อเอกสาร','ประเภท','ฉบับที่','วันที่','ผู้อนุมัติ','สถานะ'];
+  const statMap = {'active':'ใช้งาน','review':'ทบทวน','draft':'ร่าง','obsolete':'ยกเลิก'};
+  const data = store.documents.map(d => [d.id, d.name, d.type, 'v'+d.ver, d.date, d.approver, statMap[d.status]||d.status]);
+  exportToExcel(data, headers, getProjectPrefix()+'Documents.xlsx', 'เอกสาร ISO');
+}
+
+function exportPPE() {
+  const headers = ['รหัส','อุปกรณ์','คงเหลือ','ขั้นต่ำ','สถานะ','หมดอายุ'];
+  const data = store.ppe.map(p => [p.id, p.name, p.stock, p.min, p.stock<=p.min?'ต่ำกว่าขั้นต่ำ':'เพียงพอ', p.expiry]);
+  exportToExcel(data, headers, getProjectPrefix()+'PPE.xlsx', 'อุปกรณ์ PPE');
+}
+
+function exportAudits() {
+  const headers = ['รหัส','ประเภท','ขอบเขต','วันที่','ผู้ตรวจ','ข้อค้นพบ','สถานะ'];
+  const statMap = {'completed':'เสร็จสิ้น','planned':'วางแผน','in-progress':'กำลังดำเนินการ'};
+  const data = store.audits.map(a => [a.id, a.type, a.scope, a.date, a.auditor, a.findings>0?a.findings+' ข้อ':'-', statMap[a.status]||a.status]);
+  exportToExcel(data, headers, getProjectPrefix()+'Audits.xlsx', 'Audit');
+}
+
+function exportCAPA() {
+  const headers = ['รหัส','ที่มา','ปัญหา','สาเหตุ','การแก้ไข','ผู้รับผิดชอบ','กำหนด','สถานะ'];
+  const statMap = {'completed':'เสร็จสิ้น','in-progress':'กำลังดำเนินการ','open':'เปิด','overdue':'เกินกำหนด'};
+  const data = store.capa.map(c => [c.id, c.source, c.problem, c.root, c.action, c.owner, c.due, statMap[c.status]||c.status]);
+  exportToExcel(data, headers, getProjectPrefix()+'CAPA.xlsx', 'CAPA');
+}
+
+function exportWorkPermits() {
+  const phaseMap = {'construction':'ก่อสร้าง','maintenance':'ซ่อมบำรุง','operation':'เดินเครื่อง'};
+  const deptMap = {'civil':'โยธา','mechanical':'เครื่องกล','electrical':'ไฟฟ้า','chemical':'เคมี','process':'Process'};
+  const statMap = {'pending':'รออนุมัติ','approved':'อนุมัติ','rejected':'ปฏิเสธ','expired':'หมดอายุ','completed':'เสร็จสิ้น'};
+  const headers = ['เลขที่','ลักษณะงาน','ระบบงาน','ประเภทงาน','บริษัท','ผู้ขอ','จำนวนคนงาน','สถานที่','วันที่เริ่ม','วันที่สิ้นสุด','เวลา','รายละเอียด','มาตรการความปลอดภัย','PPE','ระดับความเสี่ยง','สถานะ','ผู้อนุมัติ','วันที่อนุมัติ','เหตุผลปฏิเสธ'];
+  const data = store.workPermits.map(wp => [
+    wp.id, phaseMap[wp.phase]||wp.phase||'', deptMap[wp.dept]||wp.dept||'', wp.type, wp.company, wp.requester, wp.workers, wp.location,
+    wp.startDate, wp.endDate, (wp.timeStart||'')+'-'+(wp.timeEnd||''), wp.desc, wp.safety,
+    Array.isArray(wp.ppe)?wp.ppe.join(', '):wp.ppe||'', wp.risk, statMap[wp.status]||wp.status, wp.approver||'', wp.approveDate||'', wp.rejectReason||''
+  ]);
+  exportToExcel(data, headers, getProjectPrefix()+'Work_Permits.xlsx', 'Work Permit');
+}
+
+function exportNFPA() {
+  const catMap = {'fire-suppression':'ระบบดับเพลิง','fire-alarm':'ระบบแจ้งเตือน','fuel-storage':'เชื้อเพลิง/สารเคมี','electrical':'ระบบไฟฟ้า','emergency':'ฉุกเฉิน','biomass':'ชีวมวล/ขยะ'};
+  const statMap = {'pass':'ผ่าน','fail':'ไม่ผ่าน','pending':'รอตรวจ'};
+  // NFPA 850 Checklist
+  const h1 = ['รหัส','หมวด NFPA','รายการตรวจสอบ','มาตรฐาน','ความถี่','ตรวจล่าสุด','สถานะ'];
+  const d1 = store.nfpaChecklist.map(n => [n.id, catMap[n.cat]||n.cat, n.item, n.std, n.freq, n.lastCheck, statMap[n.status]||n.status]);
+  // NFPA 25
+  const h2 = ['ระบบ/อุปกรณ์','ประเภท','ความถี่','ตรวจล่าสุด','ครั้งถัดไป','สถานะ'];
+  const d2 = store.nfpa25Schedule.map(n => [n.sys, n.type, n.freq, n.lastCheck, n.nextCheck, n.status==='ok'?'ปกติ':n.status==='due-soon'?'ใกล้ครบกำหนด':'เกินกำหนด']);
+  // NFPA 72
+  const h3 = ['อุปกรณ์','สถานที่','ความถี่','ตรวจล่าสุด','ครั้งถัดไป','สถานะ'];
+  const d3 = store.nfpa72Schedule.map(n => [n.device, n.location, n.freq, n.lastCheck, n.nextCheck, n.status==='ok'?'ปกติ':n.status==='due-soon'?'ใกล้ครบกำหนด':'เกินกำหนด']);
+
+  const wb = XLSX.utils.book_new();
+  const ws1 = XLSX.utils.aoa_to_sheet([h1,...d1]);
+  ws1['!cols'] = h1.map((h,i)=>{ let m=h.length; d1.forEach(r=>{if(r[i]&&String(r[i]).length>m) m=String(r[i]).length;}); return {wch:Math.min(Math.max(m+2,10),60)};});
+  XLSX.utils.book_append_sheet(wb, ws1, 'NFPA 850');
+  const ws2 = XLSX.utils.aoa_to_sheet([h2,...d2]);
+  ws2['!cols'] = h2.map((h,i)=>{ let m=h.length; d2.forEach(r=>{if(r[i]&&String(r[i]).length>m) m=String(r[i]).length;}); return {wch:Math.min(Math.max(m+2,10),60)};});
+  XLSX.utils.book_append_sheet(wb, ws2, 'NFPA 25');
+  const ws3 = XLSX.utils.aoa_to_sheet([h3,...d3]);
+  ws3['!cols'] = h3.map((h,i)=>{ let m=h.length; d3.forEach(r=>{if(r[i]&&String(r[i]).length>m) m=String(r[i]).length;}); return {wch:Math.min(Math.max(m+2,10),60)};});
+  XLSX.utils.book_append_sheet(wb, ws3, 'NFPA 72');
+  XLSX.writeFile(wb, getProjectPrefix()+'NFPA_Fire_Protection.xlsx');
+}
+
+function exportNFPA704() {
+  const headers = ['รหัส','สารเคมี/วัสดุ','สถานที่จัดเก็บ','Health (H)','Fire (F)','Reactivity (R)','Special','หมายเหตุ'];
+  const data = store.nfpa704Items.map(n => [n.id, n.name, n.location, n.h, n.f, n.r, n.s||'-', n.note]);
+  exportToExcel(data, headers, getProjectPrefix()+'NFPA704_Hazard_Diamond.xlsx', 'NFPA 704');
+}
+
+function exportMSDS() {
+  const ghsMap = {'corrosive':'กัดกร่อน','flammable':'ไวไฟ','toxic':'มีพิษ','health-hazard':'อันตรายต่อสุขภาพ','irritant':'ระคายเคือง','oxidizer':'ออกซิไดเซอร์','explosive':'ระเบิด','environment':'อันตรายต่อสิ่งแวดล้อม','compressed-gas':'ก๊าซอัด'};
+  const statMap = {'current':'เป็นปัจจุบัน','expiring':'ใกล้หมดอายุ','expired':'หมดอายุ'};
+  const headers = ['รหัส','ชื่อสารเคมี','CAS No.','สถานที่จัดเก็บ','ปริมาณ','การจำแนก GHS','ระดับความเสี่ยง','PPE ที่ต้องใช้','PEL/TLV','วันที่ SDS','สถานะ','การปฐมพยาบาล'];
+  const data = store.msdsItems.map(m => [m.id, m.name, m.cas, m.location, m.qty, ghsMap[m.ghs]||m.ghs, m.risk, m.ppe, m.pel, m.sdsDate, statMap[m.status]||m.status, m.firstaid]);
+  exportToExcel(data, headers, getProjectPrefix()+'MSDS_SDS.xlsx', 'MSDS/SDS');
+}
+
+function exportMSDSCompliance() {
+  const catMap = {'storage':'การจัดเก็บ','handling':'การจัดการ/ใช้งาน','emergency':'ฉุกเฉิน','monitoring':'การเฝ้าระวัง'};
+  const statMap = {'pass':'ผ่าน','fail':'ไม่ผ่าน','pending':'รอตรวจ'};
+  // Compliance Checklist
+  const h1 = ['รหัส','หมวด','รายการตรวจ','ความถี่','ตรวจล่าสุด','สถานะ'];
+  const d1 = store.msdsChecklist.map(m => [m.id, catMap[m.cat]||m.cat, m.item, m.freq, m.lastCheck, statMap[m.status]||m.status]);
+  // Exposure Monitoring
+  const h2 = ['รหัส','วันที่','สารเคมี','พื้นที่','ค่าที่วัดได้','PEL/TLV','ผล','การดำเนินการ'];
+  const resultMap = {'pass':'ผ่าน','warning':'เตือน','exceed':'เกินค่ามาตรฐาน'};
+  const d2 = store.exposureRecords.map(e => [e.id, e.date, e.chemical, e.area, e.measured, e.pel, resultMap[e.result]||e.result, e.action]);
+
+  const wb = XLSX.utils.book_new();
+  const ws1 = XLSX.utils.aoa_to_sheet([h1,...d1]);
+  ws1['!cols'] = h1.map((h,i)=>{ let m=h.length; d1.forEach(r=>{if(r[i]&&String(r[i]).length>m) m=String(r[i]).length;}); return {wch:Math.min(Math.max(m+2,10),60)};});
+  XLSX.utils.book_append_sheet(wb, ws1, 'MSDS Compliance');
+  const ws2 = XLSX.utils.aoa_to_sheet([h2,...d2]);
+  ws2['!cols'] = h2.map((h,i)=>{ let m=h.length; d2.forEach(r=>{if(r[i]&&String(r[i]).length>m) m=String(r[i]).length;}); return {wch:Math.min(Math.max(m+2,10),60)};});
+  XLSX.utils.book_append_sheet(wb, ws2, 'Exposure Monitoring');
+  XLSX.writeFile(wb, getProjectPrefix()+'MSDS_Compliance.xlsx');
+}
+
+function exportActivityLog() {
+  const logs = getActivityLogs();
+  const headers = ['#','วันที่-เวลา','ผู้ใช้','ตำแหน่ง','กิจกรรม','โครงการ'];
+  const roleMap = {'safety':'จป.วิชาชีพ','manager':'ผู้จัดการ','contractor':'ผู้รับเหมา','env':'สิ่งแวดล้อม','admin':'ผู้ดูแลระบบ'};
+  const data = logs.map((l,i) => [i+1, new Date(l.timestamp).toLocaleString('th-TH'), l.username||l.name||'', roleMap[l.role]||l.role||'', l.action==='login'?'เข้าสู่ระบบ':'ออกจากระบบ', l.projectName||l.project||'']);
+  exportToExcel(data, headers, 'Activity_Log.xlsx', 'บันทึกกิจกรรม');
 }
 
 // ===== INIT =====
